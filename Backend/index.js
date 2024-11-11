@@ -2,8 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
-// Server Start
+const user_route = require("./routes/user.route");
+
 const app = express();
+
+// Server Start
 const PORT = process.env.PORT;
 app.listen(PORT, () =>
   console.log(`MERN Blog App | Backend started on port ${PORT}`)
@@ -36,3 +39,7 @@ mongoose
 //     process.exit(1);
 //   }
 // };
+
+// Run API
+app.use(express.json());
+app.use("/api/auth/user", user_route);
