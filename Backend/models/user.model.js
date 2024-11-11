@@ -10,6 +10,11 @@ const UserSchema = new Schema(
       min: 7,
       max: 25,
     },
+    email: {
+      type: String,
+      require: true,
+      unique: true,
+    },
     password: {
       type: String,
       require: true,
