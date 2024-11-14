@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
-const user_route = require("./routes/user.route");
+const user_route = require("./routes/UserRoute");
 
 const app = express();
 
@@ -43,3 +43,13 @@ mongoose
 //TODO: Run API
 app.use(express.json());
 app.use("/api/auth/user", user_route);
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({
+    success: false,
+    statusCode: statusCode,
+    message: message,
+  });
+});
