@@ -7,16 +7,16 @@ const sign_up = async (req, res, next) => {
   const { email, username, password } = req.body;
 
   //* Regex Pattern for Email
-  const emailRegexPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailRegexPattern = /^[a-zA-Z0-9](?!.*[.\-_]{2})([a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const emailValid = emailRegexPattern.test(email);
 
   //* Regex Pattern for Username
-  const usernameRegexPattern = /^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*$/;
+  const usernameRegexPattern = /^[A-Za-z](?!.*[.\-_]{2})(?!.*[.\-_].*[.\-_])[A-Za-z0-9]*(?:[.\-_][A-Za-z0-9]+)*$/;
   const usernameValid = usernameRegexPattern.test(username);
 
   //* Regex Pattern for Password
   const passwordRegexPattern =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]*$/;
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*[!@#$%^&*]{2})(?!.*[!@#$%^&*][^A-Za-z0-9]).*$/;
   const passwordValid = passwordRegexPattern.test(password);
 
   //TODO: Check Email
@@ -114,7 +114,7 @@ const sign_up = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      message: `Sign-up Successfully: Username - ${username} | Email: ${email}`,
+      message: `Sign-up Successfully | Username: ${username} | Email: ${email}`,
       accessToken,
     });
   } catch (error) {
