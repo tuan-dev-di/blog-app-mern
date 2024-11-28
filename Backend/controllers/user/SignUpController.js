@@ -31,7 +31,7 @@ const sign_up = async (req, res, next) => {
   if (!emailValid)
     return res.status(400).json({
       success: false,
-      message: `${email} is not matched with Regex Pattern`,
+      message: `Email: '${email}' is not matched with Regex Pattern`,
     });
 
   //* Existed Email
@@ -39,7 +39,7 @@ const sign_up = async (req, res, next) => {
   if (emailExisted)
     return res.status(400).json({
       success: false,
-      message: `${email} has been already existed`,
+      message: `Email: '${email}' has been already existed`,
     });
 
   //TODO: Check Username
@@ -69,7 +69,7 @@ const sign_up = async (req, res, next) => {
   if (usernameExisted)
     return res.status(400).json({
       success: false,
-      message: `${username} has been already existed`,
+      message: `Username: '${username}' has been already existed`,
     });
 
   //TODO: Check Password
