@@ -69,7 +69,7 @@ const SignUp = () => {
   } else if (successMessage) {
     alertComponent = (
       <Alert className="mt-5" color="info" icon={SlLike}>
-        {successMessage}
+        {successMessage + "\n Wait for 5s to navigate to Sign In page"}
       </Alert>
     );
   }
@@ -81,34 +81,37 @@ const SignUp = () => {
         <span className="font-semibold text-6xl">Sign Up</span>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           <div>
-            <Label value="Email" />
+            <Label className="text-lg" value="Email" />
             <TextInput
               id="email"
-              placeholder="email@mail.com"
+              placeholder="Enter your email address"
               type="email"
               icon={HiMail}
+              sizing="lg"
               required
               onChange={handleChange}
             />
           </div>
           <div>
-            <Label value="Username" />
+            <Label className="text-lg" value="Username" />
             <TextInput
               id="username"
-              placeholder="ArysDomi"
+              placeholder="Enter your username"
               type="text"
               icon={FaUser}
+              sizing="lg"
               required
               onChange={handleChange}
             />
           </div>
           <div>
-            <Label value="Password" />
+            <Label className="text-lg" value="Password" />
             <TextInput
               id="password"
-              placeholder="Password"
+              placeholder="Enter your password"
               type="password"
               icon={FaLock}
+              sizing="lg"
               required
               onChange={handleChange}
             />
@@ -116,6 +119,7 @@ const SignUp = () => {
           <Button
             gradientDuoTone="purpleToBlue"
             type="submit"
+            size="xl"
             disabled={loading}
           >
             {loading ? (
@@ -128,11 +132,11 @@ const SignUp = () => {
             )}
           </Button>
         </form>
-        <div className="flex gap-2 mt-5">
-          <span>Have an account?</span>
+        <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-in" className="text-blue-500">
             Sign In
           </Link>
+          <span>if you have an account?</span>
         </div>
         {alertComponent}
       </div>

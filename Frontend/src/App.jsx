@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Header } from "./components/index";
+import { FooterComponent, HeaderComponent } from "./components/index";
 import { Home, About, Project, SignIn, SignUp } from "./pages/index";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Header />
+      <HeaderComponent />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
@@ -13,6 +13,7 @@ export default function App() {
         <Route path="/sign-up" element={<SignUp />}></Route>
         <Route path="/project" element={<Project />}></Route>
       </Routes>
+      <FooterComponent />
     </BrowserRouter>
   );
 }
