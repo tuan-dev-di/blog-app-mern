@@ -76,9 +76,11 @@ const SignUp = () => {
 
   return (
     // Whole page Sign up
-    <div className="min-h-screen mt-20">
+    <div className="min-h-screen mt-14">
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5">
-        <span className="font-semibold text-6xl">Sign Up</span>
+        <div className="font-semibold text-center text-6xl">
+          <span>Sign Up</span>
+        </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           <div>
             <Label className="text-lg" value="Email" />
@@ -87,7 +89,6 @@ const SignUp = () => {
               placeholder="Enter your email address"
               type="email"
               icon={HiMail}
-              sizing="lg"
               required
               onChange={handleChange}
             />
@@ -99,7 +100,6 @@ const SignUp = () => {
               placeholder="Enter your username"
               type="text"
               icon={FaUser}
-              sizing="lg"
               required
               onChange={handleChange}
             />
@@ -111,7 +111,6 @@ const SignUp = () => {
               placeholder="Enter your password"
               type="password"
               icon={FaLock}
-              sizing="lg"
               required
               onChange={handleChange}
             />
@@ -119,7 +118,6 @@ const SignUp = () => {
           <Button
             gradientDuoTone="purpleToBlue"
             type="submit"
-            size="xl"
             disabled={loading}
           >
             {loading ? (

@@ -25,7 +25,9 @@ const SignIn = () => {
     // Whole page Sign-in
     <div className="min-h-screen mt-20">
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
-        <span className="font-semibold text-6xl">Sign In</span>
+        <div className="font-semibold text-center text-6xl">
+          <span>Sign In</span>
+        </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           <div>
             <Label className="text-lg" value="Username" />
@@ -34,7 +36,6 @@ const SignIn = () => {
               placeholder="Enter your username"
               type="text"
               icon={FaUser}
-              sizing="lg"
               required
             />
           </div>
@@ -45,14 +46,13 @@ const SignIn = () => {
               placeholder="Enter your password"
               type="password"
               icon={FaLock}
-              sizing="lg"
               required
             />
           </div>
-          <Button gradientDuoTone="purpleToBlue" type="submit" size="xl">
+          <Button gradientDuoTone="purpleToBlue" type="submit">
             Continue
           </Button>
-          <Button gradientDuoTone="pinkToOrange" type="submit" size="xl">
+          <Button gradientDuoTone="pinkToOrange" type="submit">
             Continue with Google
             <FaGoogle className="ml-2 h-5 w-5" />
           </Button>
