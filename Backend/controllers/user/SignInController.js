@@ -2,11 +2,15 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
+const {
+  checkEmptyUsername,
+  checkEmptyPassword,
+} = require("../../utilities/validationUser");
 
 const sign_in = async (req, res) => {
   const { username, password } = req.body;
 
-  if (!username || !password || username === "" || password === "")
+  if (checkEmptyUsername(username) || checkEmptyPassword(password))
     return res.status(400).json({
       success: false,
       message: "Username and Password are required",
@@ -41,7 +45,13 @@ const sign_in = async (req, res) => {
       })
       .json({
         success: true,
-        message: `Sign-In Successfully: Welcome - ${username}`,
+        message: `Welcome - ${username}`,
+        user: {
+          id: user._id,
+          username: `${username}`,
+          created: user.createdAt,
+          updated: user.updatedAt,
+        },
         accessToken: accessToken,
       });
   } catch (error) {

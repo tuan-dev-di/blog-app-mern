@@ -78,7 +78,7 @@ const SignIn = () => {
     <div className="min-h-screen mt-14">
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
         <div className="font-semibold text-center text-6xl">
-          <span>Đăng nhập</span>
+          <span>Sign In</span>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           <div>
