@@ -45,12 +45,12 @@ const sign_in = async (req, res) => {
       })
       .json({
         success: true,
-        message: `Welcome - ${username}`,
         user: {
-          id: user._id,
-          username: `${username}`,
-          created: user.createdAt,
-          updated: user.updatedAt,
+          _id: user._id,
+          email: `${user.email}`,
+          // username: `${username}`,
+          dateCreated: user.createdAt,
+          dateUpdated: user.updatedAt,
         },
         accessToken: accessToken,
       });

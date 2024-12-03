@@ -22,7 +22,7 @@ const FooterComponent = () => {
           <div className="mt-5">
             <Footer.Brand
               href="https://github.com/tuan-dev-di"
-              src="https://eastus1-mediap.svc.ms/transform/thumbnail?provider=spo&farmid=193768&inputFormat=jpg&cs=MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDQ4MTcxMGE0fFNQTw&docid=https%3A%2F%2Fmy.microsoftpersonalcontent.com%2F_api%2Fv2.0%2Fdrives%2Fb!T_R4d1A2kEKTS2xCnPnm8t-xJXb02LBJmdEbimiI5vtUNKg--GyrRarHA72gRyC3%2Fitems%2F01AXMQAMHL35YNUC7LD5CYADYGTURMF2CF%3Ftempauth%3Dv1e.eyJzaXRlaWQiOiI3Nzc4ZjQ0Zi0zNjUwLTQyOTAtOTM0Yi02YzQyOWNmOWU2ZjIiLCJhcHBpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDA0ODE3MTBhNCIsImF1ZCI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMC9teS5taWNyb3NvZnRwZXJzb25hbGNvbnRlbnQuY29tQDkxODgwNDBkLTZjNjctNGM1Yi1iMTEyLTM2YTMwNGI2NmRhZCIsImV4cCI6IjE3MzI4Mjc2MDAifQ.a8qNEXkZYJhU3AYAKziVFHNtdsex85zy4FSKjtKxvAklPV3_6aF2Ip4sBvf0kLFOyVKP5l195Z6Gjpnt0GMpaKX0hwtHEXAzqN9xPaLDRmhw-0NwLQm_WiSOIcNARAUQEYi0Y1bNHLzFWHV5kE1mc34oPS5DU5WcETB34PMUXa3ylOI5Yvvn9uQrjw8JqBBzSMBztRUxiDHk_MqGt520uHu1xFBMPPnCf9WPxcwXFS8i05njN63YnMnZhpbAxn_WaeIeg07WwlQu5S5uJUT1FONeQFAXUvw4DjN6NH7bVNwGMFalshG84zdZI2gcWy6qalZmVEZVG5UD-b1krAneTPR29EcPNzySteXfNOplBcziD2Atf4qbFi8MO2r1eE5u.E6aeYYY741y7IwquZxalZMHF-oqN8kZYQGm6ta5PjD4%26version%3DPublished&cb=63858873257&encodeFailures=1&width=873&height=571"
+              // src="file:///E:/Pictures/Ami Gif/Ami_BắnTim.gif"
               alt="Arys Domi"
               name="Arys Domi"
             />

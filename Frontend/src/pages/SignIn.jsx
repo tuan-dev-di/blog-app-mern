@@ -1,28 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button, Spinner, Alert } from "flowbite-react";
 import { FaUser, FaLock, FaGoogle } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { SlLike } from "react-icons/sl";
+import { useState } from "react";
 import { HiInformationCircle } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   let alertComponent = null;
 
-  useEffect(() => {
-    let timeout;
-    if (errorMessage || successMessage) {
-      timeout = setTimeout(() => {
-        errorMessage(null);
-        successMessage(null);
-      }, 5000);
-    }
-    return () => clearTimeout(timeout);
-  }, [errorMessage, successMessage]);
+  if (errorMessage) {
+    alertComponent = (
+      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
+        {errorMessage}
+      </Alert>
+    );
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -35,9 +36,7 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
-      setSuccessMessage(null);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/users/sign-in", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,33 +44,17 @@ const SignIn = () => {
       });
       const data = await res.json();
       if (!res.ok || data.success === false) {
-        setErrorMessage(data.message);
+        dispatch(signInFailure(data.message));
         return;
       }
-      setSuccessMessage(data.message);
+      dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/");
-      }, 5000);
+      }, 3000);
     } catch (error) {
-      setErrorMessage(error.message);
-    } finally {
-      setLoading(false);
+      dispatch(signInFailure(error.message));
     }
   };
-
-  if (errorMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {errorMessage}
-      </Alert>
-    );
-  } else if (successMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="info" icon={SlLike}>
-        {successMessage}
-      </Alert>
-    );
-  }
 
   return (
     // Whole page Sign-in
