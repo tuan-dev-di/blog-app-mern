@@ -1,14 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Label, TextInput, Button, Spinner, Alert } from "flowbite-react";
 import { FaUser, FaLock, FaGoogle } from "react-icons/fa";
-import { useState } from "react";
 import { HiInformationCircle } from "react-icons/hi";
-import { useDispatch, useSelector } from "react-redux";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
+import { signIn } from "../apis/auth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -37,13 +38,8 @@ const SignIn = () => {
 
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/auth/users/sign-in", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok || data.success === false) {
+      const { ok, data } = await signIn(formData);
+      if (!ok) {
         dispatch(signInFailure(data.message));
         return;
       }
