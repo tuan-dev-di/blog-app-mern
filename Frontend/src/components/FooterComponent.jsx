@@ -1,5 +1,6 @@
 import { Footer } from "flowbite-react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
+import Ami_Chill from "../assets/Ami_ChillChill.jpg";
 
 const FooterComponent = () => {
   return (
@@ -22,7 +23,7 @@ const FooterComponent = () => {
           <div className="mt-5">
             <Footer.Brand
               href="https://github.com/tuan-dev-di"
-              // src="file:///E:/Pictures/Ami Gif/Ami_BắnTim.gif"
+              src={Ami_Chill}
               alt="Arys Domi"
               name="Arys Domi"
             />
