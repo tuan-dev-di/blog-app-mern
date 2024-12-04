@@ -10,6 +10,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    //* Sign In
     signInStart: (state) => {
       state.loading = true;
       state.error = null;
@@ -26,6 +27,13 @@ const userSlice = createSlice({
   },
 });
 
-export const { signInStart, signInSuccess, signInFailure } = userSlice.actions;
+export const {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+  // signUpStart,
+  // signUpSuccess,
+  // signUpFailure,
+} = userSlice.actions;
 
 export default userSlice.reducer;

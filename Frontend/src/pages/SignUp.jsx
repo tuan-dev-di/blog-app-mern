@@ -1,15 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { HiMail, HiInformationCircle } from "react-icons/hi";
 import { FaUser, FaLock } from "react-icons/fa";
-import { useState, useEffect } from "react";
 import { SlLike } from "react-icons/sl";
+// import {
+//   signUpStart,
+//   signUpSuccess,
+//   signUpFailure,
+// } from "../redux/user/userSlice";
+
+import { signUp } from "../apis/auth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  // const { loading, error: errorMessage } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   let alertComponent = null;
 
@@ -38,23 +48,21 @@ const SignUp = () => {
       setLoading(true);
       setErrorMessage(null);
       setSuccessMessage(null);
-      const res = await fetch("/api/auth/users/sign-up", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (!res.ok || data.success === false) {
+      // dispatch(signUpStart());
+      const { ok, data } = await signUp(formData);
+      if (!ok) {
         setErrorMessage(data.message);
+        // dispatch(signUpFailure(data.message));
         return;
       }
       setSuccessMessage(data.message);
+      // dispatch(signUpSuccess(data.message));
       setTimeout(() => {
         navigate("/sign-in");
       }, 5000);
     } catch (error) {
       setErrorMessage(error.message);
+      // dispatch(signUpFailure(error.message));
     } finally {
       setLoading(false);
     }
