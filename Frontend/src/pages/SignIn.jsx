@@ -96,11 +96,13 @@ const SignIn = () => {
               "Continue"
             )}
           </Button>
-          <Button gradientDuoTone="pinkToOrange" type="submit">
+        </form>
+        <div className="flex flex-col mt-4">
+          <Button outline gradientDuoTone="purpleToPink" type="submit">
             Continue with Google
             <FaGoogle className="ml-2 h-5 w-5" />
           </Button>
-        </form>
+        </div>
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-up" className="text-blue-500">
             Sign Up

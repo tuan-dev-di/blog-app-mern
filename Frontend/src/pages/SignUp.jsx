@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { HiMail, HiInformationCircle } from "react-icons/hi";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaGoogle } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 // import {
 //   signUpStart,
@@ -138,6 +138,12 @@ const SignUp = () => {
             )}
           </Button>
         </form>
+        <div className="flex flex-col mt-4">
+          <Button outline gradientDuoTone="purpleToPink" type="submit">
+            Continue with Google
+            <FaGoogle className="ml-2 h-5 w-5" />
+          </Button>
+        </div>
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-in" className="text-blue-500">
             Sign In

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FooterComponent, HeaderComponent } from "./components/index";
-import { Home, About, Project, SignIn, SignUp } from "./pages/index";
+import { Home, About, Project, SignIn, SignUp } from "./pages/_index";
 
 export default function App() {
   return (
