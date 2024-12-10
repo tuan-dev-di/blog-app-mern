@@ -11,36 +11,16 @@ const {
   checkRegexPassword,
   checkEmptyEmail,
   checkRegexEmail,
+  checkEmptyDisplayName,
+  checkLengthDisplayName,
+  checkRegexDisplayName,
 } = require("../../utilities/validationUser");
 
-const sign_up = async (req, res, next) => {
-  const { email, username, password } = req.body;
-
-  //TODO: Check Email
-  //* Email is a empty string
-  if (checkEmptyEmail(email))
-    return res.status(400).json({
-      success: false,
-      message: "Email is required",
-    });
-
-  //* Email is match with Regex Pattern
-  if (!checkRegexEmail(email))
-    return res.status(400).json({
-      success: false,
-      message: `Email: '${email}' is not matched with Regex Pattern`,
-    });
-
-  //* Existed Email
-  const emailExisted = await User.findOne({ email });
-  if (emailExisted)
-    return res.status(400).json({
-      success: false,
-      message: `Email: '${email}' has been already existed`,
-    });
+const sign_up = async (req, res) => {
+  const { username, password, email, displayName } = req.body;
 
   //TODO: Check Username
-  //* Username is a empty string
+  //* Username is an empty string
   if (checkEmptyUsername(username))
     return res.status(400).json({
       success: false,
@@ -54,11 +34,11 @@ const sign_up = async (req, res, next) => {
       message: "Username must be between 7 and 25 characters",
     });
 
-  //* Username is match with Regex Pattern
+  //* Username is matched with Regex Pattern
   if (!checkRegexUsername(username))
     return res.status(400).json({
       success: false,
-      message: `Username: '${username}' is not matched with Regex Pattern`,
+      message: `Username: "${username}" is not matched with Regex Pattern`,
     });
 
   //* Existed Username
@@ -66,11 +46,11 @@ const sign_up = async (req, res, next) => {
   if (usernameExisted)
     return res.status(400).json({
       success: false,
-      message: `Username: '${username}' has been already existed`,
+      message: `Username: "${username}" has been already existed`,
     });
 
   //TODO: Check Password
-  //* Password is a empty string
+  //* Password is an empty string
   if (checkEmptyPassword(password))
     return res.status(400).json({
       success: false,
@@ -84,19 +64,67 @@ const sign_up = async (req, res, next) => {
       message: "Password must be greater than 6 characters",
     });
 
-  //* Password is match with Regex Pattern
+  //* Password is matched with Regex Pattern
   if (!checkRegexPassword(password))
     return res.status(400).json({
       success: false,
-      message: `Password: '${password}' is not matched with Regex Pattern`,
+      message: "Your password is not matched with Regex Pattern",
     });
 
-  //TODO: Encrypted Password and create a new User
+  //TODO: Encrypted Password
   const hashedPassword = await argon2.hash(password);
+
+  //TODO: Check Email
+  //* Email is an empty string
+  if (checkEmptyEmail(email))
+    return res.status(400).json({
+      success: false,
+      message: "Email is required",
+    });
+
+  //* Email is matched with Regex Pattern
+  if (!checkRegexEmail(email))
+    return res.status(400).json({
+      success: false,
+      message: `Email: "${email}" is not matched with Regex Pattern`,
+    });
+
+  //* Existed Email
+  const emailExisted = await User.findOne({ email });
+  if (emailExisted)
+    return res.status(400).json({
+      success: false,
+      message: `Email: "${email}" has been already existed`,
+    });
+
+  //TODO: Check Display Name
+  //* Display Name is an empty string
+  if (checkEmptyDisplayName(displayName))
+    return res.status(400).json({
+      success: false,
+      message: "Display Name is required",
+    });
+
+  //* Length of Display Name
+  if (checkLengthDisplayName(displayName))
+    return res.status(400).json({
+      success: false,
+      message: `Your name: "${displayName}" must be between 2 and 50 characters`,
+    });
+
+  //* Display Name is match with Regex Pattern
+  if (!checkRegexDisplayName(displayName))
+    return res.status(400).json({
+      success: false,
+      message: `Your name: "${displayName}" is not matched with Regex Pattern`,
+    });
+
+  //TODO: Create a new User
   const newUser = new User({
-    email: email,
     username: username,
     password: hashedPassword,
+    email: email,
+    displayName: displayName,
   });
 
   //* Passed validation
@@ -111,12 +139,13 @@ const sign_up = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      // message: ` | Username: ${username} | Email: ${email}`,
       message: "Sign-up Successfully",
       user: {
-        id: newUser._id,
-        username: `${username}`,
-        email: `${email}`,
+        _id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+        displayName: newUser.displayName,
+        profileImage: newUser.profileImage,
         created: newUser.createdAt,
         updated: newUser.updatedAt,
       },

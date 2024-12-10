@@ -21,7 +21,7 @@ const sign_in = async (req, res) => {
     if (!user)
       return res.status(400).json({
         success: false,
-        message: `'${username}' does not exist`,
+        message: `"${username}" does not existed`,
       });
 
     const passwordIncorrect = await argon2.verify(user.password, password);
@@ -47,10 +47,12 @@ const sign_in = async (req, res) => {
         success: true,
         user: {
           _id: user._id,
-          email: `${user.email}`,
-          // username: `${username}`,
-          dateCreated: user.createdAt,
-          dateUpdated: user.updatedAt,
+          username: user.username,
+          email: user.email,
+          displayName: user.displayName,
+          profileImage: user.profileImage,
+          created: user.createdAt,
+          updated: user.updatedAt,
         },
         accessToken: accessToken,
       });

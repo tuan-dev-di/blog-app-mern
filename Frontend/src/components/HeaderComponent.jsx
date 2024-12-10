@@ -13,9 +13,8 @@ const Header = () => {
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
         <span className="px-2 py-2 bg-gradient-to-r from-indigo-500 via-indigo-700 to-pink-400 rounded-lg text-white">
-          Arys Domi
+          Arys Domi&apos;s Blog
         </span>
-        Blog
       </Link>
       <form action="">
         <TextInput

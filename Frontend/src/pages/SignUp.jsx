@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { HiMail, HiInformationCircle } from "react-icons/hi";
-import { FaUser, FaLock, FaGoogle } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 // import {
 //   signUpStart,
@@ -12,6 +12,7 @@ import { SlLike } from "react-icons/sl";
 // } from "../redux/user/userSlice";
 
 import { signUp } from "../apis/auth";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -29,7 +30,7 @@ const SignUp = () => {
       timeout = setTimeout(() => {
         setErrorMessage(null);
         setSuccessMessage(null);
-      }, 5000);
+      }, 7000);
     }
     return () => clearTimeout(timeout);
   }, [errorMessage, successMessage]);
@@ -84,14 +85,16 @@ const SignUp = () => {
 
   return (
     // Whole page Sign up
-    <div className="min-h-screen mt-14">
+    <div className="min-h-screen mt-7">
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5">
         <div className="font-semibold text-center text-6xl">
           <span>Sign Up</span>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           <div>
-            <Label className="text-lg" value="Username" />
+            <Label className="text-lg">
+              Username<span className="text-red-500 ml-1">*</span>
+            </Label>
             <TextInput
               id="username"
               placeholder="Enter your username"
@@ -102,7 +105,9 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <Label className="text-lg" value="Password" />
+            <Label className="text-lg">
+              Password<span className="text-red-500 ml-1">*</span>
+            </Label>
             <TextInput
               id="password"
               placeholder="Enter your password"
@@ -113,12 +118,26 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <Label className="text-lg" value="Email" />
+            <Label className="text-lg">
+              Email<span className="text-red-500 ml-1">*</span>
+            </Label>
             <TextInput
               id="email"
               placeholder="Enter your email address"
               type="email"
               icon={HiMail}
+              required
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Label className="text-lg">
+              Display Name<span className="text-red-500 ml-1">*</span>
+            </Label>
+            <TextInput
+              id="displayName"
+              placeholder="Enter your display name"
+              type="text"
               required
               onChange={handleChange}
             />
@@ -137,18 +156,14 @@ const SignUp = () => {
               "Continue"
             )}
           </Button>
+          <p className="font-sans text-center">Or</p>
+          <OAuth></OAuth>
         </form>
-        <div className="flex flex-col mt-4">
-          <Button outline gradientDuoTone="purpleToPink" type="submit">
-            Continue with Google
-            <FaGoogle className="ml-2 h-5 w-5" />
-          </Button>
-        </div>
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-in" className="text-blue-500">
             Sign In
           </Link>
-          <span>if you have an account?</span>
+          <span>if you have an account!</span>
         </div>
         {alertComponent}
       </div>

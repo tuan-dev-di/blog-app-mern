@@ -42,6 +42,22 @@ const checkRegexEmail = (email) => {
   return emailRegexPattern.test(email);
 };
 
+//TODO: Check validation for Display Name
+const checkEmptyDisplayName = (displayName) => {
+  return !displayName || displayName === "";
+};
+
+const checkLengthDisplayName = (displayName) => {
+  return displayName.length < 2 || displayName.length > 50;
+};
+
+const checkRegexDisplayName = (name) => {
+  //* Regex Pattern for Display Name
+  const displayNameRegexPattern =
+    /^[a-zA-ZĂÂÁÀẢÃẠẮẰẲẴẶẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌƠỚỜỞỠỢÔỐỒỔỖỘÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴăâắằẳẵặấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọơớờởỡợôốồổỗộúùủũụưứừửữựýỳỷỹỵ ]{2,50}(?<![ .'-])$/;
+  return displayNameRegexPattern.test(name);
+};
+
 module.exports = {
   checkEmptyUsername,
   checkLengthUsername,
@@ -51,4 +67,7 @@ module.exports = {
   checkRegexPassword,
   checkEmptyEmail,
   checkRegexEmail,
+  checkEmptyDisplayName,
+  checkLengthDisplayName,
+  checkRegexDisplayName,
 };

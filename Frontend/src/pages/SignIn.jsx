@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label, TextInput, Button, Spinner, Alert } from "flowbite-react";
-import { FaUser, FaLock, FaGoogle } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 import { HiInformationCircle } from "react-icons/hi";
 import {
   signInStart,
@@ -10,21 +10,22 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import { signIn } from "../apis/auth";
+import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let alertComponent = null;
+  // let alertComponent = null;
 
-  if (errorMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {errorMessage}
-      </Alert>
-    );
-  }
+  // if (errorMessage) {
+  //   alertComponent = (
+  //     <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
+  //       {errorMessage}
+  //     </Alert>
+  //   );
+  // }
 
   const handleChange = (e) => {
     setFormData({
@@ -54,7 +55,7 @@ const SignIn = () => {
 
   return (
     // Whole page Sign-in
-    <div className="min-h-screen mt-14">
+    <div className="min-h-screen mt-7">
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
         <div className="font-semibold text-center text-6xl">
           <span>Sign In</span>
@@ -96,20 +97,16 @@ const SignIn = () => {
               "Continue"
             )}
           </Button>
+          <p className="font-sans text-center">Or</p>
+          <OAuth></OAuth>
         </form>
-        <div className="flex flex-col mt-4">
-          <Button outline gradientDuoTone="purpleToPink" type="submit">
-            Continue with Google
-            <FaGoogle className="ml-2 h-5 w-5" />
-          </Button>
-        </div>
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-up" className="text-blue-500">
             Sign Up
           </Link>
-          <span>if you do not have an account?</span>
+          <span>if you do not have an account!</span>
         </div>
-        {alertComponent}
+        {/* {alertComponent} */}
       </div>
     </div>
   );
