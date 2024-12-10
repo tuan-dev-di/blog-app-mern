@@ -17,15 +17,15 @@ const SignIn = () => {
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // let alertComponent = null;
+  let alertComponent = null;
 
-  // if (errorMessage) {
-  //   alertComponent = (
-  //     <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-  //       {errorMessage}
-  //     </Alert>
-  //   );
-  // }
+  if (errorMessage) {
+    alertComponent = (
+      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
+        {errorMessage}
+      </Alert>
+    );
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -106,7 +106,7 @@ const SignIn = () => {
           </Link>
           <span>if you do not have an account!</span>
         </div>
-        {/* {alertComponent} */}
+        {alertComponent}
       </div>
     </div>
   );
