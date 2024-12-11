@@ -98,7 +98,7 @@ const SignIn = () => {
             )}
           </Button>
           <p className="font-sans text-center">Or</p>
-          <OAuth></OAuth>
+          <OAuth />
         </form>
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-up" className="text-blue-500">
