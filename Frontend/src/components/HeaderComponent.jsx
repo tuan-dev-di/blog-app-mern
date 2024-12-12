@@ -1,10 +1,20 @@
-import { Navbar, TextInput, Button, NavbarCollapse } from "flowbite-react";
+import {
+  Navbar,
+  TextInput,
+  Button,
+  NavbarCollapse,
+  Dropdown,
+  Avatar,
+} from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const path = useLocation().pathname;
+  const current = useSelector((state) => state.user);
+  const curUser = current.currentUser;
 
   return (
     <Navbar className="border-b-2 ">
@@ -31,12 +41,36 @@ const Header = () => {
         <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
           <FaMoon></FaMoon>
         </Button>
-        <Link to="/sign-in">
-          <Button gradientDuoTone="purpleToBlue" color="gray" pill>
-            Sign In
-          </Button>
-        </Link>
-        <Navbar.Toggle />
+        {curUser !== null ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt="user" img={curUser.user.profileImage} rounded />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">{curUser.user.displayName}</span>
+              <span className="block truncate text-sm font-medium">
+                {curUser.user.email}
+              </span>
+            </Dropdown.Header>
+            <Link to="/profile">
+              <Dropdown.Item>Profile</Dropdown.Item>
+            </Link>
+            <Link to="/settings">
+              <Dropdown.Item>Settings</Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign Out</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <Link to="/sign-in">
+            <Button gradientDuoTone="purpleToBlue" color="gray" pill>
+              Sign In
+            </Button>
+          </Link>
+        )}
       </div>
       <NavbarCollapse>
         <Navbar.Link active={path === "/"} as={"div"}>
