@@ -16,11 +16,9 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 const Header = () => {
   const path = useLocation().pathname;
   const curUser = useSelector((state) => state.user.currentUser);
-  // const curUser = current.currentUser;
 
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);
-  console.log(theme);
 
   return (
     <Navbar className="border-b-2 ">
@@ -69,7 +67,6 @@ const Header = () => {
               <IoSunny />
             </Tooltip>
           )}
-          {/* <IoMoonSharp /> */}
         </Button>
         {curUser !== null ? (
           <Dropdown
@@ -85,10 +82,10 @@ const Header = () => {
                 {curUser.user.email}
               </span>
             </Dropdown.Header>
-            <Link to="/profile">
+            <Link to="/dashboard?tab=profile">
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
-            <Link to="/settings">
+            <Link to="/dashboard?tab=settings">
               <Dropdown.Item>Settings</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
