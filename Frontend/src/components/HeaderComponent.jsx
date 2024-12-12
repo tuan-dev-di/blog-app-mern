@@ -5,16 +5,22 @@ import {
   NavbarCollapse,
   Dropdown,
   Avatar,
+  Tooltip,
 } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { IoMoonSharp, IoSunny } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
-  const current = useSelector((state) => state.user);
-  const curUser = current.currentUser;
+  const curUser = useSelector((state) => state.user.currentUser);
+  // const curUser = current.currentUser;
+
+  const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme.theme);
+  console.log(theme);
 
   return (
     <Navbar className="border-b-2 ">
@@ -38,8 +44,32 @@ const Header = () => {
         <AiOutlineSearch></AiOutlineSearch>
       </Button>
       <div className="flex gap-2 md:order-2">
-        <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
-          <FaMoon></FaMoon>
+        <Button
+          className="w-12 h-10 hidden sm:inline"
+          color="gray"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "light" ? (
+            <Tooltip
+              content="Dark Mode"
+              style="light"
+              placement="bottom"
+              trigger="hover"
+            >
+              <IoMoonSharp />
+            </Tooltip>
+          ) : (
+            <Tooltip
+              content="Light Mode"
+              style="dark"
+              placement="bottom"
+              trigger="hover"
+            >
+              <IoSunny />
+            </Tooltip>
+          )}
+          {/* <IoMoonSharp /> */}
         </Button>
         {curUser !== null ? (
           <Dropdown
