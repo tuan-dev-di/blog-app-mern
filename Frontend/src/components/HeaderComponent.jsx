@@ -43,7 +43,7 @@ const Header = () => {
       </Button>
       <div className="flex gap-2 md:order-2">
         <Button
-          className="w-12 h-10 hidden sm:inline"
+          className="w-13 h-10 hidden sm:inline"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
@@ -77,19 +77,15 @@ const Header = () => {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">{curUser.user.displayName}</span>
-              <span className="block truncate text-sm font-medium">
-                {curUser.user.email}
-              </span>
+              <Link to="/dashboard?tab=profile">
+                <span className="block text-sm">
+                  {curUser.user.displayName}
+                </span>
+                <span className="block truncate text-sm font-medium">
+                  {curUser.user.email}
+                </span>
+              </Link>
             </Dropdown.Header>
-            <Link to="/dashboard?tab=profile">
-              <Dropdown.Item>Profile</Dropdown.Item>
-            </Link>
-            <Link to="/dashboard?tab=settings">
-              <Dropdown.Item>Settings</Dropdown.Item>
-            </Link>
-            <Dropdown.Divider />
-            <Dropdown.Item>Sign Out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
