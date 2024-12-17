@@ -46,7 +46,7 @@ const SignIn = () => {
       }
       dispatch(signInSuccess(data));
       setTimeout(() => {
-        navigate("/");
+        navigate("/dashboard?tab=profile");
       }, 3000);
     } catch (error) {
       dispatch(signInFailure(error.message));
