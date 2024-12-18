@@ -21,6 +21,7 @@ const DashboardSidebar = () => {
               active={tab === "profile"}
               icon={FaUserEdit}
               className=""
+              as="div"
             >
               Profile
             </Sidebar.Item>
