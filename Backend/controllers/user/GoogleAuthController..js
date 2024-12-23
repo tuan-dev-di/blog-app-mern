@@ -61,7 +61,7 @@ const google_auth = async (req, res) => {
         });
     }
   } catch (error) {
-    console.log("ERROR: " + error);
+    console.log("ERROR: ", error);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

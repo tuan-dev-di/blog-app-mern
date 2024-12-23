@@ -1,6 +1,7 @@
 require("dotenv").config();
-const express = require("express");
 const mongoose = require("mongoose");
+const express = require("express");
+const cookieParser = require("cookie-parser");
 
 const user_route = require("./routes/UserRoute");
 
@@ -42,4 +43,15 @@ mongoose
 
 //TODO: Run API
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/auth/users", user_route);
+
+// app.use((error, req, res, next) => {
+//   const statusCode = error.statusCode || 500;
+//   const message = error.message || "Internal Error Server";
+//   res.status(statusCode).json({
+//     code: statusCode,
+//     success: false,
+//     message: message,
+//   });
+// });
