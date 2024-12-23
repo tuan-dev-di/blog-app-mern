@@ -13,12 +13,12 @@ const {
 
 const router = express.Router();
 
-//? Authentication & Authorization
+// Authentication & Authorization
 router.post("/google-auth", google_auth);
 router.post("/sign-in", sign_in);
 router.post("/sign-up", sign_up);
 
-//? Profile
+// Profile
 router.put("/profile/update/:userId", verifyToken, update_profile);
 router.delete("/profile/delete:userId", verifyToken, delete_profile);
 

@@ -47,7 +47,7 @@ const SignIn = () => {
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/dashboard?tab=profile");
-      }, 3000);
+      }, 1500); // After 1.5s, user will be navigating to dashboard
     } catch (error) {
       dispatch(signInFailure(error.message));
     }

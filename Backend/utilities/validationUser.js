@@ -1,4 +1,4 @@
-//TODO: Check validation for Username
+//? Check validation for Username
 const checkEmptyUsername = (username) => {
   return !username || username === "";
 };
@@ -14,7 +14,7 @@ const checkRegexUsername = (username) => {
   return usernameRegexPattern.test(username);
 };
 
-//TODO: Check validation for Password
+//? Check validation for Password
 const checkEmptyPassword = (password) => {
   return !password || password === "";
 };
@@ -30,7 +30,7 @@ const checkRegexPassword = (password) => {
   return passwordRegexPattern.test(password);
 };
 
-//TODO: Check validation for Email
+//? Check validation for Email
 const checkEmptyEmail = (email) => {
   return !email || email === "";
 };
@@ -42,7 +42,7 @@ const checkRegexEmail = (email) => {
   return emailRegexPattern.test(email);
 };
 
-//TODO: Check validation for Display Name
+//? Check validation for Display Name
 const checkEmptyDisplayName = (displayName) => {
   return !displayName || displayName === "";
 };

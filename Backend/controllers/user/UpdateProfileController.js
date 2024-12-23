@@ -19,7 +19,7 @@ const update_profile = async (req, res) => {
   const updateData = {};
   const { username, password, email, displayName, profileImage } = req.body;
 
-  //TODO: Check password if user want to update password in their profile page
+  //? Check password if user want to update password in their profile page
   if (password) {
     if (checkLengthPassword(password))
       return res.status(400).json({
@@ -34,7 +34,7 @@ const update_profile = async (req, res) => {
       });
   }
 
-  //TODO: Check email if user want to update email in their profile page
+  //? Check email if user want to update email in their profile page
   if (email)
     if (!checkRegexEmail(email))
       return res.status(400).json({
@@ -42,7 +42,7 @@ const update_profile = async (req, res) => {
         message: `Email: "${email}" is not matched with Regex Pattern`,
       });
 
-  //TODO: Check display name if user want to update display name in their profile page
+  //?: Check display name if user want to update display name in their profile page
   if (displayName) {
     if (checkLengthDisplayName(displayName))
       return res.status(400).json({
