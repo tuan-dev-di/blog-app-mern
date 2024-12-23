@@ -175,7 +175,7 @@ const DashboardProfile = () => {
 
   if (updateFailUser) {
     alertComponent = (
-      <Alert className="mt-5" color="fail" icon={HiInformationCircle}>
+      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
         {updateFailUser}
       </Alert>
     );
@@ -266,7 +266,6 @@ const DashboardProfile = () => {
           <Label className="text-base" value="Password" />
           <div className="relative">
             <TextInput
-              className="bg-gray-100 focus:ring focus:ring-blue-500"
               id="password"
               placeholder="Change Password"
               type={showPassword ? "text" : "password"}
@@ -274,9 +273,9 @@ const DashboardProfile = () => {
               onChange={handleUpdate}
             />
             <Button
-              type="button"
               onClick={toggleShowPassword}
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-600 bg-gray-100 hover:bg-gray-100 focus:ring focus:ring-blue-500"
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-transparent cursor-pointer border-none shadow-none sm:inline"
+              color="gray"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </Button>
