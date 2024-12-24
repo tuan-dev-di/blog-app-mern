@@ -18,6 +18,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //? Get Username & Password from User to Sign In
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -25,7 +26,6 @@ const SignIn = () => {
     });
   };
 
-  //? Get Username & Password from User to Auth
   const handleSubmit = async (e) => {
     e.preventDefault();
 

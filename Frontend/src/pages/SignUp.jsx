@@ -23,6 +23,7 @@ const SignUp = () => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //? Get Username & Password from User to Sign Up
   const handleChange = (e) => {
     setFormData({
       ...formData,

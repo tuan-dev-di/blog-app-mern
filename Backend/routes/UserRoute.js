@@ -18,7 +18,7 @@ router.post("/google-auth", google_auth);
 router.post("/sign-in", sign_in);
 router.post("/sign-up", sign_up);
 
-// Profile
+// Account
 router.put("/account/update/:userId", verifyToken, update_account);
 router.delete("/account/delete/:userId", verifyToken, delete_account);
 
