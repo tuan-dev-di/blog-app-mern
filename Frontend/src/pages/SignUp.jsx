@@ -22,18 +22,6 @@ const SignUp = () => {
   // const { loading, error: errorMessage } = useSelector((state) => state.user);
   // const dispatch = useDispatch();
   const navigate = useNavigate();
-  let alertComponent = null;
-
-  useEffect(() => {
-    let timeout;
-    if (errorMessage || successMessage) {
-      timeout = setTimeout(() => {
-        setErrorMessage(null);
-        setSuccessMessage(null);
-      }, 7000);
-    }
-    return () => clearTimeout(timeout);
-  }, [errorMessage, successMessage]);
 
   const handleChange = (e) => {
     setFormData({
@@ -60,7 +48,7 @@ const SignUp = () => {
       // dispatch(signUpSuccess(data.message));
       setTimeout(() => {
         navigate("/sign-in");
-      }, 5000);
+      }, 3000);
     } catch (error) {
       setErrorMessage(error.message);
       // dispatch(signUpFailure(error.message));
@@ -76,6 +64,18 @@ const SignUp = () => {
   };
 
   //? Warning for User after update error/success
+  let alertComponent = null;
+  useEffect(() => {
+    let timeout;
+    if (errorMessage || successMessage) {
+      timeout = setTimeout(() => {
+        setErrorMessage(null);
+        setSuccessMessage(null);
+      }, 7000);
+    }
+    return () => clearTimeout(timeout);
+  }, [errorMessage, successMessage]);
+
   if (errorMessage) {
     alertComponent = (
       <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
@@ -85,7 +85,7 @@ const SignUp = () => {
   } else if (successMessage) {
     alertComponent = (
       <Alert className="mt-5" color="info" icon={SlLike}>
-        {successMessage + "\n Wait for 5s to navigate to Sign In page"}
+        {successMessage} <br /> Wait for 5s to navigate to Sign In page
       </Alert>
     );
   }

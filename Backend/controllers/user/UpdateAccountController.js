@@ -8,7 +8,7 @@ const {
 } = require("../../utilities/validationUser");
 const User = require("../../models/User");
 
-const update_profile = async (req, res) => {
+const update_account = async (req, res) => {
   if (req.user.userId !== req.params.userId) {
     return res.status(403).json({
       success: false,
@@ -94,4 +94,4 @@ const update_profile = async (req, res) => {
   }
 };
 
-module.exports = { update_profile };
+module.exports = { update_account };

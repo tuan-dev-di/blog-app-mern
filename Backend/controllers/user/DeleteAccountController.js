@@ -1,6 +1,6 @@
 const User = require("../../models/User");
 
-const delete_profile = async (req, res) => {
+const delete_account = async (req, res) => {
   if (req.user.userId !== req.params.userId) {
     return res.status(403).json({
       success: false,
@@ -30,4 +30,4 @@ const delete_profile = async (req, res) => {
   }
 };
 
-module.exports = { delete_profile };
+module.exports = { delete_account };

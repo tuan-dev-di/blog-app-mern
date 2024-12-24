@@ -8,20 +8,26 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
-import { Label, TextInput, Button, Alert } from "flowbite-react";
+import { Label, TextInput, Button, Alert, Modal } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdEdit } from "react-icons/md";
-import { HiInformationCircle } from "react-icons/hi";
+import {
+  HiInformationCircle,
+  HiOutlineExclamationCircle,
+} from "react-icons/hi";
 import { SlLike } from "react-icons/sl";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import {
-  updateStart,
-  updateSuccess,
-  updateFailure,
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../../redux/user/userSlice";
-import { updateProfile } from "../../apis/user";
+import { deleteAccount, updateAccount } from "../../apis/user";
 
 const DashboardProfile = () => {
   const [formData, setFormData] = useState({});
@@ -29,11 +35,13 @@ const DashboardProfile = () => {
   const navigate = useNavigate();
 
   const curUser = useSelector((state) => state.user.currentUser.user);
+  const userId = curUser._id; // Get Id of user's account
 
+  //* ----------------------------------- UPDATE situation
   // Update Success
-  const [updateSuccessUser, setUpdateSuccessUser] = useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(null);
   // Update Failure
-  const [updateFailUser, setUpdateFailUser] = useState(null);
+  const [updateFail, setUpdateFail] = useState(null);
   // User input image file from their computer
   const [profileImageFile, setProfileImageFile] = useState(null);
   // User input image file by link
@@ -61,6 +69,7 @@ const DashboardProfile = () => {
     if (profileImageFile) uploadFile();
   }, [profileImageFile]);
 
+  //? Upload file image from user to UI
   const uploadFile = async () => {
     // service firebase.storage {
     //   match /b/{bucket}/o {
@@ -123,40 +132,73 @@ const DashboardProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setUpdateFailUser(null);
-    setUpdateSuccessUser(null);
+    setUpdateFail(null);
+    setUpdateSuccess(null);
 
     if (profileImageUploading) {
-      setUpdateFailUser("Please wait for the profile image to be uploaded");
+      setUpdateFail("Please wait for the profile image to be uploaded");
       return;
     }
 
     if (Object.keys(formData).length === 0) {
-      setUpdateFailUser("Nothing changes");
+      setUpdateFail("Nothing changes");
       return;
     }
 
     try {
-      dispatch(updateStart());
-      const userId = curUser._id;
-      const { ok, data } = await updateProfile(userId, formData);
+      dispatch(updateUserStart());
+      const { ok, data } = await updateAccount(userId, formData);
       if (!ok) {
-        dispatch(updateFailure(data.message));
-        setUpdateFailUser(data.message);
+        dispatch(updateUserFailure(data.message));
+        setUpdateFail(data.message);
         return;
       }
 
-      dispatch(updateSuccess(data));
+      dispatch(updateUserSuccess(data));
       setProfileImageUploadProgress(false);
-      setUpdateSuccessUser("Your profile has been updated!");
+      setUpdateSuccess("Your profile has been updated!");
       setTimeout(() => {
         navigate("/dashboard?tab=profile");
-      }, 1500);
+      }, 3000);
     } catch (error) {
-      dispatch(updateFailure(error.message));
-      setUpdateFailUser(error.message);
+      dispatch(updateUserFailure(error.message));
+      setUpdateFail(error.message);
     }
   };
+
+  //* ----------------------------------- DELETE situation
+  // Delete Success
+  const [deleteSuccess, setDeleteSuccess] = useState(null);
+  // Delete Failure
+  const [deleteFail, setDeleteFail] = useState(null);
+  // Get modal to warn about deletion for user
+  const [deleteModal, setDeleteModal] = useState(false);
+
+  //? Delete account of User
+  const handleDeleteUser = async () => {
+    setDeleteSuccess(false);
+    setDeleteFail(false);
+    setDeleteModal(false);
+    try {
+      dispatch(deleteUserStart());
+      const { ok, data } = await deleteAccount(userId, formData);
+      console.log(data);
+
+      if (!ok) {
+        dispatch(deleteUserFailure(data.message));
+        setDeleteFail(data.message);
+        return;
+      }
+
+      dispatch(deleteUserSuccess(data));
+      setDeleteSuccess("Your account has been deleted");
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+      setDeleteFail(error.message);
+    }
+  };
+
+  //* ----------------------------------- OTHERS
 
   //? Button display password
   const [showPassword, setShowPassword] = useState(false);
@@ -168,31 +210,43 @@ const DashboardProfile = () => {
   let alertComponent = null;
   useEffect(() => {
     let timeout;
-    if (updateFailUser || updateSuccessUser) {
+    if (updateFail || updateSuccess) {
       timeout = setTimeout(() => {
-        setUpdateFailUser(null);
-        setUpdateSuccessUser(null);
-      }, 7000); // After 7s, alert will be disappear
+        setUpdateFail(null);
+        setUpdateSuccess(null);
+      }, 3000); // After 7s, alert will be disappear
     }
     return () => clearTimeout(timeout);
-  }, [updateFailUser, updateSuccessUser]);
+  }, [updateFail, updateSuccess]);
 
-  if (updateFailUser) {
+  if (updateFail) {
     alertComponent = (
       <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {updateFailUser}
+        {updateFail}
       </Alert>
     );
-  } else if (updateSuccessUser) {
+  } else if (updateSuccess) {
     alertComponent = (
       <Alert className="mt-5" color="success" icon={SlLike}>
-        {updateSuccessUser}
+        {updateSuccess}
+      </Alert>
+    );
+  } else if (deleteFail) {
+    alertComponent = (
+      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
+        {deleteFail}
+      </Alert>
+    );
+  } else if (deleteSuccess) {
+    alertComponent = (
+      <Alert className="mt-5" color="success" icon={SlLike}>
+        {deleteSuccess}
       </Alert>
     );
   }
 
   return (
-    <div className="max-w-lg mx-auto p-3 w-full">
+    <div className="max-w-lg mx-auto p-3 w-full flex flex-col gap-2">
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <input
           type="file"
@@ -299,10 +353,39 @@ const DashboardProfile = () => {
         <Button gradientDuoTone="greenToBlue" className="mt-3" type="submit">
           Update Profile
         </Button>
-        <Button color="failure" className="mt-3" type="submit">
-          Delete Account
-        </Button>
       </form>
+      <Button
+        color="failure"
+        className="mt-3"
+        type="submit"
+        onClick={() => setDeleteModal(true)}
+      >
+        Delete Account
+      </Button>
+      <Modal
+        show={deleteModal}
+        size="md"
+        onClose={() => setDeleteModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600 " />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this account?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeleteUser}>
+                Yes, I&apos;m sure
+              </Button>
+              <Button color="gray" onClick={() => setDeleteModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
       {alertComponent}
     </div>
   );

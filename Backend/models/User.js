@@ -28,7 +28,7 @@ const UserSchema = new Schema(
     profileImage: {
       type: String,
       default:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.deviantart.com%2Fkarmaanddestiny%2Fart%2FDefault-user-icon-4-858661084&psig=AOvVaw3aSxWNAqHTJbzCc6wgvtl0&ust=1733830604329000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJCSor7MmooDFQAAAAAdAAAAABAS",
+        "https://i.pinimg.com/736x/90/d1/ac/90d1ac48711f63c6a290238c8382632f.jpg",
     },
   },
   { timestamps: true }

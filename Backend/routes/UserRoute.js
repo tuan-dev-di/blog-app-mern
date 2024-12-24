@@ -5,11 +5,11 @@ const { sign_in } = require("../controllers/user/SignInController.js");
 const { sign_up } = require("../controllers/user/SignUpController.js");
 const { google_auth } = require("../controllers/user/GoogleAuthController..js");
 const {
-  update_profile,
-} = require("../controllers/user/UpdateProfileController.js");
+  update_account,
+} = require("../controllers/user/UpdateAccountController.js");
 const {
-  delete_profile,
-} = require("../controllers/user/DeleteProfileController.js");
+  delete_account,
+} = require("../controllers/user/DeleteAccountController.js");
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.post("/sign-in", sign_in);
 router.post("/sign-up", sign_up);
 
 // Profile
-router.put("/profile/update/:userId", verifyToken, update_profile);
-router.delete("/profile/delete/:userId", verifyToken, delete_profile);
+router.put("/account/update/:userId", verifyToken, update_account);
+router.delete("/account/delete/:userId", verifyToken, delete_account);
 
 module.exports = router;
