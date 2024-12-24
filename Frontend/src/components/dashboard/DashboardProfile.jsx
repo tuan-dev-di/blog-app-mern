@@ -48,6 +48,7 @@ const DashboardProfile = () => {
   // Use for reference: tag img can use like tag input
   const filePicker = useRef();
 
+  //? Get a new image file/URL from user
   const handleChangeProfileImage = (e) => {
     let file = e.target.files[0];
     if (file) {
@@ -112,11 +113,7 @@ const DashboardProfile = () => {
     );
   };
 
-  const [showPassword, setShowPassword] = useState(false);
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
+  //? Update profile of User
   const handleUpdate = (e) => {
     setFormData({
       ...formData,
@@ -161,6 +158,13 @@ const DashboardProfile = () => {
     }
   };
 
+  //? Button display password
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  //? Warning for User after update error/success
   let alertComponent = null;
   useEffect(() => {
     let timeout;
@@ -277,7 +281,7 @@ const DashboardProfile = () => {
               className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-transparent cursor-pointer border-none shadow-none sm:inline"
               color="gray"
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
             </Button>
           </div>
         </div>

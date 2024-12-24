@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label, TextInput, Button, Spinner, Alert } from "flowbite-react";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { HiInformationCircle } from "react-icons/hi";
 import {
   signInStart,
@@ -17,15 +17,6 @@ const SignIn = () => {
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let alertComponent = null;
-
-  if (errorMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {errorMessage}
-      </Alert>
-    );
-  }
 
   const handleChange = (e) => {
     setFormData({
@@ -34,6 +25,7 @@ const SignIn = () => {
     });
   };
 
+  //? Get Username & Password from User to Auth
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,6 +44,22 @@ const SignIn = () => {
       dispatch(signInFailure(error.message));
     }
   };
+
+  //? Button display password
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  //? Warning for User after update error/success
+  let alertComponent = null;
+  if (errorMessage) {
+    alertComponent = (
+      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
+        {errorMessage}
+      </Alert>
+    );
+  }
 
   return (
     // Whole page Sign-in
@@ -74,14 +82,23 @@ const SignIn = () => {
           </div>
           <div>
             <Label className="text-lg" value="Password" />
-            <TextInput
-              id="password"
-              placeholder="Enter your password"
-              type="password"
-              icon={FaLock}
-              onChange={handleChange}
-              required
-            />
+            <div className="relative">
+              <TextInput
+                id="password"
+                placeholder="Enter your password"
+                type={showPassword ? "text" : "password"}
+                icon={FaLock}
+                onChange={handleChange}
+                required
+              />
+              <Button
+                onClick={toggleShowPassword}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-transparent cursor-pointer border-none shadow-none sm:inline"
+                color="gray"
+              >
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </Button>
+            </div>
           </div>
           <Button
             gradientDuoTone="purpleToBlue"
