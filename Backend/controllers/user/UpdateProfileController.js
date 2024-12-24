@@ -39,7 +39,7 @@ const update_profile = async (req, res) => {
     if (!checkRegexEmail(email))
       return res.status(400).json({
         success: false,
-        message: `Email: "${email}" is not matched with Regex Pattern`,
+        message: `Email: '${email}' is not matched with Regex Pattern`,
       });
 
   //?: Check display name if user want to update display name in their profile page
@@ -47,13 +47,13 @@ const update_profile = async (req, res) => {
     if (checkLengthDisplayName(displayName))
       return res.status(400).json({
         success: false,
-        message: `Your name: "${displayName}" must be between 2 and 50 characters`,
+        message: `Your name: '${displayName}' must be between 2 and 50 characters`,
       });
 
     if (!checkRegexDisplayName(displayName))
       return res.status(400).json({
         success: false,
-        message: `Your name: "${displayName}" is not matched with Regex Pattern`,
+        message: `Your name: '${displayName}' is not matched with Regex Pattern`,
       });
   }
 
@@ -72,12 +72,11 @@ const update_profile = async (req, res) => {
     );
 
     //* Check if the user is not updated
-    if (!updateUser) {
+    if (!updateUser)
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
-    }
 
     //* Check user is updated and do not response password
     const { password, ...rest } = updateUser._doc;

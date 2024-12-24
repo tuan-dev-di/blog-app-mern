@@ -20,6 +20,6 @@ router.post("/sign-up", sign_up);
 
 // Profile
 router.put("/profile/update/:userId", verifyToken, update_profile);
-router.delete("/profile/delete:userId", verifyToken, delete_profile);
+router.delete("/profile/delete/:userId", verifyToken, delete_profile);
 
 module.exports = router;

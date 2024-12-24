@@ -38,7 +38,7 @@ const sign_up = async (req, res) => {
   if (!checkRegexUsername(username))
     return res.status(400).json({
       success: false,
-      message: `Username: "${username}" is not matched with Regex Pattern`,
+      message: `Username: '${username}' is not matched with Regex Pattern`,
     });
 
   //* Existed Username
@@ -46,7 +46,7 @@ const sign_up = async (req, res) => {
   if (usernameExisted)
     return res.status(400).json({
       success: false,
-      message: `Username: "${username}" has been already existed`,
+      message: `Username: '${username}' has been already existed`,
     });
 
   //? Check Password
@@ -86,7 +86,7 @@ const sign_up = async (req, res) => {
   if (!checkRegexEmail(email))
     return res.status(400).json({
       success: false,
-      message: `Email: "${email}" is not matched with Regex Pattern`,
+      message: `Email: '${email}' is not matched with Regex Pattern`,
     });
 
   //* Existed Email
@@ -94,7 +94,7 @@ const sign_up = async (req, res) => {
   if (emailExisted)
     return res.status(400).json({
       success: false,
-      message: `Email: "${email}" has been already existed`,
+      message: `Email: '${email}' has been already existed`,
     });
 
   //? Check Display Name
@@ -109,14 +109,14 @@ const sign_up = async (req, res) => {
   if (checkLengthDisplayName(displayName))
     return res.status(400).json({
       success: false,
-      message: `Your name: "${displayName}" must be between 2 and 50 characters`,
+      message: `Your name: '${displayName}' must be between 2 and 50 characters`,
     });
 
   //* Display Name is match with Regex Pattern
   if (!checkRegexDisplayName(displayName))
     return res.status(400).json({
       success: false,
-      message: `Your name: "${displayName}" is not matched with Regex Pattern`,
+      message: `Your name: '${displayName}' is not matched with Regex Pattern`,
     });
 
   //? Create a new User
