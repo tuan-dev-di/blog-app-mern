@@ -35,7 +35,10 @@ const DashboardProfile = () => {
   const navigate = useNavigate();
 
   const curUser = useSelector((state) => state.user.currentUser.user);
+  const token = useSelector((state) => state.user.currentUser);
   const userId = curUser._id; // Get Id of user's account
+  console.log(curUser);
+  console.log("User:", token);
 
   //* ----------------------------------- UPDATE situation
   // Update Success
@@ -157,9 +160,7 @@ const DashboardProfile = () => {
       dispatch(updateUserSuccess(data));
       setProfileImageUploadProgress(false);
       setUpdateSuccess("Your profile has been updated!");
-      setTimeout(() => {
-        navigate("/dashboard?tab=profile");
-      }, 3000);
+      navigate("/dashboard?tab=profile");
     } catch (error) {
       dispatch(updateUserFailure(error.message));
       setUpdateFail(error.message);
@@ -362,6 +363,11 @@ const DashboardProfile = () => {
       >
         Delete Account
       </Button>
+      {/* <div className="text-blue-600 flex justify-between mt-5">
+        <span onClick={handleSignOut} className="cursor-pointer">
+          Sign Out
+        </span>
+      </div> */}
       <Modal
         show={deleteModal}
         size="md"

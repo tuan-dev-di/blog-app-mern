@@ -22,7 +22,7 @@ const delete_account = async (req, res) => {
       message: "User is deleted successfully",
     });
   } catch (error) {
-    console.log("ERROR: ", error);
+    console.log("ERROR:", error);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

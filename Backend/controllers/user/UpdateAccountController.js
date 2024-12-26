@@ -5,16 +5,15 @@ const {
   checkRegexEmail,
   checkLengthDisplayName,
   checkRegexDisplayName,
-} = require("../../utilities/validationUser");
+} = require("../../utilities/ValidationUser.js");
 const User = require("../../models/User");
 
 const update_account = async (req, res) => {
-  if (req.user.userId !== req.params.userId) {
+  if (req.user.userId !== req.params.userId)
     return res.status(403).json({
       success: false,
       message: "You are not allowed to update this profile",
     });
-  }
 
   const updateData = {};
   const { username, password, email, displayName, profileImage } = req.body;
@@ -86,7 +85,7 @@ const update_account = async (req, res) => {
       user: rest,
     });
   } catch (error) {
-    console.log("ERROR: ", error);
+    console.log("ERROR:", error);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

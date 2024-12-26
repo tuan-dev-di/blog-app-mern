@@ -14,7 +14,7 @@ const {
   checkEmptyDisplayName,
   checkLengthDisplayName,
   checkRegexDisplayName,
-} = require("../../utilities/validationUser");
+} = require("../../utilities/ValidationUser");
 
 const sign_up = async (req, res) => {
   const { username, password, email, displayName } = req.body;
@@ -137,22 +137,27 @@ const sign_up = async (req, res) => {
       process.env.Access_Token
     );
 
-    return res.status(200).json({
-      success: true,
-      message: "Sign-up Successfully",
-      user: {
-        _id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-        displayName: newUser.displayName,
-        profileImage: newUser.profileImage,
-        created: newUser.createdAt,
-        updated: newUser.updatedAt,
-      },
-      accessToken,
-    });
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, {
+        httpOnly: true,
+      })
+      .json({
+        success: true,
+        message: "Sign-up Successfully",
+        user: {
+          _id: newUser._id,
+          username: newUser.username,
+          email: newUser.email,
+          displayName: newUser.displayName,
+          profileImage: newUser.profileImage,
+          created: newUser.createdAt,
+          updated: newUser.updatedAt,
+        },
+        accessToken,
+      });
   } catch (error) {
-    console.log(error);
+    console.log("ERROR:", error);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Error Server",

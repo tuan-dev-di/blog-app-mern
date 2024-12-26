@@ -72,7 +72,7 @@ const SignUp = () => {
       timeout = setTimeout(() => {
         setErrorMessage(null);
         setSuccessMessage(null);
-      }, 7000);
+      }, 3000);
     }
     return () => clearTimeout(timeout);
   }, [errorMessage, successMessage]);
