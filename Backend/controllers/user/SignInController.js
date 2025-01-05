@@ -6,62 +6,72 @@ const {
   checkEmptyUsername,
   checkEmptyPassword,
 } = require("../../utilities/ValidationUser");
+const { responseHelper } = require("../../utilities/ResponseHelper");
 
 const sign_in = async (req, res) => {
   const { username, password } = req.body;
 
   if (checkEmptyUsername(username) || checkEmptyPassword(password))
-    return res.status(400).json({
-      success: false,
-      message: "Username and Password are required",
-    });
+    return responseHelper(
+      res,
+      400,
+      false,
+      "Username and Password are required"
+    );
 
   try {
-    const user = await User.findOne({ username });
-    if (!user)
-      return res.status(400).json({
-        success: false,
-        message: `Username: '${username}' does not existed`,
-      });
+    const userValid = await User.findOne({ username });
+    if (!userValid)
+      return responseHelper(
+        res,
+        400,
+        false,
+        `Username: '${username}' does not existed`
+      );
 
-    const passwordIncorrect = await argon2.verify(user.password, password);
-    if (!passwordIncorrect)
-      return res.status(400).json({
-        success: false,
-        message: "Password is incorrect",
-      });
+    const passwordCorrect = await argon2.verify(userValid.password, password);
+    if (!passwordCorrect)
+      return responseHelper(res, 400, false, "Password is incorrect");
 
     const accessToken = jwt.sign(
       {
-        userId: user._id,
+        userId: userValid._id,
+        role: userValid.role,
       },
-      process.env.Access_Token
+      process.env.Access_Token,
+      {
+        expiresIn: "24h",
+      }
     );
 
-    return res
-      .status(200)
-      .cookie("accessToken", accessToken, {
-        httpOnly: true,
-      })
-      .json({
-        success: true,
-        user: {
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          displayName: user.displayName,
-          profileImage: user.profileImage,
-          created: user.createdAt,
-          updated: user.updatedAt,
+    const { password: userPassword, ...user } = userValid._doc;
+
+    return responseHelper(
+      res,
+      200,
+      true,
+      `Welcome - ${username}`,
+      [
+        {
+          name: "accessToken",
+          value: accessToken,
+          options: {
+            httpOnly: true,
+            secure: true,
+            expiresIn: "24h",
+          },
         },
-        accessToken: accessToken,
-      });
+      ],
+      { user, accessToken: accessToken }
+    );
   } catch (error) {
     console.log("ERROR:", error);
-    return res.status(400).json({
-      success: false,
-      message: `${error.message}` || "Internal Server Error",
-    });
+    return responseHelper(
+      res,
+      400,
+      false,
+      `${error.message}` || "Internal Server Error"
+    );
   }
 };
 

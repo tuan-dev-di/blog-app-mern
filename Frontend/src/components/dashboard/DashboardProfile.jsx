@@ -35,10 +35,10 @@ const DashboardProfile = () => {
   const navigate = useNavigate();
 
   const curUser = useSelector((state) => state.user.currentUser.user);
-  const token = useSelector((state) => state.user.currentUser);
   const userId = curUser._id; // Get Id of user's account
-  console.log(curUser);
-  console.log("User:", token);
+  const token = useSelector((state) => state.user.currentUser);
+  // console.log(curUser);
+  // console.log("User:", token);
 
   //* ----------------------------------- UPDATE situation
   // Update Success
@@ -215,7 +215,7 @@ const DashboardProfile = () => {
       timeout = setTimeout(() => {
         setUpdateFail(null);
         setUpdateSuccess(null);
-      }, 3000); // After 7s, alert will be disappear
+      }, 3000); // After 3s, alert will be disappear
     }
     return () => clearTimeout(timeout);
   }, [updateFail, updateSuccess]);
