@@ -31,7 +31,10 @@ const verifyToken = async (req, res, next) => {
         return res
           .status(401)
           .json({ success: false, message: "Access Denied" });
-      req.user = user;
+      req.user = {
+        userId: user.userId,
+        role: user.role,
+      };
       next();
     });
   } catch (error) {

@@ -16,6 +16,7 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 const Header = () => {
   const path = useLocation().pathname;
   const curUser = useSelector((state) => state.user.currentUser);
+  // console.log("Current User:", curUser);
 
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);
@@ -78,9 +79,11 @@ const Header = () => {
           >
             <Dropdown.Header>
               <Link to="/dashboard?tab=profile">
+                {/* Display Name */}
                 <span className="block text-sm">
                   {curUser.user.displayName}
                 </span>
+                {/* Email */}
                 <span className="block truncate text-sm font-medium">
                   {curUser.user.email}
                 </span>

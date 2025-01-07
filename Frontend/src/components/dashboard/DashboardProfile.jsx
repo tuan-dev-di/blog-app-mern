@@ -34,11 +34,11 @@ const DashboardProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const curUser = useSelector((state) => state.user.currentUser.user);
-  const userId = curUser._id; // Get Id of user's account
-  const token = useSelector((state) => state.user.currentUser);
-  // console.log(curUser);
-  // console.log("User:", token);
+  const curUser = useSelector((state) => state.user.currentUser);
+  const loading = useSelector((state) => state.user.loading);
+
+  const userId = curUser.user._id; // Get Id of user's account
+  const token = curUser.accessToken;
 
   //* ----------------------------------- UPDATE situation
   // Update Success
@@ -125,7 +125,7 @@ const DashboardProfile = () => {
     );
   };
 
-  //? Update profile of User
+  //? Update account of User
   const handleUpdate = (e) => {
     setFormData({
       ...formData,
@@ -257,7 +257,7 @@ const DashboardProfile = () => {
           hidden
         />
         <div
-          className="relative w-48 h-48 self-center cursor-pointer shadow-lg overflow-hidden rounded-full"
+          className="relative w-52 h-52 self-center cursor-pointer shadow-lg overflow-hidden rounded-full mt-7"
           onClick={() => filePicker.current.click()}
         >
           {profileImageUploadProgress && (
@@ -282,7 +282,7 @@ const DashboardProfile = () => {
             />
           )}
           <img
-            src={profileImageUrl || curUser.profileImage}
+            src={profileImageUrl || curUser.user.profileImage}
             defaultValue={curUser.profileImage}
             alt={curUser.displayName}
             className={`rounded-full w-full h-full ${
@@ -296,14 +296,14 @@ const DashboardProfile = () => {
           <Alert color="failure">{profileImageUploadError}</Alert>
         )}
         <p className="my-4 text-center text-2xl">
-          <strong>{curUser.displayName}</strong>
+          <strong>{curUser.user.displayName}</strong>
         </p>
         <div>
           <Label className="text-base" value="Username" />
           <TextInput
             id="username"
-            defaultValue={curUser.username}
-            placeholder={curUser.username}
+            defaultValue={curUser.user.username}
+            placeholder={curUser.user.username}
             type="text"
             icon={FaUser}
             disabled
@@ -313,8 +313,8 @@ const DashboardProfile = () => {
           <Label className="text-base" value="Email" />
           <TextInput
             id="email"
-            defaultValue={curUser.email}
-            placeholder={curUser.email}
+            defaultValue={curUser.user.email}
+            placeholder={curUser.user.email}
             type="email"
             icon={MdEmail}
             onChange={handleUpdate}
@@ -344,15 +344,21 @@ const DashboardProfile = () => {
           <Label className="text-base" value="Display Name" />
           <TextInput
             id="displayName"
-            defaultValue={curUser.displayName}
-            placeholder={curUser.displayName}
+            defaultValue={curUser.user.displayName}
+            placeholder={curUser.user.displayName}
             type="text"
             icon={MdEdit}
             onChange={handleUpdate}
           />
         </div>
-        <Button gradientDuoTone="greenToBlue" className="mt-3" type="submit">
-          Update Profile
+        <Button
+          gradientDuoTone="greenToBlue"
+          className="mt-3"
+          type="submit"
+          disabled={loading || profileImageUploading}
+        >
+          {/* Update Account */}
+          {loading ? "Loading..." : "Update Account"}
         </Button>
       </form>
       <Button

@@ -6,32 +6,30 @@ const {
   checkEmptyUsername,
   checkEmptyPassword,
 } = require("../../utilities/ValidationUser");
-const { responseHelper } = require("../../utilities/ResponseHelper");
 
 const sign_in = async (req, res) => {
   const { username, password } = req.body;
 
   if (checkEmptyUsername(username) || checkEmptyPassword(password))
-    return responseHelper(
-      res,
-      400,
-      false,
-      "Username and Password are required"
-    );
+    return res.status(400).json({
+      success: false,
+      message: "Username and Password are required",
+    });
 
   try {
     const userValid = await User.findOne({ username });
     if (!userValid)
-      return responseHelper(
-        res,
-        400,
-        false,
-        `Username: '${username}' does not existed`
-      );
+      return res.status(400).json({
+        success: false,
+        message: `Username: '${username}' does not existed`,
+      });
 
     const passwordCorrect = await argon2.verify(userValid.password, password);
     if (!passwordCorrect)
-      return responseHelper(res, 400, false, "Password is incorrect");
+      return res.status(400).json({
+        success: false,
+        message: "Password is incorrect",
+      });
 
     const accessToken = jwt.sign(
       {
@@ -46,32 +44,25 @@ const sign_in = async (req, res) => {
 
     const { password: userPassword, ...user } = userValid._doc;
 
-    return responseHelper(
-      res,
-      200,
-      true,
-      `Welcome - ${username}`,
-      [
-        {
-          name: "accessToken",
-          value: accessToken,
-          options: {
-            httpOnly: true,
-            secure: true,
-            expiresIn: "24h",
-          },
-        },
-      ],
-      { user, accessToken: accessToken }
-    );
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        // maxAge: 24 * 60 * 60 * 1000
+        // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+      })
+      .json({
+        success: true,
+        user: user,
+        accessToken: accessToken,
+      });
   } catch (error) {
     console.log("ERROR:", error);
-    return responseHelper(
-      res,
-      400,
-      false,
-      `${error.message}` || "Internal Server Error"
-    );
+    return res.status(400).json({
+      success: false,
+      message: `${error.message}` || "Internal Server Error",
+    });
   }
 };
 

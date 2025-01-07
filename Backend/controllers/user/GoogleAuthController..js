@@ -2,44 +2,43 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
-const { responseHelper } = require("../../utilities/ValidationUser");
 
 const google_auth = async (req, res) => {
   const { email, name, photo } = req.body;
   const username = req.body.email;
-  const usernamePrefix = username.split("@")[0];
+  const usernamePrefix = username.split("@")[0]; // Create username from email before @ symbol with element at 0
 
   try {
     const checkUser = await User.findOne({ email });
+    console.log(checkUser);
+
     if (checkUser) {
       const accessToken = jwt.sign(
         {
-          userId: checkUser.uid,
-          role: user.role,
+          userId: checkUser._id,
+          role: checkUser.role,
         },
-        process.env.Access_Token
+        process.env.Access_Token,
+        {
+          expiresIn: "24h",
+        }
       );
 
       const { password, ...user } = checkUser._doc;
 
-      return responseHelper(
-        res,
-        200,
-        true,
-        `Welcome - ${checkUser.username}`,
-        [
-          {
-            name: "accessToken",
-            value: accessToken,
-            options: {
-              httpOnly: true,
-              secure: true,
-              expiresIn: "24h",
-            },
-          },
-        ],
-        { user, accessToken: accessToken }
-      );
+      return res
+        .status(200)
+        .cookie("accessToken", accessToken, {
+          httpOnly: true,
+          secure: true,
+          // maxAge: 24 * 60 * 60 * 1000
+          // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+        })
+        .json({
+          success: true,
+          user: user,
+          accessToken: accessToken,
+        });
     } else {
       const randomPassword =
         Math.random().toString(36).slice(-8) +
@@ -57,40 +56,36 @@ const google_auth = async (req, res) => {
       const accessToken = jwt.sign(
         {
           userId: newUser.uid,
-          role: user.role,
+          role: newUser.role,
         },
-        process.env.Access_Token
+        process.env.Access_Token,
+        {
+          expiresIn: "24h",
+        }
       );
 
       const { password, ...user } = newUser._doc;
-
-      return responseHelper(
-        res,
-        200,
-        true,
-        `Welcome - ${newUser.username}`,
-        [
-          {
-            name: "accessToken",
-            value: accessToken,
-            options: {
-              httpOnly: true,
-              secure: true,
-              expiresIn: "24h",
-            },
-          },
-        ],
-        { user, accessToken: accessToken }
-      );
+      return res
+        .status(200)
+        .cookie("accessToken", accessToken, {
+          httpOnly: true,
+          secure: true,
+          // maxAge: 24 * 60 * 60 * 1000
+          // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+        })
+        .json({
+          success: true,
+          message: `Welcome - ${newUser.username}`,
+          user: user,
+          accessToken: accessToken,
+        });
     }
   } catch (error) {
     console.log("ERROR:", error);
-    return responseHelper(
-      res,
-      400,
-      false,
-      `${error.message}` || "Internal Server Error"
-    );
+    return res.status(400).json({
+      success: false,
+      message: `${error.message}` || "Internal Server Error",
+    });
   }
 };
 

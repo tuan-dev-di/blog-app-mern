@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Sidebar } from "flowbite-react";
 import { FaUserEdit, FaSignOutAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
+import { MdArticle } from "react-icons/md";
 
 import { signOutSuccess, signOutFailure } from "../../redux/user/userSlice";
 import { signOutUser } from "../../apis/auth";
 
 const DashboardSidebar = () => {
+  const curUser = useSelector((state) => state.user.currentUser);
+  const userRole = curUser.user.role;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,8 +25,6 @@ const DashboardSidebar = () => {
   }, [location.search]);
 
   //? Sign out
-  const [userSignOutSuccess, setUserSignOutSuccess] = useState(null);
-  const [userSignOutFailure, setUserSignOutFailure] = useState(null);
 
   const handleSignout = async () => {
     try {
@@ -31,7 +33,6 @@ const DashboardSidebar = () => {
 
       if (!ok) {
         dispatch(signOutFailure(data.message));
-        setUserSignOutFailure(data.message);
         return;
       }
 
@@ -40,7 +41,6 @@ const DashboardSidebar = () => {
 
       dispatch(signOutSuccess(data.message));
       console.log("Sign out successfully");
-      setUserSignOutSuccess("Sign out successfully");
       navigate("/sign-in");
     } catch (error) {
       dispatch(signOutFailure(error.message));
@@ -61,6 +61,13 @@ const DashboardSidebar = () => {
               Profile
             </Sidebar.Item>
           </Link>
+          {userRole === "admin" && (
+            <Link to="/dashboard/post">
+              <Sidebar.Item icon={MdArticle} className="" as="div">
+                Posts
+              </Sidebar.Item>
+            </Link>
+          )}
           <Sidebar.Item icon={IoMdSettings} className="">
             Settings
           </Sidebar.Item>

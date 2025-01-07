@@ -1,20 +1,15 @@
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
 
-const { responseHelper } = require("../../utilities/ResponseHelper");
-
 const sign_out = async (req, res) => {
   try {
     const token = req.cookies.accessToken;
-    console.log("TOKEN:", token);
 
     if (!token)
-      return responseHelper(
-        res,
-        401,
-        false,
-        "No token available. Please sign in"
-      );
+      return res.status(401).json({
+        success: false,
+        message: "No token available. Please sign in",
+      });
 
     const decodedToken = jwt.decode(token, process.env.Access_Token);
     const id = decodedToken.userId;
@@ -22,17 +17,24 @@ const sign_out = async (req, res) => {
     // console.log("ID:", id);
 
     const user = await User.findById(id);
-    if (!user) return responseHelper(res, 404, false, "User not found");
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
 
-    return responseHelper(res, 200, true, `Sign out successfully`);
+    return res
+      .status(200)
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: true,
+      })
+      .json({ success: true, message: `Sign out successfully` });
   } catch (error) {
     console.log("ERROR:", error);
-    return responseHelper(
-      res,
-      400,
-      false,
-      `${error.message}` || "Internal Server Error"
-    );
+    return res.status(400).json({
+      success: false,
+      message: `${error.message}` || "Internal Server Error",
+    });
   }
 };
 
