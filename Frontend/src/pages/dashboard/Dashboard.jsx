@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { DashboardSidebar, DashboardProfile } from "../components/_index";
+import {
+  // DashboardSidebar,
+  // DashboardProfile,
+  SidebarApp,
+} from "../../components/_index";
+import DetailAccount from "./DetailAccount";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -14,9 +19,9 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="">
-        <DashboardSidebar />
+        <SidebarApp />
       </div>
-      {tab === "profile" && <DashboardProfile />}
+      {tab === "profile" && <DetailAccount />}
     </div>
   );
 };

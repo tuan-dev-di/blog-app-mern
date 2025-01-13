@@ -29,7 +29,7 @@ import {
 } from "../../redux/user/userSlice";
 import { deleteAccount, updateAccount } from "../../apis/user";
 
-const DashboardProfile = () => {
+const DetailAccount = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const DashboardProfile = () => {
   const loading = useSelector((state) => state.user.loading);
 
   const userId = curUser.user._id; // Get Id of user's account
-  const token = curUser.accessToken;
+  // const token = curUser.accessToken;
 
   //* ----------------------------------- UPDATE situation
   // Update Success
@@ -403,4 +403,4 @@ const DashboardProfile = () => {
   );
 };
 
-export default DashboardProfile;
+export default DetailAccount;

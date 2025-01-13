@@ -3,6 +3,7 @@ import {
   FooterComponent,
   HeaderComponent,
   PrivateRoute,
+  AdminPrivateRoute,
 } from "./components/_index";
 import {
   Home,
@@ -11,6 +12,8 @@ import {
   SignIn,
   SignUp,
   Dashboard,
+  CreatePost,
+  Post,
 } from "./pages/_index";
 
 export default function App() {
@@ -25,6 +28,10 @@ export default function App() {
         <Route path="/sign-up" element={<SignUp />}></Route>
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+        </Route>
+        <Route element={<AdminPrivateRoute allowedRoles={["admin"]} />}>
+          <Route path="/posts" element={<Post />}></Route>
+          <Route path="/posts/create-post" element={<CreatePost />}></Route>
         </Route>
       </Routes>
       <FooterComponent />

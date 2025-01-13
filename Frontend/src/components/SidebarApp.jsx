@@ -7,10 +7,10 @@ import { FaUserEdit, FaSignOutAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { MdArticle } from "react-icons/md";
 
-import { signOutSuccess, signOutFailure } from "../../redux/user/userSlice";
-import { signOutUser } from "../../apis/auth";
+import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
+import { signOutUser } from "../apis/auth";
 
-const DashboardSidebar = () => {
+const SidebarApp = () => {
   const curUser = useSelector((state) => state.user.currentUser);
   const userRole = curUser.user.role;
 
@@ -51,31 +51,31 @@ const DashboardSidebar = () => {
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Link to="/dashboard?tab=profile">
-            <Sidebar.Item
-              active={tab === "profile"}
-              icon={FaUserEdit}
-              className=""
-              as="div"
-            >
-              Profile
-            </Sidebar.Item>
-          </Link>
+          <Sidebar.Item
+            active={tab === "profile"}
+            icon={FaUserEdit}
+            className="cursor-pointer"
+            as={"div"}
+          >
+            <Link to="/dashboard?tab=profile">Profile</Link>
+          </Sidebar.Item>
           {userRole === "admin" && (
-            <Link to="/dashboard/post">
-              <Sidebar.Item icon={MdArticle} className="" as="div">
-                Posts
-              </Sidebar.Item>
-            </Link>
+            <Sidebar.Item
+              icon={MdArticle}
+              className="cursor-pointer"
+              as={"div"}
+            >
+              <Link to="/posts">Posts</Link>
+            </Sidebar.Item>
           )}
-          <Sidebar.Item icon={IoMdSettings} className="">
+          <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">
             Settings
           </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           <Sidebar.Item
             icon={FaSignOutAlt}
-            className=""
+            className="cursor-pointer"
             onClick={handleSignout}
           >
             Sign Out
@@ -86,4 +86,4 @@ const DashboardSidebar = () => {
   );
 };
 
-export default DashboardSidebar;
+export default SidebarApp;
