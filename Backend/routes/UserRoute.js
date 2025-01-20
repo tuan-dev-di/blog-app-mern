@@ -1,6 +1,8 @@
+//? ==================== IMPORT TECHs & LIBRARIES ====================
 const express = require("express");
 const verifyToken = require("../middleware/Auth.js");
 
+//? ==================== IMPORT FUNCTION ====================
 const { sign_in } = require("../controllers/user/SignInController.js");
 const { sign_up } = require("../controllers/user/SignUpController.js");
 const { sign_out } = require("../controllers/user/SignOutController.js");
@@ -12,6 +14,7 @@ const {
   delete_account,
 } = require("../controllers/user/DeleteAccountController.js");
 
+//? ==================== USING ROUTER FROM EXPRESS ====================
 const router = express.Router();
 
 // Authentication & Authorization

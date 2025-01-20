@@ -1,19 +1,21 @@
+//? ==================== IMPORT TECHs - LIBRARIES ====================
 require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
+//? ==================== IMPORT ROUTEs ====================
 const user_route = require("./routes/UserRoute");
+const post_route = require("./routes/PostRoute");
 
+//? ==================== CALL PORT FROM .ENV ====================
 const app = express();
-
-//TODO: Start Server with PORT
 const PORT = process.env.PORT;
 app.listen(PORT, () =>
   console.log(`MERN Blog App | Backend started on port ${PORT}`)
 );
 
-//TODO: Connect to Mongo Database
+//? ==================== CONNECT DATABASE MONGOOSE ====================
 const MongoDB_Username = process.env.MONGO_Username;
 const MongoDB_Password = process.env.MONGO_Password;
 const MongoDB_Cluster = process.env.MONGO_Cluster;
@@ -41,10 +43,11 @@ mongoose
 //   }
 // };
 
-//TODO: Run API
+//? ==================== RUN APIs ====================
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth/users", user_route);
+app.use("/api/posts", post_route);
 
 // app.use((error, req, res, next) => {
 //   const statusCode = error.statusCode || 500;

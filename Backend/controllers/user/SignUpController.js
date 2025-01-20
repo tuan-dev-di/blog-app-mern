@@ -19,7 +19,7 @@ const {
 const sign_up = async (req, res) => {
   const { username, password, email, displayName } = req.body;
 
-  //? ========================================================= Check Username
+  //? ==================== CHECK USERNAME ====================
   //* Username is an empty string
   if (checkEmptyUsername(username))
     return res.status(400).json({
@@ -49,7 +49,7 @@ const sign_up = async (req, res) => {
       message: `Username: '${username}' has been already existed`,
     });
 
-  //? ========================================================= Check Password
+  //? ==================== CHECK PASSWORD ====================
   //* Password is an empty string
   if (checkEmptyPassword(password))
     return res.status(400).json({
@@ -74,7 +74,7 @@ const sign_up = async (req, res) => {
   //* Encrypted Password
   const hashedPassword = await argon2.hash(password);
 
-  //? ========================================================= Check Email
+  //? ==================== CHECK EMAIL ====================
   //* Email is an empty string
   if (checkEmptyEmail(email))
     return res.status(400).json({
@@ -97,7 +97,7 @@ const sign_up = async (req, res) => {
       message: `Email: '${email}' has been already existed`,
     });
 
-  //? ========================================================= Check Display Name
+  //? ==================== CHECK DISPLAY NAME ====================
   //* Display Name is an empty string
   if (checkEmptyDisplayName(displayName))
     return res.status(400).json({
@@ -119,7 +119,7 @@ const sign_up = async (req, res) => {
       message: `Your name: '${displayName}' is not matched with Regex Pattern`,
     });
 
-  //? ========================================================= Create a new User
+  //? ==================== CREATE NEW USER ====================
   const newUser = new User({
     username: username,
     password: hashedPassword,

@@ -1,4 +1,4 @@
-//? Check validation for Username
+//? ==================== VALIDATION USERNAME ====================
 const checkEmptyUsername = (username) => {
   return !username || username === "";
 };
@@ -8,13 +8,12 @@ const checkLengthUsername = (username) => {
 };
 
 const checkRegexUsername = (username) => {
-  //* Regex Pattern for Username
   const usernameRegexPattern =
     /^[A-Za-z](?!.*[.\-_]{2})(?!.*[.\-_].*[.\-_])[A-Za-z0-9]*(?:[.\-_][A-Za-z0-9]+)*$/;
   return usernameRegexPattern.test(username);
 };
 
-//? Check validation for Password
+//? ==================== VALIDATION PASSWORD ====================
 const checkEmptyPassword = (password) => {
   return !password || password === "";
 };
@@ -24,25 +23,23 @@ const checkLengthPassword = (password) => {
 };
 
 const checkRegexPassword = (password) => {
-  //* Regex Pattern for Password
   const passwordRegexPattern =
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*[!@#$%^&*]{2})(?!.*[!@#$%^&*][^A-Za-z0-9]).*$/;
   return passwordRegexPattern.test(password);
 };
 
-//? Check validation for Email
+//? ==================== VALIDATION EMAIL ====================
 const checkEmptyEmail = (email) => {
   return !email || email === "";
 };
 
 const checkRegexEmail = (email) => {
-  //* Regex Pattern for Email
   const emailRegexPattern =
     /^[a-zA-Z0-9](?!.*[.\-_]{2})([a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegexPattern.test(email);
 };
 
-//? Check validation for Display Name
+//? ==================== VALIDATION DISPLAY NAME ====================
 const checkEmptyDisplayName = (displayName) => {
   return !displayName || displayName === "";
 };
@@ -52,7 +49,6 @@ const checkLengthDisplayName = (displayName) => {
 };
 
 const checkRegexDisplayName = (name) => {
-  //* Regex Pattern for Display Name
   const displayNameRegexPattern =
     /^[a-zA-ZĂÂÁÀẢÃẠẮẰẲẴẶẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌƠỚỜỞỠỢÔỐỒỔỖỘÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴăâắằẳẵặấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọơớờởỡợôốồổỗộúùủũụưứừửữựýỳỷỹỵ ]{2,50}(?<![ .'-])$/;
   return displayNameRegexPattern.test(name);

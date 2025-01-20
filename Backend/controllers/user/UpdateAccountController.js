@@ -19,7 +19,7 @@ const update_account = async (req, res) => {
   const updateData = {};
   const { username, password, email, displayName, profileImage } = req.body;
 
-  //? ========================================================= Check password if user want to update password in their profile page
+  //? ============================== Check password if user want to update password in their profile page
   if (password) {
     if (checkLengthPassword(password))
       return res.status(400).json({
@@ -34,7 +34,7 @@ const update_account = async (req, res) => {
       });
   }
 
-  //? ========================================================= Check email if user want to update email in their profile page
+  //? ============================== Check email if user want to update email in their profile page
   if (email)
     if (!checkRegexEmail(email))
       return res.status(400).json({
@@ -42,7 +42,7 @@ const update_account = async (req, res) => {
         message: `Email: '${email}' is not matched with Regex Pattern`,
       });
 
-  //? ========================================================= Check display name if user want to update display name in their profile page
+  //? ============================== Check display name if user want to update display name in their profile page
   if (displayName) {
     if (checkLengthDisplayName(displayName))
       return res.status(400).json({
@@ -57,7 +57,7 @@ const update_account = async (req, res) => {
       });
   }
 
-  //? ========================================================= Check if any fields has been changed from user, only data on that field will be updated
+  //? ============================== Check if any fields has been changed from user, only data on that field will be updated
   if (username) updateData.username = username;
   if (password) updateData.password = await argon2.hash(password);
   if (email) updateData.email = email;
@@ -71,14 +71,14 @@ const update_account = async (req, res) => {
       { new: true }
     );
 
-    //* Check if the user is not updated
+    //? ============================== Check if the user is not updated
     if (!updateUser)
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
 
-    //* Check user is updated and do not response password
+    //? ============================== Check user is updated and do not response password
     const { password, ...user } = updateUser._doc;
 
     return res.status(200).json({

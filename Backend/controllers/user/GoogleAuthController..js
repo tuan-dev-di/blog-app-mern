@@ -6,7 +6,7 @@ const User = require("../../models/User");
 const google_auth = async (req, res) => {
   const { email, name, photo } = req.body;
   const username = req.body.email;
-  const usernamePrefix = username.split("@")[0]; // Create username from email before @ symbol with element at 0
+  const usernamePrefix = username.split("@")[0]; // Create username from email before @ symbol with element at 0 position
 
   try {
     const checkUser = await User.findOne({ email });
@@ -40,6 +40,8 @@ const google_auth = async (req, res) => {
           accessToken: accessToken,
         });
     } else {
+      // Create a random password if user uses Google account to sign up
+      //* The function of automatically sending passwords to users has not been used
       const randomPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
