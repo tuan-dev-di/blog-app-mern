@@ -44,6 +44,13 @@ const create_post = async (req, res) => {
       message: "Title is not matched with Regex Pattern",
     });
 
+  const titleExisted = await Post.findOne({ title });
+  if (titleExisted)
+    return res.status(200).json({
+      success: false,
+      message: "This title is already existed, please try again!",
+    });
+
   //? ==================== CHECK CATEGORY ====================
   //* Category is an empty string
   if (checkEmptyCategory(category))
@@ -72,13 +79,22 @@ const create_post = async (req, res) => {
       message: "Content is not match with Regex Pattern",
     });
 
+  //? ==================== CHECK SLUG ====================
+  const slug = title
+    .split(" ")
+    .join("-")
+    .toLowerCase()
+    .replace(/[^A-Za-z0-9-]/g, "-");
+
   //? ==================== CHECK IMAGE ====================
 
+  //? ==================== CREATE A NEW POST ====================
   const newPost = new Post({
     userId: user_id,
     title: title,
     category: category,
     content: content,
+    slug: slug,
     imagePost: imagePost,
   });
 
