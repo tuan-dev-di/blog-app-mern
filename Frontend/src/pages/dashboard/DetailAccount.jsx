@@ -91,7 +91,7 @@ const DetailAccount = () => {
     // Get name of file
     const fileNameUpload = profileImageFile.name;
     // Create a new name for file image to store on firebase with date and time currently
-    const fileName = new Date().getTime() + fileNameUpload;
+    const fileName = new Date().getTime() + "_" + fileNameUpload;
 
     const storageRef = ref(storage, fileName);
     const uploadFileTask = uploadBytesResumable(storageRef, profileImageFile);
