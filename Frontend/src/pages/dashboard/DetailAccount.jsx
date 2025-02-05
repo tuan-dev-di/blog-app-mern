@@ -211,14 +211,16 @@ const DetailAccount = () => {
   let alertComponent = null;
   useEffect(() => {
     let timeout;
-    if (updateFail || updateSuccess) {
+    if (updateFail || updateSuccess || deleteFail || deleteSuccess) {
       timeout = setTimeout(() => {
         setUpdateFail(null);
         setUpdateSuccess(null);
+        setDeleteFail(null);
+        setDeleteSuccess(null);
       }, 3000); // After 3s, alert will be disappear
     }
     return () => clearTimeout(timeout);
-  }, [updateFail, updateSuccess]);
+  }, [updateFail, updateSuccess, deleteFail, deleteSuccess]);
 
   if (updateFail) {
     alertComponent = (

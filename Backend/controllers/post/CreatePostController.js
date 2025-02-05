@@ -3,7 +3,6 @@ const {
   checkEmptyTitle,
   checkLengthTitle,
   checkRegexTitle,
-  checkEmptyCategory,
   checkEmptyContent,
   checkLengthContent,
   checkRegexContent,
@@ -49,14 +48,6 @@ const create_post = async (req, res) => {
     return res.status(200).json({
       success: false,
       message: "This title is already existed, please try again!",
-    });
-
-  //? ==================== CHECK CATEGORY ====================
-  //* Category is an empty string
-  if (checkEmptyCategory(category))
-    return res.status(400).json({
-      success: false,
-      message: "Category is required",
     });
 
   //? ==================== CHECK CONTENT ====================

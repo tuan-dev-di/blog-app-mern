@@ -1,3 +1,5 @@
+const { convert } = require("html-to-text");
+
 //? ==================== VALIDATION TITLE ====================
 const checkEmptyTitle = (title) => {
   return !title || title === "";
@@ -12,11 +14,6 @@ const checkRegexTitle = (title) => {
   return titleRegexPattern.test(title);
 };
 
-//? ==================== VALIDATION CATEGORY ====================
-const checkEmptyCategory = (category) => {
-  return !category || category === "";
-};
-
 //? ==================== VALIDATION CONTENT ====================
 
 const checkEmptyContent = (content) => {
@@ -28,8 +25,10 @@ const checkLengthContent = (content) => {
 };
 
 const checkRegexContent = (content) => {
-  const contentRegexPattern = /^[A-Z](?!.*  )[\w\W]*$/;
-  return contentRegexPattern.test(content);
+  const contentRegexPattern =
+    /^[A-Z][A-Za-z0-9!@#$%^&*()_+{}[\]:;"'<>,.?/~` |-]*\S$/;
+  const convertContent = convert(content, { wordwrap: false });
+  return contentRegexPattern.test(convertContent);
 };
 
 //? ==================== VALIDATION IMAGE POST ====================
@@ -41,7 +40,6 @@ module.exports = {
   checkEmptyTitle,
   checkLengthTitle,
   checkRegexTitle,
-  checkEmptyCategory,
   checkEmptyContent,
   checkLengthContent,
   checkRegexContent,

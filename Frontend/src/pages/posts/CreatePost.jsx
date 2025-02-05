@@ -1,5 +1,6 @@
 //? ==================== IMPORT REACT LIBRARY ====================
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //? ==================== IMPORT FIREBASE ====================
 import {
@@ -17,29 +18,38 @@ import {
   Select,
   FileInput,
   Button,
+  Alert,
   // Spinner,
 } from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
+import { SlLike } from "react-icons/sl";
 
 //? ==================== IMPORT REACT QUILL ====================
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { createPost } from "../../apis/post";
 
 const CreatePost = () => {
   const [formData, setFormData] = useState({});
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState(null);
+  const navigate = useNavigate();
+
+  const [postImage, setPostImage] = useState(null);
   const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
   const [postImageUploadLoading, setPostImageUploadLoading] = useState(null);
   const [postImageUploadError, setPostImageUploadError] = useState(null);
-  const [postImageUploadSuccess, setPostImageUploadSuccess] = useState(null);
+  // const [postImageUploadSuccess, setPostImageUploadSuccess] = useState(null);
 
+  const [createSuccess, setCreateSuccess] = useState(null);
+  const [createFail, setCreateFail] = useState(null);
+
+  // -------------------- HANDLE UPLOAD POST's IMAGE --------------------
   const handleChangeImagePost = async (e) => {
     const file = e.target.files[0];
     const fileName = file.name;
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setSelectedImage(reader.result); // Lưu URL của ảnh vào state
+        setPostImage(reader.result); // Lưu URL của ảnh vào state
       };
       reader.readAsDataURL(file); // Đọc file và chuyển sang DataURL
     } else {
@@ -66,8 +76,7 @@ const CreatePost = () => {
           setPostImageUploadError(
             "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB"
           );
-          setSelectedImage(null);
-          setSelectedImageUrl(null);
+          setPostImage(null);
           setPostImageUploadLoading(null);
           setPostImageUploadProgress(null);
         },
@@ -86,16 +95,73 @@ const CreatePost = () => {
     }
   };
 
+  // -------------------- HANDLE CREATE POST --------------------
+  // ReactQuill doesn't support prop Id
+  // Post's image upload with another handle
+  const handleCreatePost = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value.trim(),
+    });
+  };
+
+  // -------------------- HANDLE SUBMIT --------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { ok, data } = await createPost(formData);
+      if (!ok) {
+        setCreateFail(data.message);
+        return;
+      }
+
+      setCreateSuccess("Your post is created!");
+      navigate(`/posts/${data.post.slug}`);
+
+      setCreateFail(null);
+    } catch (error) {
+      setCreateFail(error.message);
+    }
+  };
+
+  // -------------------- ALERT --------------------
+  let alertComponent = null;
+  useEffect(() => {
+    let timeout;
+    if (createFail || createSuccess) {
+      timeout = setTimeout(() => {
+        setCreateFail(null);
+        setCreateSuccess(null);
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [createFail, createSuccess]);
+
+  if (createFail) {
+    alertComponent = (
+      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
+        {createFail}
+      </Alert>
+    );
+  } else if (createSuccess) {
+    alertComponent = (
+      <Alert className="mt-5" color="success" icon={SlLike}>
+        {createSuccess}
+      </Alert>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-7 min-h-screen">
       <h1 className="text-center text-4xl my-7 font-semibold">
         Create a new post
       </h1>
-      <form className="flex flex-col gap-2">
+      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
-          {/* -------------------- TITLE & CATEGORY -------------------- */}
           <div>
             <div className="flex gap-4 sm:flex-row items-start">
+              {/* -------------------- TITLE -------------------- */}
               <div className="flex flex-col flex-1">
                 <Label className="text-base">
                   Title<span className="text-red-500 ml-1">*</span>
@@ -105,14 +171,21 @@ const CreatePost = () => {
                   type="text"
                   className="flex-1 w-[500px]"
                   placeholder="Enter a title"
+                  onChange={handleCreatePost}
                   required
                 />
               </div>
+
+              {/* -------------------- CATEGORY -------------------- */}
               <div className="flex flex-col flex-1">
                 <Label className="text-base">
                   Category<span className="text-red-500 ml-1">*</span>
                 </Label>
-                <Select id="category" className="flex-1">
+                <Select
+                  id="category"
+                  className="flex-1"
+                  onChange={handleCreatePost}
+                >
                   <option value="uncategorized">
                     ----- Language | Framework -----
                   </option>
@@ -135,9 +208,17 @@ const CreatePost = () => {
               Content<span className="text-red-500 ml-1">*</span>
             </Label>
             <ReactQuill
+              id="content"
               theme="snow"
               placeholder="Enter your content"
               className="h-56 mb-10"
+              onChange={(value) => {
+                setFormData({
+                  ...formData,
+                  content: value,
+                });
+              }}
+              required
             />
           </div>
 
@@ -152,10 +233,10 @@ const CreatePost = () => {
                 className="flex h-96 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
               >
                 <div className="flex flex-col items-center justify-center pb-6 pt-5 h-80 w-full">
-                  {selectedImage ? (
+                  {postImage ? (
                     <img
-                      src={selectedImage || selectedImageUrl}
-                      alt="Selected"
+                      src={postImage}
+                      alt="Selected Image"
                       className="h-96 w-full object-cover rounded-lg"
                     />
                   ) : (
@@ -196,10 +277,19 @@ const CreatePost = () => {
             </div>
           </div>
         </div>
-        <Button className="mt-5" gradientDuoTone="purpleToBlue" type="submit">
-          Create
+        <Button
+          className="mt-5"
+          gradientDuoTone="purpleToBlue"
+          type="submit"
+          disabled={postImageUploadLoading}
+        >
+          {postImageUploadLoading ? "Loading ..." : "Publish"}
         </Button>
+        {postImageUploadError && (
+          <Alert color="failure">{postImageUploadError}</Alert>
+        )}
       </form>
+      {alertComponent}
     </div>
   );
 };
