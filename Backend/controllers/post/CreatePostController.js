@@ -6,7 +6,6 @@ const {
   checkEmptyContent,
   checkLengthContent,
   checkRegexContent,
-  checkEmptyImage,
 } = require("../../utilities/ValidationPost");
 
 const create_post = async (req, res) => {
@@ -79,14 +78,6 @@ const create_post = async (req, res) => {
     .join("-")
     .toLowerCase()
     .replace(/[^A-Za-z0-9-]/g, "-");
-
-  //? --------------------| Check validate image |--------------------
-  //* Content is an empty string
-  if (checkEmptyImage(imagePost))
-    return res.status(400).json({
-      success: false,
-      message: "Image is required",
-    });
 
   //? --------------------| Create a new post |--------------------
   const newPost = new Post({

@@ -224,9 +224,7 @@ const CreatePost = () => {
 
           {/* -------------------- IMAGE -------------------- */}
           <div>
-            <Label className="text-base">
-              Image<span className="text-red-500 ml-1">*</span>
-            </Label>
+            <Label className="text-base">Image</Label>
             <div className="w-full items-center justify-center">
               <Label
                 htmlFor="dropzone-file"

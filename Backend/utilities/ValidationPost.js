@@ -31,11 +31,6 @@ const checkRegexContent = (content) => {
   return contentRegexPattern.test(convertContent);
 };
 
-//? ==================== VALIDATION IMAGE POST ====================
-const checkEmptyImage = (image) => {
-  return !image || image === "";
-};
-
 module.exports = {
   checkEmptyTitle,
   checkLengthTitle,
@@ -43,5 +38,4 @@ module.exports = {
   checkEmptyContent,
   checkLengthContent,
   checkRegexContent,
-  checkEmptyImage,
 };

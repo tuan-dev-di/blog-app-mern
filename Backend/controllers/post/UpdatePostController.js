@@ -1,7 +1,5 @@
-const update_post = (req, res) => {
-  return res.json({
-    message: "Hello, this is a update post",
-  });
-};
+const Post = require("../../models/Post");
+
+const update_post = (req, res) => {};
 
 module.exports = { update_post };
