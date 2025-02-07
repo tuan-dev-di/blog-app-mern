@@ -25,7 +25,6 @@ const SidebarApp = () => {
   }, [location.search]);
 
   //? Sign out
-
   const handleSignout = async () => {
     try {
       // Sign out with firebase sign out
@@ -48,12 +47,13 @@ const SidebarApp = () => {
   };
 
   return (
-    <Sidebar className="w-full md:w-56">
+    <Sidebar className="w-full md:w-60">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           <Sidebar.Item
             active={tab === "profile"}
             icon={FaUserEdit}
+            label={userRole}
             className="cursor-pointer"
             as={"div"}
           >

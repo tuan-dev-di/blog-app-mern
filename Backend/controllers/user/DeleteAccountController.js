@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 
 const delete_account = async (req, res) => {
+  //? --------------------| Check Id and role of user |--------------------
   if (req.user.userId !== req.params.userId)
     return res.status(403).json({
       success: false,

@@ -6,11 +6,11 @@ const {
   checkEmptyContent,
   checkLengthContent,
   checkRegexContent,
-  // checkEmptyImage,
+  checkEmptyImage,
 } = require("../../utilities/ValidationPost");
 
 const create_post = async (req, res) => {
-  //? ==================== Get Id and role of user ====================
+  //? --------------------| Check Id and role of user |--------------------
   const user_id = req.user.userId;
   const user_role = req.user.role;
   if (user_role !== "admin")
@@ -21,7 +21,7 @@ const create_post = async (req, res) => {
 
   const { title, category, content, imagePost } = req.body;
 
-  //? ==================== CHECK TITLE ====================
+  //? --------------------| Check validate title |--------------------
   //* Title is an empty string
   if (checkEmptyTitle(title))
     return res.status(400).json({
@@ -43,6 +43,7 @@ const create_post = async (req, res) => {
       message: "Title is not matched with Regex Pattern",
     });
 
+  //* Title is existed
   const titleExisted = await Post.findOne({ title });
   if (titleExisted)
     return res.status(200).json({
@@ -50,7 +51,7 @@ const create_post = async (req, res) => {
       message: "This title is already existed, please try again!",
     });
 
-  //? ==================== CHECK CONTENT ====================
+  //? --------------------| Check validate content |--------------------
   //* Content is an empty string
   if (checkEmptyContent(content))
     return res.status(400).json({
@@ -58,28 +59,36 @@ const create_post = async (req, res) => {
       message: "Content is required",
     });
 
+  //* Length of Content
   if (checkLengthContent(content))
     return res.status(400).json({
       success: false,
       message: "Length of content must between 50 and 5000 characters",
     });
 
+  //* Content is matched with Regex Pattern
   if (!checkRegexContent(content))
     return res.status(400).json({
       success: false,
       message: "Content is not match with Regex Pattern",
     });
 
-  //? ==================== CHECK SLUG ====================
+  //? --------------------| Get title and convert to slug |--------------------
   const slug = title
     .split(" ")
     .join("-")
     .toLowerCase()
     .replace(/[^A-Za-z0-9-]/g, "-");
 
-  //? ==================== CHECK IMAGE ====================
+  //? --------------------| Check validate image |--------------------
+  //* Content is an empty string
+  if (checkEmptyImage(imagePost))
+    return res.status(400).json({
+      success: false,
+      message: "Image is required",
+    });
 
-  //? ==================== CREATE A NEW POST ====================
+  //? --------------------| Create a new post |--------------------
   const newPost = new Post({
     userId: user_id,
     title: title,

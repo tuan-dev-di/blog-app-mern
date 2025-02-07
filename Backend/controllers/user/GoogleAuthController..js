@@ -9,6 +9,7 @@ const google_auth = async (req, res) => {
   const usernamePrefix = username.split("@")[0]; // Create username from email before @ symbol with element at 0 position
 
   try {
+    //? --------------------| Check user existed with Google account |--------------------
     const checkUser = await User.findOne({ email });
     console.log(checkUser);
 
