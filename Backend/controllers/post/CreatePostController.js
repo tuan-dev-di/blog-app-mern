@@ -18,7 +18,7 @@ const create_post = async (req, res) => {
       message: "Invalid role",
     });
 
-  const { title, category, content, imagePost } = req.body;
+  const { title, category, content, image } = req.body;
 
   //? --------------------| Check validate title |--------------------
   //* Title is an empty string
@@ -86,7 +86,7 @@ const create_post = async (req, res) => {
     category: category,
     content: content,
     slug: slug,
-    imagePost: imagePost,
+    image: image,
   });
 
   try {

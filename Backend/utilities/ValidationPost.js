@@ -25,8 +25,7 @@ const checkLengthContent = (content) => {
 };
 
 const checkRegexContent = (content) => {
-  const contentRegexPattern =
-    /^[A-Z][A-Za-z0-9!@#$%^&*()_+{}[\]:;"'<>,.?/~` |-]*\S$/;
+  const contentRegexPattern = /^[A-Z][a-zA-Z0-9\s]*\S$/;
   const convertContent = convert(content, { wordwrap: false });
   return contentRegexPattern.test(convertContent);
 };
