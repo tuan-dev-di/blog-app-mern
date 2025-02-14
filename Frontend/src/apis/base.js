@@ -10,18 +10,27 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
 
   if (data) options.body = JSON.stringify(data);
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, options);
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Unknown error occurred");
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Unknown error occurred");
+    }
+
+    let jsonData;
+    try {
+      jsonData = await response.json();
+    } catch {
+      jsonData = null;
+    }
+
+    return {
+      ok: response.ok,
+      status: response.status,
+      data: jsonData,
+    };
+  } catch (error) {
+    console.log("ERROR:", error.message);
   }
-
-  const jsonData = await response.json();
-
-  return {
-    ok: response.ok,
-    status: response.status,
-    data: jsonData,
-  };
 };

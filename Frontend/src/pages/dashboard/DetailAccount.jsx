@@ -41,22 +41,14 @@ const DetailAccount = () => {
   // const token = curUser.accessToken;
 
   //* ----------------------------------- UPDATE situation
-  // Update Success
   const [updateSuccess, setUpdateSuccess] = useState(null);
-  // Update Failure
   const [updateFail, setUpdateFail] = useState(null);
-  // User input image file from their computer
   const [profileImageFile, setProfileImageFile] = useState(null);
-  // User input image file by link
   const [profileImageUrl, setProfileImageUrl] = useState(null);
-  // Progress of Image when user upload their image
   const [profileImageUploadProgress, setProfileImageUploadProgress] =
     useState(null);
-  // Error notification when user use invalid file
   const [profileImageUploading, setProfileImageUploading] = useState(null);
-  // Error notification when user use invalid file
   const [profileImageUploadError, setProfileImageUploadError] = useState(null);
-  // Use for reference: tag img can use like tag input
   const filePicker = useRef();
 
   //? Get a new image file/URL from user
@@ -74,16 +66,6 @@ const DetailAccount = () => {
 
   //? Upload file image from user to UI
   const uploadFile = async () => {
-    // service firebase.storage {
-    //   match /b/{bucket}/o {
-    //     match /{allPaths=**} {
-    //       allow read: if request.auth != null
-    //       allow write: if
-    //       request.resource.size < 4 * 1024 * 1024 &&
-    //       request.resource.contentType.matches('image/.*')
-    //     }
-    //   }
-    // }
     setProfileImageUploadError(null);
 
     // Using storage of Firebase
@@ -168,11 +150,8 @@ const DetailAccount = () => {
   };
 
   //* ----------------------------------- DELETE situation
-  // Delete Success
   const [deleteSuccess, setDeleteSuccess] = useState(null);
-  // Delete Failure
   const [deleteFail, setDeleteFail] = useState(null);
-  // Get modal to warn about deletion for user
   const [deleteModal, setDeleteModal] = useState(false);
 
   //? Delete account of User
@@ -198,8 +177,6 @@ const DetailAccount = () => {
       setDeleteFail(error.message);
     }
   };
-
-  //* ----------------------------------- OTHERS
 
   //? Button display password
   const [showPassword, setShowPassword] = useState(false);

@@ -1,5 +1,5 @@
 import { SidebarApp } from "../../components/_index";
-import PostTable from "../posts/PostTable";
+import ListPost from "./ListPost";
 
 const Post = () => {
   return (
@@ -7,7 +7,7 @@ const Post = () => {
       <div className="">
         <SidebarApp />
       </div>
-      <PostTable />
+      <ListPost />
     </div>
   );
 };

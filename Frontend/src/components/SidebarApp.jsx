@@ -65,7 +65,7 @@ const SidebarApp = () => {
               className="cursor-pointer"
               as={"div"}
             >
-              <Link to="/posts">Posts</Link>
+              <Link to="/posts/list-post">Posts</Link>
             </Sidebar.Item>
           )}
           <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">

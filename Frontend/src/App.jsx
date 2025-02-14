@@ -30,7 +30,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
         </Route>
         <Route element={<AdminPrivateRoute allowedRoles={["admin"]} />}>
-          <Route path="/posts" element={<Post />}></Route>
+          <Route path="/posts/list-post" element={<Post />}></Route>
           <Route path="/posts/create-post" element={<CreatePost />}></Route>
         </Route>
       </Routes>
