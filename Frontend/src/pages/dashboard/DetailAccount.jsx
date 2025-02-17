@@ -236,7 +236,7 @@ const DetailAccount = () => {
           hidden
         />
         <div
-          className="relative w-52 h-52 self-center cursor-pointer shadow-lg overflow-hidden rounded-full mt-7"
+          className="relative w-60 h-56 self-center cursor-pointer shadow-lg overflow-hidden rounded-full mt-7"
           onClick={() => filePicker.current.click()}
         >
           {profileImageUploadProgress && (

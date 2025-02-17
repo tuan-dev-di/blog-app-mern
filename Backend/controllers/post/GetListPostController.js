@@ -2,8 +2,9 @@ const Post = require("../../models/Post");
 
 const list_post = async (req, res) => {
   try {
-    const postStartIndex = parseInt(req.query.postStartIndex) || 0;
-    const limitPost = parseInt(req.query.limitPost) || 9;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 7;
+    const skip = (page - 1) * limit;
     const sortDirection = req.query.order === "asc" ? 1 : -1;
 
     // Create query
@@ -14,16 +15,16 @@ const list_post = async (req, res) => {
     if (req.query.postId) query._id = req.query.postId;
     if (req.query.searchTerm) {
       query.$or = [
-        { title: { $regex: req.query.searchTerm, $option: "i" } },
-        { content: { $regex: req.query.searchTerm, $option: "i" } },
+        { title: { $regex: req.query.searchTerm, $options: "i" } },
+        { content: { $regex: req.query.searchTerm, $options: "i" } },
       ];
     }
 
     const posts = await Post.find(query)
       .sort({ updateAt: sortDirection })
-      .skip(postStartIndex)
-      .limit(limitPost);
-    const totalPost = await Post.countDocuments();
+      .skip(skip)
+      .limit(limit);
+    const totalPost = await Post.countDocuments(query);
 
     const now = new Date();
     const monthAgo = new Date(
@@ -39,6 +40,7 @@ const list_post = async (req, res) => {
 
     return res.status(200).json({
       posts,
+      totalPage: Math.ceil(totalPost / limit),
       totalPost,
       postLastMonth,
     });

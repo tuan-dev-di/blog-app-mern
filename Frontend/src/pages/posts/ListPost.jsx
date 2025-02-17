@@ -1,4 +1,4 @@
-import { Button, Table, Tooltip } from "flowbite-react";
+import { Button, Table, Tooltip, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 import { FaPlus } from "react-icons/fa";
@@ -8,27 +8,38 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { getPosts } from "../../apis/post";
+
 const ListPost = () => {
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
   const role = curUser.user.role;
 
   const [userPost, setUserPost] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const postPerPage = 7;
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/posts/list-post?userId=${userId}`);
-        const data = await res.json();
+        const data = await getPosts(userId, currentPage, postPerPage);
         console.log("DATA:", data);
 
-        if (res.ok) setUserPost(data.posts);
+        if (data) {
+          setUserPost(data.posts);
+          setTotalPage(data.totalPage);
+        } else console.log("Something went wrong:", data.posts);
       } catch (error) {
         console.log("ERROR:", error.message);
       }
     };
     if (role === "admin") fetchPosts();
-  }, [userId, role]);
+  }, [userId, role, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className="relative mx-auto p-7 w-full">
@@ -45,7 +56,7 @@ const ListPost = () => {
         {role === "admin" && userPost.length > 0 ? (
           <div>
             <Table hoverable className="mt-7 shadow-md">
-              <Table.Head>
+              <Table.Head className="text-base">
                 <Table.HeadCell>Post Image</Table.HeadCell>
                 <Table.HeadCell>Title</Table.HeadCell>
                 <Table.HeadCell>Category</Table.HeadCell>
@@ -100,9 +111,19 @@ const ListPost = () => {
                 ))}
               </Table.Body>
             </Table>
+            <div className="flex overflow-x-auto sm:justify-center mt-4">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
           </div>
         ) : (
-          <p className="italic font-semibold text-red-700"> You have no permission </p>
+          <p className="italic font-semibold text-red-700 mt-2">
+            {" "}
+            You have no permission{" "}
+          </p>
         )}
       </div>
     </div>
