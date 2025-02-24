@@ -73,7 +73,7 @@ const ListPost = () => {
         return;
       }
 
-      toast.success("Your post is deleted successfully!", {
+      toast.success("Delete post successfully!", {
         theme: "colored",
       });
       setUserPost((prev) =>

@@ -11,11 +11,7 @@ import { app } from "../../firebase";
 import { Label, TextInput, Button, Alert, Modal } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdEdit } from "react-icons/md";
-import {
-  HiInformationCircle,
-  HiOutlineExclamationCircle,
-} from "react-icons/hi";
-import { SlLike } from "react-icons/sl";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -29,6 +25,10 @@ import {
 } from "../../redux/user/userSlice";
 import { deleteAccount, updateAccount } from "../../apis/user";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 const DetailAccount = () => {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
@@ -41,14 +41,11 @@ const DetailAccount = () => {
   // const token = curUser.accessToken;
 
   //* ----------------------------------- UPDATE situation
-  const [updateSuccess, setUpdateSuccess] = useState(null);
-  const [updateFail, setUpdateFail] = useState(null);
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrl, setProfileImageUrl] = useState(null);
   const [profileImageUploadProgress, setProfileImageUploadProgress] =
     useState(null);
   const [profileImageUploading, setProfileImageUploading] = useState(null);
-  const [profileImageUploadError, setProfileImageUploadError] = useState(null);
   const filePicker = useRef();
 
   //? Get a new image file/URL from user
@@ -66,8 +63,6 @@ const DetailAccount = () => {
 
   //? Upload file image from user to UI
   const uploadFile = async () => {
-    setProfileImageUploadError(null);
-
     // Using storage of Firebase
     const storage = getStorage(app);
     // Get name of file
@@ -86,8 +81,9 @@ const DetailAccount = () => {
       },
       (error) => {
         console.log("ERROR Upload File:", error);
-        setProfileImageUploadError(
-          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB"
+        toast.error(
+          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
+          { theme: "colored" }
         );
         setProfileImageUploadProgress(null);
         setProfileImageUploading(null);
@@ -117,16 +113,16 @@ const DetailAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setUpdateFail(null);
-    setUpdateSuccess(null);
 
     if (profileImageUploading) {
-      setUpdateFail("Please wait for the profile image to be uploaded");
+      toast.error("Please wait for the profile image to be uploaded", {
+        theme: "colored",
+      });
       return;
     }
 
     if (Object.keys(formData).length === 0) {
-      setUpdateFail("Nothing changes");
+      toast.warn("Nothing changes", { theme: "colored" });
       return;
     }
 
@@ -135,29 +131,25 @@ const DetailAccount = () => {
       const { ok, data } = await updateAccount(userId, formData);
       if (!ok) {
         dispatch(updateUserFailure(data.message));
-        setUpdateFail(data.message);
+        toast.error(data.message, { theme: "colored" });
         return;
       }
 
       dispatch(updateUserSuccess(data));
       setProfileImageUploadProgress(false);
-      setUpdateSuccess("Your profile has been updated!");
+      toast.success("Update profile successfully!", { theme: "colored" });
       navigate("/dashboard?tab=profile");
     } catch (error) {
       dispatch(updateUserFailure(error.message));
-      setUpdateFail(error.message);
+      toast.error(error.message, { theme: "colored" });
     }
   };
 
   //* ----------------------------------- DELETE situation
-  const [deleteSuccess, setDeleteSuccess] = useState(null);
-  const [deleteFail, setDeleteFail] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
 
   //? Delete account of User
   const handleDeleteUser = async () => {
-    setDeleteSuccess(false);
-    setDeleteFail(false);
     setDeleteModal(false);
     try {
       dispatch(deleteUserStart());
@@ -166,15 +158,15 @@ const DetailAccount = () => {
 
       if (!ok) {
         dispatch(deleteUserFailure(data.message));
-        setDeleteFail(data.message);
+        toast.error(data.message, { theme: "colored" });
         return;
       }
 
       dispatch(deleteUserSuccess(data));
-      setDeleteSuccess("Your account has been deleted");
+      toast.success("Delete account successfully", { theme: "colored" });
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
-      setDeleteFail(error.message);
+      toast.error(error.message, { theme: "colored" });
     }
   };
 
@@ -184,49 +176,9 @@ const DetailAccount = () => {
     setShowPassword(!showPassword);
   };
 
-  //? Warning for User after update error/success
-  let alertComponent = null;
-  useEffect(() => {
-    let timeout;
-    if (updateFail || updateSuccess || deleteFail || deleteSuccess) {
-      timeout = setTimeout(() => {
-        setUpdateFail(null);
-        setUpdateSuccess(null);
-        setDeleteFail(null);
-        setDeleteSuccess(null);
-      }, 3000); // After 3s, alert will be disappear
-    }
-    return () => clearTimeout(timeout);
-  }, [updateFail, updateSuccess, deleteFail, deleteSuccess]);
-
-  if (updateFail) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {updateFail}
-      </Alert>
-    );
-  } else if (updateSuccess) {
-    alertComponent = (
-      <Alert className="mt-5" color="success" icon={SlLike}>
-        {updateSuccess}
-      </Alert>
-    );
-  } else if (deleteFail) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {deleteFail}
-      </Alert>
-    );
-  } else if (deleteSuccess) {
-    alertComponent = (
-      <Alert className="mt-5" color="success" icon={SlLike}>
-        {deleteSuccess}
-      </Alert>
-    );
-  }
-
   return (
     <div className="max-w-lg mx-auto p-3 w-full flex flex-col gap-2">
+      <ToastContainer position="top-right" autoClose={7000} />
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <input
           type="file"
@@ -377,7 +329,6 @@ const DetailAccount = () => {
           </div>
         </Modal.Body>
       </Modal>
-      {alertComponent}
     </div>
   );
 };

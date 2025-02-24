@@ -9,12 +9,14 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 
-import { Label, TextInput, Select, Button, Alert } from "flowbite-react";
+import { Label, TextInput, Select, Button } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
-import { HiInformationCircle } from "react-icons/hi";
-import { SlLike } from "react-icons/sl";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 import { createPost } from "../../apis/post";
 
@@ -22,15 +24,10 @@ const CreatePost = () => {
   const filePicker = useRef();
   const navigate = useNavigate();
 
-  const [createPostFail, setCreatePostFail] = useState(null);
-  const [createPostSuccess, setCreatePostSuccess] = useState(null);
-
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [postImageURL, setPostImageURL] = useState(null);
   const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
-  const [postImageUploadError, setPostImageUploadError] = useState(null);
-  // const [uploadedPostImage, setUploadedPostImage] = useState(null);
 
   //? ---------------| CHANGE IMAGE |---------------
   const handleChangePostImage = async (e) => {
@@ -58,7 +55,6 @@ const CreatePost = () => {
   // };
 
   const uploadFile = async () => {
-    setPostImageUploadError(null);
     if (!postImage) return;
 
     const storage = getStorage(app);
@@ -75,8 +71,9 @@ const CreatePost = () => {
       },
       (error) => {
         console.log("ERROR Upload File:", error);
-        setPostImageUploadError(
-          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB"
+        toast.error(
+          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
+          { theme: "colored" }
         );
         setPostImage(null);
         setPostImageURL(null);
@@ -109,50 +106,22 @@ const CreatePost = () => {
     try {
       const { ok, data } = await createPost(formData);
       if (!ok) {
-        setCreatePostFail(data.message);
+        toast.error(data.message, { theme: "colored" });
         return;
       }
 
       console.log("DATA:", data);
-      setCreatePostSuccess("Your post is created");
+      toast.success("Create post successfully!", { theme: "colored" });
       navigate(`/posts/${data.post.slug}`);
-
-      setCreatePostFail(null);
     } catch (error) {
       console.log("ERROR - Create Post Fail:", error.message);
-      setCreatePostFail(error);
+      toast.error(error.message, { theme: "colored" });
     }
   };
 
-  //? ---------------| ALERT |---------------
-  let alertComponent;
-  useEffect(() => {
-    let timeout;
-    if (createPostFail || createPostSuccess) {
-      timeout = setTimeout(() => {
-        setCreatePostFail(null);
-        setCreatePostSuccess(null);
-      }, 3000);
-    }
-    return () => clearTimeout(timeout);
-  }, [createPostFail, createPostSuccess]);
-
-  if (createPostFail) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {createPostFail}
-      </Alert>
-    );
-  } else if (createPostSuccess) {
-    alertComponent = (
-      <Alert className="mt-5" color="success" icon={SlLike}>
-        {createPostSuccess}
-      </Alert>
-    );
-  }
-
   return (
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
+      <ToastContainer position="top-right" autoClose={7000} />
       <div className="font-semibold text-center text-4xl my-7">
         <span>Create a new post</span>
       </div>
@@ -295,9 +264,6 @@ const CreatePost = () => {
                     </>
                   )}
                 </div>
-                {postImageUploadError && (
-                  <Alert color="failure">${postImageUploadError}</Alert>
-                )}
               </div>
             </div>
           </div>
@@ -306,7 +272,6 @@ const CreatePost = () => {
           Publish
         </Button>
       </form>
-      {alertComponent}
     </div>
   );
 };
