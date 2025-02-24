@@ -197,7 +197,8 @@ const CreatePost = () => {
                 ref={filePicker}
                 hidden
               />
-              <div
+              <button
+                type="button"
                 className="relative w-auto h-[600px] self-center cursor-pointer overflow-hidden shadow-xl"
                 onClick={() => filePicker.current.click()}
               >
@@ -264,7 +265,7 @@ const CreatePost = () => {
                     </>
                   )}
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
-import { Label, TextInput, Button, Alert, Modal } from "flowbite-react";
+import { Label, TextInput, Button, Modal } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdEdit } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -187,8 +187,9 @@ const DetailAccount = () => {
           ref={filePicker}
           hidden
         />
-        <div
-          className="relative w-60 h-56 self-center cursor-pointer shadow-lg overflow-hidden rounded-full mt-7"
+        <button
+          type="button"
+          className="relative w-60 h-60 self-center cursor-pointer shadow-lg overflow-hidden rounded-full mt-7"
           onClick={() => filePicker.current.click()}
         >
           {profileImageUploadProgress && (
@@ -222,10 +223,7 @@ const DetailAccount = () => {
               "opacity-60"
             }`}
           />
-        </div>
-        {profileImageUploadError && (
-          <Alert color="failure">{profileImageUploadError}</Alert>
-        )}
+        </button>
         <p className="my-4 text-center text-2xl">
           <strong>{curUser.user.displayName}</strong>
         </p>
