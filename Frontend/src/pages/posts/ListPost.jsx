@@ -7,7 +7,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { IoRefresh } from "react-icons/io5";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
@@ -36,21 +36,27 @@ const ListPost = () => {
   const [postIdToDelete, setPostIdToDelete] = useState("");
   const [deleteModal, setDeleteModal] = useState(false);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await getPosts(userId, currentPage, postPerPage);
+  const list_posts = useCallback(async () => {
+    try {
+      const data = await getPosts(userId, currentPage, postPerPage);
+      if (data) {
+        setUserPost(data.posts);
+        setTotalPage(data.totalPage);
+      } else toast.error(data.message, { theme: "colored" });
+    } catch (error) {
+      console.log("ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  }, [userId, currentPage, postPerPage]);
 
-        if (data) {
-          setUserPost(data.posts);
-          setTotalPage(data.totalPage);
-        }
-      } catch (error) {
-        console.log("ERROR:", error.message);
-      }
-    };
-    if (role === "admin") fetchPosts();
-  }, [userId, role, currentPage]);
+  useEffect(() => {
+    if (role === "admin") list_posts();
+  }, [role, list_posts]);
+
+  const handleRefresh = async () => {
+    await list_posts();
+    toast.success("Refreshed!", { theme: "colored" });
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -63,7 +69,7 @@ const ListPost = () => {
       const { ok, data } = await deletePost(postIdToDelete, userId);
 
       if (!ok) {
-        toast.error(data.message, {theme: "colored"});
+        toast.error(data.message, { theme: "colored" });
         return;
       }
 
@@ -85,7 +91,11 @@ const ListPost = () => {
       <div className="flex justify-between items-center">
         <div className="font-semibold text-4xl">List Post</div>
         <div className="flex gap-2">
-          <Button className="rounded-full w-10 border-2 shadow-md" color="none">
+          <Button
+            className="rounded-full w-10 border-2 shadow-md"
+            color="none"
+            onClick={handleRefresh}
+          >
             <Tooltip
               content="Refresh"
               style="light"
@@ -186,7 +196,7 @@ const ListPost = () => {
           </div>
         ) : (
           <p className="italic font-semibold text-red-700 mt-2">
-            You have no permission
+            You have no permission or list post is empty!
           </p>
         )}
       </div>
