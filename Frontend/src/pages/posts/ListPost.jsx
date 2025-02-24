@@ -1,35 +1,50 @@
-import { Button, Table, Tooltip, Pagination } from "flowbite-react";
+import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 import { FaPlus } from "react-icons/fa";
 import { LuPencil } from "react-icons/lu";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { IoRefresh } from "react-icons/io5";
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { getPosts } from "../../apis/post";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
+import { getPosts, deletePost } from "../../apis/post";
 
 const ListPost = () => {
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
   const role = curUser.user.role;
 
+  /*
+   * Set pagination
+   * Set 7 posts per page
+   */
   const [userPost, setUserPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const postPerPage = 7;
 
+  /*
+   * Set delete function with modal
+   */
+  const [postIdToDelete, setPostIdToDelete] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const data = await getPosts(userId, currentPage, postPerPage);
-        console.log("DATA:", data);
 
         if (data) {
           setUserPost(data.posts);
           setTotalPage(data.totalPage);
-        } else console.log("Something went wrong:", data.posts);
+        }
       } catch (error) {
         console.log("ERROR:", error.message);
       }
@@ -41,19 +56,55 @@ const ListPost = () => {
     setCurrentPage(page);
   };
 
+  const handleDeletePost = async () => {
+    setDeleteModal(false);
+
+    try {
+      const { ok, data } = await deletePost(postIdToDelete, userId);
+
+      if (!ok) {
+        toast.error(data.message, {theme: "colored"});
+        return;
+      }
+
+      toast.success("Your post is deleted successfully!", {
+        theme: "colored",
+      });
+      setUserPost((prev) =>
+        prev ? prev.filter((post) => post._id !== postIdToDelete) : []
+      );
+    } catch (error) {
+      console.log("ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  };
+
   return (
     <div className="relative mx-auto p-7 w-full">
-      <div className="font-semibold text-4xl">List Post</div>
-      <div className="absolute top-5 right-5">
-        <Link to="/posts/create-post">
-          <Button gradientMonochrome="teal">
-            <FaPlus className="mr-2 h-5 w-5" />
-            New Post
+      <ToastContainer position="top-right" autoClose={7000} />
+      <div className="flex justify-between items-center">
+        <div className="font-semibold text-4xl">List Post</div>
+        <div className="flex gap-2">
+          <Button className="rounded-full w-10 border-2 shadow-md" color="none">
+            <Tooltip
+              content="Refresh"
+              style="light"
+              placement="bottom"
+              trigger="hover"
+            >
+              <IoRefresh className="w-4 h-4" />
+            </Tooltip>
           </Button>
-        </Link>
+          <Link to="/posts/create-post">
+            <Button gradientMonochrome="teal">
+              <FaPlus className="mr-2 h-5 w-5" />
+              New Post
+            </Button>
+          </Link>
+        </div>
       </div>
       <div>
-        {role === "admin" && userPost.length > 0 ? (
+        {role === "admin" && userPost?.length > 0 ? (
           <div>
             <Table hoverable className="mt-7 shadow-md">
               <Table.Head className="text-base">
@@ -88,24 +139,38 @@ const ListPost = () => {
                       })}
                     </Table.Cell>
                     <Table.Cell>
-                      <Tooltip
-                        content="Edit"
-                        style="light"
-                        placement="bottom"
-                        trigger="hover"
+                      <Button
+                        className="cursor-pointer bg-transparent border-none shadow-none sm:inline"
+                        color="none"
                       >
-                        <LuPencil className="w-5 h-5" />
-                      </Tooltip>
+                        <Tooltip
+                          content="Edit"
+                          style="light"
+                          placement="bottom"
+                          trigger="hover"
+                        >
+                          <LuPencil className="w-5 h-5" />
+                        </Tooltip>
+                      </Button>
                     </Table.Cell>
                     <Table.Cell>
-                      <Tooltip
-                        content="Remove"
-                        style="light"
-                        placement="bottom"
-                        trigger="hover"
+                      <Button
+                        onClick={() => {
+                          setDeleteModal(true);
+                          setPostIdToDelete(post._id);
+                        }}
+                        className="cursor-pointer bg-transparent border-none shadow-none sm:inline"
+                        color="none"
                       >
-                        <RiDeleteBin2Line className="w-5 h-5 text-red-600" />
-                      </Tooltip>
+                        <Tooltip
+                          content="Delete"
+                          style="light"
+                          placement="bottom"
+                          trigger="hover"
+                        >
+                          <RiDeleteBin2Line className="w-5 h-5 text-red-600" />
+                        </Tooltip>
+                      </Button>
                     </Table.Cell>
                   </Table.Row>
                 ))}
@@ -121,11 +186,34 @@ const ListPost = () => {
           </div>
         ) : (
           <p className="italic font-semibold text-red-700 mt-2">
-            {" "}
-            You have no permission{" "}
+            You have no permission
           </p>
         )}
       </div>
+      <Modal
+        show={deleteModal}
+        size="md"
+        onClose={() => setDeleteModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this post?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeletePost}>
+                Yes, I&apos;m sure
+              </Button>
+              <Button color="gray" onClick={() => setDeleteModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
