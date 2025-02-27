@@ -1,3 +1,6 @@
+import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import {
   Navbar,
   TextInput,
@@ -7,16 +10,14 @@ import {
   Avatar,
   Tooltip,
 } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { IoMoonSharp, IoSunny } from "react-icons/io5";
-import { useSelector, useDispatch } from "react-redux";
+
 import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
   const curUser = useSelector((state) => state.user.currentUser);
-  // console.log("Current User:", curUser);
 
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);

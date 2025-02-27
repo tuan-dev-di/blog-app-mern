@@ -1,9 +1,12 @@
-import { Button } from "flowbite-react";
-import { FaGoogle } from "react-icons/fa";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { app } from "../firebase";
+
+import { Button } from "flowbite-react";
+import { FaGoogle } from "react-icons/fa";
+
 import { signInFailure, signInSuccess } from "../redux/user/userSlice";
 import { googleAuth } from "../apis/auth";
 

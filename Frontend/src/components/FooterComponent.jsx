@@ -4,19 +4,6 @@ import Ami_Chill from "../assets/Ami_ChillChill.jpg";
 
 const FooterComponent = () => {
   return (
-    // <Footer container>
-    //   <Footer.Copyright
-    //     href="https://github.com/tuan-dev-di"
-    //     by="Arys Domi"
-    //     year={2024}
-    //   />
-    //   <div className="grid gap-3 sm:mt-4 sm:grid-cols-3 sm:gap-6">
-    //     <Footer.Title title="Privacy Policy" />
-    //     <Footer.Title title="Outstanding" />
-    //     <Footer.Title title="Contact" />
-
-    //   </div>
-    // </Footer>
     <Footer container className="border-t-2">
       <div className="w-full">
         <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1 ">
@@ -62,7 +49,6 @@ const FooterComponent = () => {
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
             <Footer.Icon href="#" icon={BsFacebook} />
             <Footer.Icon href="#" icon={BsGithub} />
-            {/* <Footer.Icon href="#" icon={BsDribbble} /> */}
           </div>
         </div>
       </div>

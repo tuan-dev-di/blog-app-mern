@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
+
 import {
   getDownloadURL,
   getStorage,
@@ -8,6 +9,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
+
 import { Label, TextInput, Button, Modal } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdEdit } from "react-icons/md";
@@ -25,9 +27,8 @@ import {
 } from "../../redux/user/userSlice";
 import { deleteAccount, updateAccount } from "../../apis/user";
 
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 
 const DetailAccount = () => {
   const [formData, setFormData] = useState({});
@@ -38,9 +39,7 @@ const DetailAccount = () => {
   const loading = useSelector((state) => state.user.loading);
 
   const userId = curUser.user._id; // Get Id of user's account
-  // const token = curUser.accessToken;
 
-  //* ----------------------------------- UPDATE situation
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrl, setProfileImageUrl] = useState(null);
   const [profileImageUploadProgress, setProfileImageUploadProgress] =
@@ -48,7 +47,7 @@ const DetailAccount = () => {
   const [profileImageUploading, setProfileImageUploading] = useState(null);
   const filePicker = useRef();
 
-  //? Get a new image file/URL from user
+  //? ---------------| HANDLE CHANGE IMAGE OF PROFILE USER |---------------
   const handleChangeProfileImage = (e) => {
     let file = e.target.files[0];
     if (file) {
@@ -61,13 +60,10 @@ const DetailAccount = () => {
     if (profileImageFile) uploadFile();
   }, [profileImageFile]);
 
-  //? Upload file image from user to UI
+  //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
   const uploadFile = async () => {
-    // Using storage of Firebase
     const storage = getStorage(app);
-    // Get name of file
     const fileNameUpload = profileImageFile.name;
-    // Create a new name for file image to store on firebase with date and time currently
     const fileName = new Date().getTime() + "_" + fileNameUpload;
 
     const storageRef = ref(storage, fileName);
@@ -103,7 +99,7 @@ const DetailAccount = () => {
     );
   };
 
-  //? Update account of User
+  //? ---------------| HANDLE UPDATE ACCOUNT |---------------
   const handleUpdate = (e) => {
     setFormData({
       ...formData,
@@ -111,6 +107,7 @@ const DetailAccount = () => {
     });
   };
 
+  //? ---------------| HANDLE SUBMIT UPDATE |---------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -145,16 +142,13 @@ const DetailAccount = () => {
     }
   };
 
-  //* ----------------------------------- DELETE situation
+  //? ---------------| HANDLE DELETE ACCOUNT |---------------
   const [deleteModal, setDeleteModal] = useState(false);
-
-  //? Delete account of User
   const handleDeleteUser = async () => {
     setDeleteModal(false);
     try {
       dispatch(deleteUserStart());
       const { ok, data } = await deleteAccount(userId, formData);
-      console.log(data);
 
       if (!ok) {
         dispatch(deleteUserFailure(data.message));
@@ -163,14 +157,14 @@ const DetailAccount = () => {
       }
 
       dispatch(deleteUserSuccess(data));
-      toast.success("Delete account successfully", { theme: "colored" });
+      toast.success("Delete account successfully!", { theme: "colored" });
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
       toast.error(error.message, { theme: "colored" });
     }
   };
 
-  //? Button display password
+  //? ---------------| HANDLE SHOW PASSWORD |---------------
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -298,11 +292,6 @@ const DetailAccount = () => {
       >
         Delete Account
       </Button>
-      {/* <div className="text-blue-600 flex justify-between mt-5">
-        <span onClick={handleSignOut} className="cursor-pointer">
-          Sign Out
-        </span>
-      </div> */}
       <Modal
         show={deleteModal}
         size="md"

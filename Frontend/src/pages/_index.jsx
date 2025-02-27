@@ -4,11 +4,11 @@ export { default as SignUp } from "./SignUp";
 export { default as Project } from "./Project";
 export { default as Home } from "./Home";
 
-// ------------------------------- DASHBOARD -------------------------------
+// ---------------| DASHBOARD |---------------
 export { default as Dashboard } from "./dashboard/Dashboard";
 export { default as DetailAccount } from "./dashboard/DetailAccount";
 
-// ------------------------------- POST -------------------------------
+// ---------------| POST |---------------
 export { default as Post } from "./posts/Post";
 export { default as ListPost } from "./posts/ListPost";
 export { default as CreatePost } from "./posts/CreatePost";

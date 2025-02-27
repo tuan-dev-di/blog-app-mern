@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";
-import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
-import { HiMail, HiInformationCircle } from "react-icons/hi";
+
+import { Label, TextInput, Button, Spinner } from "flowbite-react";
+import { HiMail } from "react-icons/hi";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { SlLike } from "react-icons/sl";
 // import {
 //   signUpStart,
 //   signUpSuccess,
@@ -14,16 +14,18 @@ import { SlLike } from "react-icons/sl";
 import { signUp } from "../apis/auth";
 import OAuth from "../components/OAuth";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const SignUp = () => {
-  const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-  // const { loading, error: errorMessage } = useSelector((state) => state.user);
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //? Get Username & Password from User to Sign Up
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
+  // const { loading, error: errorMessage } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+
+  //? ---------------| GET USERNAME, PASSWORD, EMAIL & DISPLAY NAME |---------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -31,69 +33,44 @@ const SignUp = () => {
     });
   };
 
+  //? ---------------| HANDLE SUBMIT SIGN UP |---------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-      setErrorMessage(null);
-      setSuccessMessage(null);
       // dispatch(signUpStart());
       const { ok, data } = await signUp(formData);
       if (!ok) {
-        setErrorMessage(data.message);
+        toast.error(data.message, { theme: "colored" });
         // dispatch(signUpFailure(data.message));
         return;
       }
-      setSuccessMessage(data.message);
+
       // dispatch(signUpSuccess(data.message));
       setTimeout(() => {
         navigate("/sign-in");
       }, 3000);
+      toast.success("Sign up successfully!", { theme: "colored" });
     } catch (error) {
-      setErrorMessage(error.message);
+      toast.error(error.message, { theme: "colored" });
+
       // dispatch(signUpFailure(error.message));
     } finally {
       setLoading(false);
     }
   };
 
-  //? Button display password
+  //? ---------------| HANDLE SHOW PASSWORD |---------------
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  //? Warning for User after update error/success
-  let alertComponent = null;
-  useEffect(() => {
-    let timeout;
-    if (errorMessage || successMessage) {
-      timeout = setTimeout(() => {
-        setErrorMessage(null);
-        setSuccessMessage(null);
-      }, 3000);
-    }
-    return () => clearTimeout(timeout);
-  }, [errorMessage, successMessage]);
-
-  if (errorMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {errorMessage}
-      </Alert>
-    );
-  } else if (successMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="info" icon={SlLike}>
-        {successMessage} <br /> Wait for 5s to navigate to Sign In page
-      </Alert>
-    );
-  }
-
   return (
     // Whole page Sign up
     <div className="min-h-screen mt-7">
+      <ToastContainer position="top-right" autoClose={7000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5">
         <div className="font-semibold text-center text-6xl">
           <span>Sign Up</span>
@@ -182,7 +159,6 @@ const SignUp = () => {
           </Link>
           <span>if you have an account!</span>
         </div>
-        {alertComponent}
       </div>
     </div>
   );

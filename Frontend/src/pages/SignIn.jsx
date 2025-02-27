@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Label, TextInput, Button, Spinner, Alert } from "flowbite-react";
+
+import { Label, TextInput, Button, Spinner } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { HiInformationCircle } from "react-icons/hi";
+
 import {
   signInStart,
   signInSuccess,
@@ -12,13 +13,16 @@ import {
 import { signIn } from "../apis/auth";
 import OAuth from "../components/OAuth";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const SignIn = () => {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //? Get Username & Password from User to Sign In
+  //? ---------------| GET USERNAME & PASSWORD |---------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,6 +30,7 @@ const SignIn = () => {
     });
   };
 
+  //? ---------------| HANDLE SUBMIT SIGN IN |---------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,34 +39,28 @@ const SignIn = () => {
       const { ok, data } = await signIn(formData);
       if (!ok) {
         dispatch(signInFailure(data.message));
+        toast.error(errorMessage, { theme: "colored" });
         return;
       }
+
       dispatch(signInSuccess(data));
       navigate("/dashboard?tab=profile");
+      toast.success("Sign in successfully!", { theme: "colored" });
     } catch (error) {
       dispatch(signInFailure(error.message));
+      toast.error(error.message, { theme: "colored" });
     }
   };
 
-  //? Button display password
+  //? ---------------| HANDLE SHOW PASSWORD |---------------
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  //? Warning for User after update error/success
-  let alertComponent = null;
-  if (errorMessage) {
-    alertComponent = (
-      <Alert className="mt-5" color="failure" icon={HiInformationCircle}>
-        {errorMessage}
-      </Alert>
-    );
-  }
-
   return (
-    // Whole page Sign-in
     <div className="min-h-screen mt-7">
+      <ToastContainer position="top-right" autoClose={7000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
         <div className="font-semibold text-center text-6xl">
           <span>Sign In</span>
@@ -121,7 +120,6 @@ const SignIn = () => {
           </Link>
           <span>if you do not have an account!</span>
         </div>
-        {alertComponent}
       </div>
     </div>
   );

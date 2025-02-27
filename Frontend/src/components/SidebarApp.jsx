@@ -11,12 +11,13 @@ import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
 import { signOutUser } from "../apis/auth";
 
 const SidebarApp = () => {
-  const curUser = useSelector((state) => state.user.currentUser);
-  const userRole = curUser.user.role;
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const curUser = useSelector((state) => state.user.currentUser);
+  const userRole = curUser.user.role;
+
   const [tab, setTab] = useState("");
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -24,7 +25,7 @@ const SidebarApp = () => {
     if (tabFromURL) setTab(tabFromURL);
   }, [location.search]);
 
-  //? Sign out
+  //? ---------------| HANDLE SIGN OUT |---------------
   const handleSignout = async () => {
     try {
       // Sign out with firebase sign out
@@ -39,9 +40,10 @@ const SidebarApp = () => {
       localStorage.removeItem("user");
 
       dispatch(signOutSuccess(data.message));
-      console.log("Sign out successfully");
+      console.log("Sign out successfully!");
       navigate("/sign-in");
     } catch (error) {
+      console.log(error.message);
       dispatch(signOutFailure(error.message));
     }
   };
