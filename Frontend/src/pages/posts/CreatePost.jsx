@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-import { createPost } from "../../apis/post";
+import { CREATE_POST } from "../../apis/post";
 
 const CreatePost = () => {
   const filePicker = useRef();
@@ -104,7 +104,7 @@ const CreatePost = () => {
     e.preventDefault();
 
     try {
-      const { ok, data } = await createPost(formData);
+      const { ok, data } = await CREATE_POST(formData);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         return;

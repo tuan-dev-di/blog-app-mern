@@ -11,7 +11,7 @@ import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 //   signUpFailure,
 // } from "../redux/user/userSlice";
 
-import { signUp } from "../apis/auth";
+import { SIGN_UP } from "../apis/auth";
 import OAuth from "../components/OAuth";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -40,7 +40,7 @@ const SignUp = () => {
     try {
       setLoading(true);
       // dispatch(signUpStart());
-      const { ok, data } = await signUp(formData);
+      const { ok, data } = await SIGN_UP(formData);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         // dispatch(signUpFailure(data.message));

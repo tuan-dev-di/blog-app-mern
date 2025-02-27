@@ -10,7 +10,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
-import { signIn } from "../apis/auth";
+import { SIGN_IN } from "../apis/auth";
 import OAuth from "../components/OAuth";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -36,7 +36,7 @@ const SignIn = () => {
 
     try {
       dispatch(signInStart());
-      const { ok, data } = await signIn(formData);
+      const { ok, data } = await SIGN_IN(formData);
       if (!ok) {
         dispatch(signInFailure(data.message));
         toast.error(errorMessage, { theme: "colored" });
@@ -44,8 +44,10 @@ const SignIn = () => {
       }
 
       dispatch(signInSuccess(data));
-      navigate("/dashboard?tab=profile");
       toast.success("Sign in successfully!", { theme: "colored" });
+
+      // replace: true => To prevent users from returning to the sign-in page with the "Back" button
+      navigate("/dashboard?tab=profile", { replace: true });
     } catch (error) {
       dispatch(signInFailure(error.message));
       toast.error(error.message, { theme: "colored" });

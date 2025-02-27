@@ -8,7 +8,7 @@ import { Button } from "flowbite-react";
 import { FaGoogle } from "react-icons/fa";
 
 import { signInFailure, signInSuccess } from "../redux/user/userSlice";
-import { googleAuth } from "../apis/auth";
+import { GOOGLE_AUTH } from "../apis/auth";
 
 const OAuth = () => {
   const auth = getAuth(app);
@@ -24,7 +24,7 @@ const OAuth = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const { email, displayName, photoURL } = result.user;
-      const { ok, data } = await googleAuth({
+      const { ok, data } = await GOOGLE_AUTH({
         email: email,
         name: displayName,
         photo: photoURL,

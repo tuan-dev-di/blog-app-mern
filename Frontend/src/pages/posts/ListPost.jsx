@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-import { getPosts, deletePost } from "../../apis/post";
+import { GET_POSTS, DELETE_POST } from "../../apis/post";
 
 const ListPost = () => {
   const curUser = useSelector((state) => state.user.currentUser);
@@ -38,7 +38,7 @@ const ListPost = () => {
 
   const list_posts = useCallback(async () => {
     try {
-      const data = await getPosts(userId, currentPage, postPerPage);
+      const data = await GET_POSTS(userId, currentPage, postPerPage);
       if (data) {
         setUserPost(data.posts);
         setTotalPage(data.totalPage);
@@ -66,7 +66,7 @@ const ListPost = () => {
     setDeleteModal(false);
 
     try {
-      const { ok, data } = await deletePost(postIdToDelete, userId);
+      const { ok, data } = await DELETE_POST(postIdToDelete, userId);
 
       if (!ok) {
         toast.error(data.message, { theme: "colored" });

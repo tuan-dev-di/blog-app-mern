@@ -8,7 +8,7 @@ import { IoMdSettings } from "react-icons/io";
 import { MdArticle } from "react-icons/md";
 
 import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
-import { signOutUser } from "../apis/auth";
+import { SIGN_OUT } from "../apis/auth";
 
 const SidebarApp = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const SidebarApp = () => {
   const handleSignout = async () => {
     try {
       // Sign out with firebase sign out
-      const { ok, data } = await signOutUser();
+      const { ok, data } = await SIGN_OUT();
 
       if (!ok) {
         dispatch(signOutFailure(data.message));

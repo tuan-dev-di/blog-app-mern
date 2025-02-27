@@ -25,7 +25,7 @@ import {
   deleteUserSuccess,
   deleteUserFailure,
 } from "../../redux/user/userSlice";
-import { deleteAccount, updateAccount } from "../../apis/user";
+import { DELETE_ACCOUNT, UPDATE_ACCOUNT } from "../../apis/user";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -125,7 +125,7 @@ const DetailAccount = () => {
 
     try {
       dispatch(updateUserStart());
-      const { ok, data } = await updateAccount(userId, formData);
+      const { ok, data } = await UPDATE_ACCOUNT(userId, formData);
       if (!ok) {
         dispatch(updateUserFailure(data.message));
         toast.error(data.message, { theme: "colored" });
@@ -148,7 +148,7 @@ const DetailAccount = () => {
     setDeleteModal(false);
     try {
       dispatch(deleteUserStart());
-      const { ok, data } = await deleteAccount(userId, formData);
+      const { ok, data } = await DELETE_ACCOUNT(userId, formData);
 
       if (!ok) {
         dispatch(deleteUserFailure(data.message));
