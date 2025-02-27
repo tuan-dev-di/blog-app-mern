@@ -19,29 +19,29 @@ const {
 const sign_up = async (req, res) => {
   const { username, password, email, displayName } = req.body;
 
-  //? ==================== CHECK USERNAME ====================
-  //* Username is an empty string
+  //? ---------------| CHECK USERNAME |---------------
+  // Username is an empty string
   if (checkEmptyUsername(username))
     return res.status(400).json({
       success: false,
       message: "Username is required",
     });
 
-  //* Length of Username
+  // Length of Username
   if (checkLengthUsername(username))
     return res.status(400).json({
       success: false,
       message: "Username must be between 7 and 25 characters",
     });
 
-  //* Username is matched with Regex Pattern
+  // Username is matched with Regex Pattern
   if (!checkRegexUsername(username))
     return res.status(400).json({
       success: false,
       message: `Username: '${username}' is not matched with Regex Pattern`,
     });
 
-  //* Existed Username
+  // Existed Username
   const usernameExisted = await User.findOne({ username });
   if (usernameExisted)
     return res.status(400).json({
@@ -49,47 +49,47 @@ const sign_up = async (req, res) => {
       message: `Username: '${username}' has been already existed`,
     });
 
-  //? ==================== CHECK PASSWORD ====================
-  //* Password is an empty string
+  //? ---------------| CHECK PASSWORD |---------------
+  // Password is an empty string
   if (checkEmptyPassword(password))
     return res.status(400).json({
       success: false,
       message: "Password is required",
     });
 
-  //* Length of Password
+  // Length of Password
   if (checkLengthPassword(password))
     return res.status(400).json({
       success: false,
       message: "Password must be longer than 6 characters",
     });
 
-  //* Password is matched with Regex Pattern
+  // Password is matched with Regex Pattern
   if (!checkRegexPassword(password))
     return res.status(400).json({
       success: false,
       message: "Your password is not matched with Regex Pattern",
     });
 
-  //* Encrypted Password
+  // Encrypted Password
   const hashedPassword = await argon2.hash(password);
 
-  //? ==================== CHECK EMAIL ====================
-  //* Email is an empty string
+  //? ---------------| CHECK EMAIL |---------------
+  // Email is an empty string
   if (checkEmptyEmail(email))
     return res.status(400).json({
       success: false,
       message: "Email is required",
     });
 
-  //* Email is matched with Regex Pattern
+  // Email is matched with Regex Pattern
   if (!checkRegexEmail(email))
     return res.status(400).json({
       success: false,
       message: `Email: '${email}' is not matched with Regex Pattern`,
     });
 
-  //* Existed Email
+  // Existed Email
   const emailExisted = await User.findOne({ email });
   if (emailExisted)
     return res.status(400).json({
@@ -97,29 +97,29 @@ const sign_up = async (req, res) => {
       message: `Email: '${email}' has been already existed`,
     });
 
-  //? ==================== CHECK DISPLAY NAME ====================
-  //* Display Name is an empty string
+  //? ---------------| CHECK DISPLAY NAME |---------------
+  // Display Name is an empty string
   if (checkEmptyDisplayName(displayName))
     return res.status(400).json({
       success: false,
       message: "Display Name is required",
     });
 
-  //* Length of Display Name
+  // Length of Display Name
   if (checkLengthDisplayName(displayName))
     return res.status(400).json({
       success: false,
       message: `Your name: '${displayName}' must be between 2 and 50 characters`,
     });
 
-  //* Display Name is match with Regex Pattern
+  // Display Name is match with Regex Pattern
   if (!checkRegexDisplayName(displayName))
     return res.status(400).json({
       success: false,
       message: `Your name: '${displayName}' is not matched with Regex Pattern`,
     });
 
-  //? ==================== CREATE NEW USER ====================
+  //? ---------------| CREATE NEW USER |---------------
   const newUser = new User({
     username: username,
     password: hashedPassword,
@@ -127,7 +127,7 @@ const sign_up = async (req, res) => {
     displayName: displayName,
   });
 
-  //* Passed validation
+  // Passed validation
   try {
     await newUser.save();
 

@@ -1,6 +1,6 @@
 const { convert } = require("html-to-text");
 
-//? ==================== VALIDATION TITLE ====================
+//? ---------------| VALIDATION TITLE |---------------
 const checkEmptyTitle = (title) => {
   return !title || title === "";
 };
@@ -14,7 +14,7 @@ const checkRegexTitle = (title) => {
   return titleRegexPattern.test(title);
 };
 
-//? ==================== VALIDATION CONTENT ====================
+//? ---------------| VALIDATION CONTENT |---------------
 
 const checkEmptyContent = (content) => {
   return !content || content === "";

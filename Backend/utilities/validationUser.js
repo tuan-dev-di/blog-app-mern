@@ -1,4 +1,4 @@
-//? ==================== VALIDATION USERNAME ====================
+//? ---------------| VALIDATION USERNAME |---------------
 const checkEmptyUsername = (username) => {
   return !username || username === "";
 };
@@ -13,7 +13,7 @@ const checkRegexUsername = (username) => {
   return usernameRegexPattern.test(username);
 };
 
-//? ==================== VALIDATION PASSWORD ====================
+//? ---------------| VALIDATION PASSWORD |---------------
 const checkEmptyPassword = (password) => {
   return !password || password === "";
 };
@@ -28,7 +28,7 @@ const checkRegexPassword = (password) => {
   return passwordRegexPattern.test(password);
 };
 
-//? ==================== VALIDATION EMAIL ====================
+//? ---------------| VALIDATION EMAIL |---------------
 const checkEmptyEmail = (email) => {
   return !email || email === "";
 };
@@ -39,7 +39,7 @@ const checkRegexEmail = (email) => {
   return emailRegexPattern.test(email);
 };
 
-//? ==================== VALIDATION DISPLAY NAME ====================
+//? ---------------| VALIDATION DISPLAY NAME |---------------
 const checkEmptyDisplayName = (displayName) => {
   return !displayName || displayName === "";
 };

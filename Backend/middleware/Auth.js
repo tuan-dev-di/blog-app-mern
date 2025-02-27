@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-// const verifyToken = (req, res, next) => {
+// const verify_token = (req, res, next) => {
 //   const authHeader = req.header("Authorization");
 //   const token = authHeader && authHeader.split(" ")[1];
 
@@ -21,10 +21,12 @@ const jwt = require("jsonwebtoken");
 // };
 
 const verifyToken = async (req, res, next) => {
+  //? ---------------| CHECK HAS TAKEN TOKEN |---------------
   const token = req.cookies.accessToken;
   if (!token)
     return res.status(401).json({ success: false, message: "Access Denied" });
 
+  //? ---------------| CHECK TOKEN |---------------
   try {
     jwt.verify(token, process.env.Access_Token, (err, user) => {
       if (err)

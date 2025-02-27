@@ -13,8 +13,6 @@ const sign_out = async (req, res) => {
 
     const decodedToken = jwt.decode(token, process.env.Access_Token);
     const id = decodedToken.userId;
-    // console.log("Decoded token:", decodedToken);
-    // console.log("ID:", id);
 
     const user = await User.findById(id);
     if (!user)

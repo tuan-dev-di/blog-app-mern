@@ -1,8 +1,8 @@
-//? ==================== IMPORT TECHs & LIBRARIES ====================
+//? ---------------| IMPORT TECHs & LIBRARIES |---------------
 const express = require("express");
 const verifyToken = require("../middleware/Auth");
 
-//? ==================== IMPORT FUNCTION ====================
+//? ---------------| IMPORT FUNCTION |---------------
 const { create_post } = require("../controllers/post/CreatePostController");
 const { update_post } = require("../controllers/post/UpdatePostController");
 const { delete_post } = require("../controllers/post/DeletePostController");
@@ -11,7 +11,7 @@ const {
   get_detail_post,
 } = require("../controllers/post/GetDetailPostController");
 
-//? ==================== USING ROUTER FROM EXPRESS ====================
+//? ---------------| USING ROUTER FROM EXPRESS |---------------
 const router = express.Router();
 
 router.post("/create", verifyToken, create_post);

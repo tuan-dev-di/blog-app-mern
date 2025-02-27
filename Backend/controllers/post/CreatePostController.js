@@ -9,7 +9,7 @@ const {
 } = require("../../utilities/ValidationPost");
 
 const create_post = async (req, res) => {
-  //? --------------------| Check Id and role of user |--------------------
+  //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
   const user_role = req.user.role;
   if (user_role !== "admin")
@@ -20,29 +20,29 @@ const create_post = async (req, res) => {
 
   const { title, category, content, image } = req.body;
 
-  //? --------------------| Check validate title |--------------------
-  //* Title is an empty string
+  //? ---------------| CHECK TITLE |---------------
+  // Title is an empty string
   if (checkEmptyTitle(title))
     return res.status(400).json({
       success: false,
       message: "Title is required",
     });
 
-  //* Length of title
+  // Length of title
   if (checkLengthTitle(title))
     return res.status(400).json({
       success: false,
       message: "Length of title must between 10 and 50 characters",
     });
 
-  //* Title is matched with Regex Pattern
+  // Title is matched with Regex Pattern
   if (!checkRegexTitle(title))
     return res.status(400).json({
       success: false,
       message: "Title is not matched with Regex Pattern",
     });
 
-  //* Title is existed
+  // Title is existed
   const titleExisted = await Post.findOne({ title });
   if (titleExisted)
     return res.status(200).json({
@@ -50,36 +50,36 @@ const create_post = async (req, res) => {
       message: "This title is already existed, please try again!",
     });
 
-  //? --------------------| Check validate content |--------------------
-  //* Content is an empty string
+  //? ---------------| CHECK CONTENT |---------------
+  // Content is an empty string
   if (checkEmptyContent(content))
     return res.status(400).json({
       success: false,
       message: "Content is required",
     });
 
-  //* Length of Content
+  // Length of Content
   if (checkLengthContent(content))
     return res.status(400).json({
       success: false,
       message: "Length of content must between 50 and 5000 characters",
     });
 
-  //* Content is matched with Regex Pattern
+  // Content is matched with Regex Pattern
   if (!checkRegexContent(content))
     return res.status(400).json({
       success: false,
       message: "Content is not match with Regex Pattern",
     });
 
-  //? --------------------| Get title and convert to slug |--------------------
+  //? ---------------| CREATE SLUG FROM TITLE |---------------
   const slug = title
     .split(" ")
     .join("-")
     .toLowerCase()
     .replace(/[^A-Za-z0-9-]/g, "-");
 
-  //? --------------------| Create a new post |--------------------
+  //? ---------------| CREATE A NEW POST |---------------
   const newPost = new Post({
     userId: user_id,
     title: title,
