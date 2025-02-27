@@ -14,9 +14,8 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 
 import { CREATE_POST } from "../../apis/post";
 

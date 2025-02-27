@@ -10,9 +10,8 @@ import { IoRefresh } from "react-icons/io5";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 
 import { GET_POSTS, DELETE_POST } from "../../apis/post";
 
