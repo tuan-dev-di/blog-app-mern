@@ -21,14 +21,14 @@ const sign_in = async (req, res) => {
     if (!userValid)
       return res.status(400).json({
         success: false,
-        message: `Username: '${username}' does not existed`,
+        message: "Incorrect username or password",
       });
 
     const passwordCorrect = await argon2.verify(userValid.password, password);
     if (!passwordCorrect)
       return res.status(400).json({
         success: false,
-        message: "Password is incorrect",
+        message: "Incorrect username or password",
       });
 
     const accessToken = jwt.sign(
