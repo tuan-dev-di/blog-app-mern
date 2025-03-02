@@ -198,7 +198,7 @@ const CreatePost = () => {
               />
               <button
                 type="button"
-                className="relative w-auto h-[600px] self-center cursor-pointer overflow-hidden shadow-xl"
+                className="relative w-full h-[600px] self-center cursor-pointer overflow-hidden shadow-xl"
                 onClick={() => filePicker.current.click()}
               >
                 {postImageUploadProgress && (

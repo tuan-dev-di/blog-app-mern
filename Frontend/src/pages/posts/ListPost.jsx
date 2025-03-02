@@ -54,7 +54,7 @@ const ListPost = () => {
 
   const handleRefresh = async () => {
     await list_posts();
-    toast.success("Refreshed!", { theme: "colored" });
+    toast.success("List Posts Refreshed!", { theme: "colored" });
   };
 
   const handlePageChange = (page) => {
