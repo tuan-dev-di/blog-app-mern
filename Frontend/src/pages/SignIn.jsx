@@ -18,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const SignIn = () => {
       const { ok, data } = await SIGN_IN(formData);
       if (!ok) {
         dispatch(signInFailure(data.message));
-        toast.error(errorMessage, { theme: "colored" });
+        toast.error(data?.message, { theme: "colored" });
         return;
       }
 
