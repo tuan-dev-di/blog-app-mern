@@ -13,6 +13,7 @@ import {
   SignUp,
   Dashboard,
   CreatePost,
+  DetailPost,
   Post,
 } from "./pages/_index";
 
@@ -30,8 +31,12 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
         </Route>
         <Route element={<AdminPrivateRoute allowedRoles={["admin"]} />}>
-          <Route path="/posts/list-post" element={<Post />}></Route>
+          <Route path="/posts/get-posts" element={<Post />}></Route>
           <Route path="/posts/create-post" element={<CreatePost />}></Route>
+          <Route
+            path="/posts/get-posts/:postId"
+            element={<DetailPost />}
+          ></Route>
         </Route>
       </Routes>
       <FooterComponent />

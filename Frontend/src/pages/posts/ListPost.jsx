@@ -2,7 +2,6 @@ import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 import { FaPlus } from "react-icons/fa";
-import { LuPencil } from "react-icons/lu";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { IoRefresh } from "react-icons/io5";
@@ -128,7 +127,7 @@ const ListPost = () => {
                 {userPost.map((post) => (
                   <Table.Row key={post._id}>
                     <Table.Cell>
-                      <Link to={`/posts/${post.slug}`}>
+                      <Link to={`/posts/get-posts/${post._id}`}>
                         <img
                           src={post.image}
                           alt={post.title}
@@ -137,7 +136,9 @@ const ListPost = () => {
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/posts/${post.slug}`}>{post.title}</Link>
+                      <Link to={`/posts/get-posts/${post._id}`}>
+                        {post.title}
+                      </Link>
                     </Table.Cell>
                     <Table.Cell>{post.category}</Table.Cell>
                     <Table.Cell>
@@ -146,21 +147,6 @@ const ListPost = () => {
                         month: "2-digit",
                         year: "numeric",
                       })}
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Button
-                        className="cursor-pointer bg-transparent border-none shadow-none sm:inline"
-                        color="none"
-                      >
-                        <Tooltip
-                          content="Edit"
-                          style="light"
-                          placement="bottom"
-                          trigger="hover"
-                        >
-                          <LuPencil className="w-5 h-5" />
-                        </Tooltip>
-                      </Button>
                     </Table.Cell>
                     <Table.Cell>
                       <Button
