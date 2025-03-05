@@ -107,7 +107,7 @@ const SignIn = () => {
             {loading ? (
               <div>
                 <Spinner size="sm" />
-                <span className="pl-3">Loading...</span>
+                <span className="pl-3">Signing in...</span>
               </div>
             ) : (
               "Continue"
