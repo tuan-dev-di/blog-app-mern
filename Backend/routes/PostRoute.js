@@ -6,18 +6,14 @@ const verifyToken = require("../middleware/Auth");
 const { create_post } = require("../controllers/post/CreatePostController");
 const { update_post } = require("../controllers/post/UpdatePostController");
 const { delete_post } = require("../controllers/post/DeletePostController");
-const { list_post } = require("../controllers/post/GetListPostController");
-const {
-  get_detail_post,
-} = require("../controllers/post/GetDetailPostController");
+const { get_posts } = require("../controllers/post/GetListPostController");
 
 //? ---------------| USING ROUTER FROM EXPRESS |---------------
 const router = express.Router();
 
 router.post("/create", verifyToken, create_post);
-router.put("/update", verifyToken, update_post);
+router.put("/update/:postId/:userId", verifyToken, update_post);
 router.delete("/delete/:postId/:userId", verifyToken, delete_post);
-router.get("/list-post", list_post);
-router.get("/get-detail-post", verifyToken, get_detail_post);
+router.get("/get-posts", get_posts);
 
 module.exports = router;

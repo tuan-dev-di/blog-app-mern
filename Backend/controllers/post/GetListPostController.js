@@ -1,6 +1,6 @@
 const Post = require("../../models/Post");
 
-const list_post = async (req, res) => {
+const get_posts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 7;
@@ -53,4 +53,4 @@ const list_post = async (req, res) => {
   }
 };
 
-module.exports = { list_post };
+module.exports = { get_posts };
