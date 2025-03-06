@@ -10,6 +10,7 @@ const {
 const sign_in = async (req, res) => {
   const { username, password } = req.body;
 
+  //? ---------------| CHECK EMPTY USERNAME & PASSWORD |---------------
   if (checkEmptyUsername(username) || checkEmptyPassword(password))
     return res.status(400).json({
       success: false,
@@ -58,7 +59,7 @@ const sign_in = async (req, res) => {
         accessToken: accessToken,
       });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Sign In - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

@@ -11,6 +11,7 @@ const delete_account = async (req, res) => {
   try {
     const deleteUser = await User.findByIdAndDelete(req.params.userId);
 
+    //? ---------------| CHECK IF THE USER IS NOT FOUND |---------------
     if (!deleteUser)
       return res.status(404).json({
         success: false,
@@ -22,7 +23,7 @@ const delete_account = async (req, res) => {
       message: `User is deleted successfully`,
     });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Delete Account - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

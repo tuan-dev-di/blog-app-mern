@@ -3,6 +3,7 @@ const User = require("../../models/User");
 
 const sign_out = async (req, res) => {
   try {
+    //? ---------------| CHECK TOKEN |---------------
     const token = req.cookies.accessToken;
 
     if (!token)
@@ -11,6 +12,7 @@ const sign_out = async (req, res) => {
         message: "No token available. Please sign in",
       });
 
+    //? ---------------| DECODE TOKEN BY JWT |---------------
     const decodedToken = jwt.decode(token, process.env.Access_Token);
     const id = decodedToken.userId;
 
@@ -26,9 +28,9 @@ const sign_out = async (req, res) => {
         httpOnly: true,
         secure: true,
       })
-      .json({ success: true, message: `Sign out successfully` });
+      .json({ success: true, message: "Sign out successfully" });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Sign Out - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

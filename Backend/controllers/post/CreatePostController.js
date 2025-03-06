@@ -12,7 +12,7 @@ const create_post = async (req, res) => {
   //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
   const user_role = req.user.role;
-  if (user_role !== "admin")
+  if (user_role !== "admin" || user_id !== req.params.userId)
     return res.status(403).json({
       success: false,
       message: "Invalid role",
@@ -98,7 +98,7 @@ const create_post = async (req, res) => {
       post: post,
     });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Create Post - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

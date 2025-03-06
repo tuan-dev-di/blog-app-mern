@@ -1,21 +1,21 @@
-//? ==================== IMPORT TECHs - LIBRARIES ====================
+//? ---------------| IMPORT TECHs & LIBRARIES |---------------
 require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
-//? ==================== IMPORT ROUTEs ====================
+//? ---------------| IMPORT ROUTES |---------------
 const user_route = require("./routes/UserRoute");
 const post_route = require("./routes/PostRoute");
 
-//? ==================== CALL PORT FROM .ENV ====================
+//? ---------------| CALL PORT FROM .ENV |---------------
 const app = express();
 const PORT = process.env.PORT;
 app.listen(PORT, () =>
   console.log(`MERN Blog App | Backend started on port ${PORT}`)
 );
 
-//? ==================== CONNECT DATABASE MONGOOSE ====================
+//? ---------------| CONNECT DATABASE MONGOOSE |---------------
 const MongoDB_Username = process.env.MONGO_Username;
 const MongoDB_Password = process.env.MONGO_Password;
 const MongoDB_Cluster = process.env.MONGO_Cluster;
@@ -43,7 +43,7 @@ mongoose
 //   }
 // };
 
-//? ==================== RUN APIs ====================
+//? ---------------| RUN APIs |---------------
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth/users", user_route);

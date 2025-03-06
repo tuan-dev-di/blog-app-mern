@@ -61,11 +61,7 @@ const update_post = async (req, res) => {
     .replace(/[^A-Za-z0-9-]/g, "-");
   updateData.slug = slug;
 
-  /* 
-   ? ---------------| 
-   ? CHECK IF ANY FIELDS HAS BEEN CHANGED FROM USER, ONLY DATA ON THAT FIELD WILL BE UPDATED 
-   ? |---------------
-  */
+  //? ---------------| CHECK IF ANY FIELDS HAS BEEN CHANGED FROM USER, ONLY DATA ON THAT FIELD WILL BE UPDATED |---------------
   if (title) updateData.title = title;
   if (content) updateData.content = content;
   if (category) updateData.category = category;
@@ -93,7 +89,7 @@ const update_post = async (req, res) => {
       post: post,
     });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Update Post - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

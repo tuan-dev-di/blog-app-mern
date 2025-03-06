@@ -86,7 +86,7 @@ const update_account = async (req, res) => {
       user: user,
     });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Update Account - ERROR:", error);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

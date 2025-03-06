@@ -2,6 +2,7 @@ const Post = require("../../models/Post");
 
 const get_posts = async (req, res) => {
   try {
+    //? ---------------| CREATE VARIABLE TO CHECK PAGE |---------------
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 7;
     const skip = (page - 1) * limit;
@@ -45,7 +46,7 @@ const get_posts = async (req, res) => {
       postLastMonth,
     });
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Get Post - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

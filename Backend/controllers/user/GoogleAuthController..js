@@ -13,6 +13,7 @@ const google_auth = async (req, res) => {
     const checkUser = await User.findOne({ email });
 
     if (checkUser) {
+      //? ---------------| CREATE A NEW TOKEN|---------------
       const accessToken = jwt.sign(
         {
           userId: checkUser._id,
@@ -40,8 +41,8 @@ const google_auth = async (req, res) => {
           accessToken: accessToken,
         });
     } else {
-      //* Create a random password if user uses Google account to sign up
-      // The function of automatically sending passwords to users has not been used
+      //? ---------------| CREATE A RANDOM PASSWORD |---------------
+      //* The function of automatically sending passwords to users has not been used
       const randomPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
@@ -83,7 +84,7 @@ const google_auth = async (req, res) => {
         });
     }
   } catch (error) {
-    console.log("ERROR:", error);
+    console.log("Google Auth - ERROR:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
