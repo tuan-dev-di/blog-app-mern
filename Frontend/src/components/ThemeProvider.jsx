@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-
+import PropTypes from "prop-types";
 const ThemeProvider = ({ children }) => {
   const { theme } = useSelector((state) => state.theme);
 
@@ -10,6 +10,10 @@ const ThemeProvider = ({ children }) => {
       </div>
     </div>
   );
+};
+
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default ThemeProvider;

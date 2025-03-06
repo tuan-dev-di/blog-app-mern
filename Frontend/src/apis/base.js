@@ -1,5 +1,4 @@
-// import axios from "axios";
-
+//? ---------------| CHECK ID & ROLE |---------------
 const BASE_URL = "/api";
 
 export const callApi = async (endpoint, method = "GET", data = null) => {
@@ -44,33 +43,3 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
     };
   }
 };
-
-// export const callApi = async (endpoint, method = "GET", data = null) => {
-//   try {
-//     const response = await axios({
-//       url: `${BASE_URL}${endpoint}`,
-//       method: method,
-//       data,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       timeout: 10000,
-//     });
-
-//     return {
-//       ok: true,
-//       status: response.status,
-//       data: response.data,
-//     };
-//   } catch (error) {
-//     console.log("ERROR:", error.message);
-
-//     return {
-//       ok: false,
-//       status: error.response?.status || 500,
-//       data: {
-//         message: error.response?.data?.message || "Network Error",
-//       },
-//     };
-//   }
-// };

@@ -5,5 +5,3 @@ export { default as Theme } from "./ThemeProvider";
 export { default as PrivateRoute } from "./PrivateRoute";
 export { default as AdminPrivateRoute } from "./AdminPrivateRoute";
 export { default as SidebarApp } from "./SidebarApp";
-// export { default as DashboardSidebar } from "./dashboard/DashboardSidebar";
-// export { default as DashboardProfile } from "./dashboard/DashboardProfile";
