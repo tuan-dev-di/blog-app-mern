@@ -43,7 +43,7 @@ const SidebarApp = () => {
       console.log("Sign out successfully!");
       navigate("/sign-in");
     } catch (error) {
-      console.log(error.message);
+      console.log("SidebarApp - ERROR:", error.message);
       dispatch(signOutFailure(error.message));
     }
   };

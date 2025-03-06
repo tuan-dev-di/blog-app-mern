@@ -1,15 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
 
 import { Label, TextInput, Button, Spinner } from "flowbite-react";
 import { HiMail } from "react-icons/hi";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-// import {
-//   signUpStart,
-//   signUpSuccess,
-//   signUpFailure,
-// } from "../redux/user/userSlice";
 
 import { SIGN_UP } from "../apis/auth";
 import OAuth from "../components/OAuth";
@@ -22,8 +16,6 @@ const SignUp = () => {
 
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  // const { loading, error: errorMessage } = useSelector((state) => state.user);
-  // const dispatch = useDispatch();
 
   //? ---------------| GET USERNAME, PASSWORD, EMAIL & DISPLAY NAME |---------------
   const handleChange = (e) => {
@@ -39,23 +31,18 @@ const SignUp = () => {
 
     try {
       setLoading(true);
-      // dispatch(signUpStart());
       const { ok, data } = await SIGN_UP(formData);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
-        // dispatch(signUpFailure(data.message));
         return;
       }
 
-      // dispatch(signUpSuccess(data.message));
       setTimeout(() => {
         navigate("/sign-in");
       }, 3000);
       toast.success("Sign up successfully!", { theme: "colored" });
     } catch (error) {
       toast.error(error.message, { theme: "colored" });
-
-      // dispatch(signUpFailure(error.message));
     } finally {
       setLoading(false);
     }

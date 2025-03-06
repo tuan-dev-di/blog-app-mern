@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -39,10 +39,6 @@ const CreatePost = () => {
     setPostImageURL(URL.createObjectURL(file));
   };
 
-  useEffect(() => {
-    if (postImage) uploadFile();
-  }, [postImage]);
-
   // const deleteFile = async (fileURL) => {
   //   try {
   //     const storage = getStorage(app);
@@ -53,7 +49,7 @@ const CreatePost = () => {
   //   }
   // };
 
-  const uploadFile = async () => {
+  const uploadFile = useCallback(async () => {
     if (!postImage) return;
 
     const storage = getStorage(app);
@@ -87,7 +83,11 @@ const CreatePost = () => {
         }));
       }
     );
-  };
+  }, [postImage]);
+
+  useEffect(() => {
+    if (postImage) uploadFile();
+  }, [postImage, uploadFile]);
 
   //? ---------------| HANDLE CREATE POST |---------------
   // React Quill doesn't support id prop
@@ -113,7 +113,7 @@ const CreatePost = () => {
       toast.success("Create post successfully!", { theme: "colored" });
       navigate(`/posts/${data.post.slug}`);
     } catch (error) {
-      console.log("ERROR - Create Post Fail:", error.message);
+      console.log("Create Post - ERROR", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };

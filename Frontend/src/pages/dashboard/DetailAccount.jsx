@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   getDownloadURL,
@@ -36,9 +36,8 @@ const DetailAccount = () => {
   const navigate = useNavigate();
 
   const curUser = useSelector((state) => state.user.currentUser);
-  const loading = useSelector((state) => state.user.loading);
-
   const userId = curUser.user._id; // Get Id of user's account
+  const loading = useSelector((state) => state.user.loading);
 
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrl, setProfileImageUrl] = useState(null);
@@ -56,12 +55,8 @@ const DetailAccount = () => {
     }
   };
 
-  useEffect(() => {
-    if (profileImageFile) uploadFile();
-  }, [profileImageFile]);
-
   //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
-  const uploadFile = async () => {
+  const uploadFile = useCallback(async () => {
     const storage = getStorage(app);
     const fileNameUpload = profileImageFile.name;
     const fileName = new Date().getTime() + "_" + fileNameUpload;
@@ -97,7 +92,11 @@ const DetailAccount = () => {
         setProfileImageUploading(false);
       }
     );
-  };
+  }, [profileImageFile]);
+
+  useEffect(() => {
+    if (profileImageFile) uploadFile();
+  }, [profileImageFile, uploadFile]);
 
   //? ---------------| HANDLE UPDATE ACCOUNT |---------------
   const handleUpdate = (e) => {
@@ -281,7 +280,7 @@ const DetailAccount = () => {
           disabled={loading || profileImageUploading}
         >
           {/* Update Account */}
-          {loading ? "Loading..." : "Update Account"}
+          {loading ? "Updating..." : "Update Account"}
         </Button>
       </form>
       <Button

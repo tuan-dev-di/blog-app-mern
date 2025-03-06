@@ -34,6 +34,7 @@ const ListPost = () => {
   const [postIdToDelete, setPostIdToDelete] = useState("");
   const [deleteModal, setDeleteModal] = useState(false);
 
+  //? ---------------| GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
       const data = await GET_POSTS(userId, currentPage, postPerPage);
@@ -42,7 +43,7 @@ const ListPost = () => {
         setTotalPage(data.totalPage);
       } else toast.error(data.message, { theme: "colored" });
     } catch (error) {
-      console.log("ERROR:", error.message);
+      console.log("Get Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   }, [userId, currentPage, postPerPage]);
@@ -51,15 +52,18 @@ const ListPost = () => {
     if (role === "admin") list_posts();
   }, [role, list_posts]);
 
+  //? ---------------| HANDLE REFRESH LIST POST |---------------
   const handleRefresh = async () => {
     await list_posts();
     toast.success("List Posts Refreshed!", { theme: "colored" });
   };
 
+  //? ---------------| HANDLE CHANGE PAGE |---------------
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  //? ---------------| HANDLE DELETE POST |---------------
   const handleDeletePost = async () => {
     setDeleteModal(false);
 
@@ -78,7 +82,7 @@ const ListPost = () => {
         prev ? prev.filter((post) => post._id !== postIdToDelete) : []
       );
     } catch (error) {
-      console.log("ERROR:", error.message);
+      console.log("Delete Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
