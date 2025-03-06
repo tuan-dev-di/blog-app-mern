@@ -3,6 +3,7 @@ const {
   checkRegexTitle,
   checkLengthTitle,
   checkLengthContent,
+  checkRegexContent,
 } = require("../../utilities/ValidationPost");
 
 const update_post = async (req, res) => {

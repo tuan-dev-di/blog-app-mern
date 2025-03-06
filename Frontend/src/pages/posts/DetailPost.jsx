@@ -32,8 +32,8 @@ const DetailPost = () => {
   const { postId } = useParams();
 
   const curUser = useSelector((state) => state.user.currentUser);
+  const userId = curUser.user._id;
   const role = curUser.user.role;
-
 
   //? ---------------| HANDLE GET DETAIL OF POST |---------------
   const get_details = useCallback(async () => {
@@ -42,10 +42,9 @@ const DetailPost = () => {
 
       if (data) {
         setFormData(data.posts[0]);
-        console.log("DATA: ", data.posts[0]);
       } else toast.error(data.message, { theme: "colored" });
     } catch (error) {
-      console.log("ERROR Callback:", error.message);
+      console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   }, [postId]);
@@ -63,11 +62,7 @@ const DetailPost = () => {
     setPostImageURL(URL.createObjectURL(file));
   };
 
-  useEffect(() => {
-    if (postImage) uploadFile();
-  }, [postImage]);
-
-  const uploadFile = async () => {
+  const uploadFile = useCallback(async () => {
     if (!postImage) return;
 
     const storage = getStorage(app);
@@ -101,7 +96,11 @@ const DetailPost = () => {
         }));
       }
     );
-  };
+  }, [postImage]);
+
+  useEffect(() => {
+    if (postImage) uploadFile();
+  }, [postImage, uploadFile]);
 
   //? ---------------| HANDLE UPDATE POST |---------------
   // React Quill doesn't support id prop
@@ -117,7 +116,7 @@ const DetailPost = () => {
     e.preventDefault();
 
     try {
-      const { ok, data } = await UPDATE_POST(formData);
+      const { ok, data } = await UPDATE_POST(postId, userId, formData);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         return;
@@ -125,9 +124,9 @@ const DetailPost = () => {
 
       console.log("DATA:", data);
       toast.success("Update post successfully!", { theme: "colored" });
-      navigate(`/posts/${data.post.slug}`);
+      navigate(`/posts/get-posts/${postId}`);
     } catch (error) {
-      console.log("ERROR - Update Post Fail:", error.message);
+      console.log("Update Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
@@ -136,7 +135,7 @@ const DetailPost = () => {
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
       <ToastContainer position="top-right" autoClose={7000} />
       <div className="font-semibold text-center text-4xl my-7">
-        <span>Update a post</span>
+        <span>Detail of post</span>
       </div>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
@@ -153,7 +152,7 @@ const DetailPost = () => {
                   className="flex-1 w-[500px]"
                   placeholder="Enter a title"
                   onChange={handleUpdatePost}
-                  value={formData?.title}
+                  value={formData?.title || ""}
                   required
                 />
               </div>
@@ -165,7 +164,7 @@ const DetailPost = () => {
                   id="category"
                   className="flex-1"
                   onChange={handleUpdatePost}
-                  value={formData?.category}
+                  value={formData?.category || ""}
                 >
                   <option value="uncategorized">
                     ----- Language | Framework -----
@@ -192,7 +191,7 @@ const DetailPost = () => {
               theme="snow"
               placeholder="Enter your content"
               className="h-64 mb-10"
-              value={formData?.content}
+              value={formData?.content || ""}
               onChange={(value) => {
                 setFormData({
                   ...formData,
@@ -243,13 +242,7 @@ const DetailPost = () => {
                 <div className="flex flex-col items-center justify-center pb-6 pt-5 h-full w-full  border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                   {formData?.image ? (
                     <img
-                      src={
-                        formData?.image ||
-                        postImageURL ||
-                        postImage ||
-                        "https://wordtracker-swoop-uploads.s3.amazonaws.com/uploads/ckeditor/pictures/1247/content_wordtracker_blog_article_image.jpg"
-                      }
-                      value={formData?.image}
+                      src={formData?.image || postImageURL}
                       alt="Selected post"
                       className={`w-full h-full ${
                         postImageUploadProgress &&
