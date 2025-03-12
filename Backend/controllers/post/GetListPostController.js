@@ -1,6 +1,15 @@
 const Post = require("../../models/Post");
 
 const get_posts = async (req, res) => {
+  const user_id = req.user.userId;
+  const user_role = req.user.role;
+
+  if (user_role !== "admin" || user_id !== req.params.userId)
+    return res.status(403).json({
+      success: false,
+      message: "Invalid role",
+    });
+
   try {
     //? ---------------| CREATE VARIABLE TO CHECK PAGE |---------------
     const page = parseInt(req.query.page) || 1;

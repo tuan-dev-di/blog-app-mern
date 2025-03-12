@@ -38,7 +38,7 @@ const DetailPost = () => {
   //? ---------------| HANDLE GET DETAIL OF POST |---------------
   const get_details = useCallback(async () => {
     try {
-      const data = await GET_DETAIL_POST(postId);
+      const data = await GET_DETAIL_POST(userId, postId);
 
       if (data) {
         setFormData(data.posts[0]);
@@ -47,7 +47,7 @@ const DetailPost = () => {
       console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [postId]);
+  }, [userId, postId]);
 
   useEffect(() => {
     if (role === "admin") get_details();

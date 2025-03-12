@@ -39,7 +39,7 @@ const ListPost = () => {
         setUserLastMonth(data.userLastMonth);
       } else toast.error(data.message, { theme: "colored" });
     } catch (error) {
-      console.log("Get Post - ERROR:", error.message);
+      console.log("Get User - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   }, [userId, currentPage]);
@@ -56,7 +56,7 @@ const ListPost = () => {
 
   //? ---------------| HANDLE CHANGE PAGE |---------------
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPage) console.log(setCurrentPage(page));
+    if (page >= 1 && page <= totalPage) setCurrentPage(page);
   };
 
   return (

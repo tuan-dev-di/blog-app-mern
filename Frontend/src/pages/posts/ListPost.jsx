@@ -25,8 +25,10 @@ const ListPost = () => {
    */
   const [userPost, setUserPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
-  const postPerPage = 7;
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalPost, setTotalPost] = useState(0);
+  const [postLastMonth, setPostLastMonth] = useState(0);
+  // const postPerPage = 7;
 
   /*
    * Set delete function with modal
@@ -37,16 +39,19 @@ const ListPost = () => {
   //? ---------------| GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
-      const data = await GET_POSTS(userId, currentPage, postPerPage);
+      const data = await GET_POSTS(userId, currentPage);
+      console.log(data);
       if (data) {
         setUserPost(data.posts);
         setTotalPage(data.totalPage);
+        setTotalPost(data.totalPost);
+        setPostLastMonth(data.postLastMonth);
       } else toast.error(data.message, { theme: "colored" });
     } catch (error) {
       console.log("Get Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [userId, currentPage, postPerPage]);
+  }, [userId, currentPage]);
 
   useEffect(() => {
     if (role === "admin") list_posts();
@@ -60,7 +65,7 @@ const ListPost = () => {
 
   //? ---------------| HANDLE CHANGE PAGE |---------------
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    if (page >= 1 && page <= totalPage) setCurrentPage(page);
   };
 
   //? ---------------| HANDLE DELETE POST |---------------

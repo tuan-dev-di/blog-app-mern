@@ -4,7 +4,7 @@ const get_users = async (req, res) => {
   const user_id = req.user.userId;
   const user_role = req.user.role;
 
-  if (user_role !== "admin" || user_id !== req.user.userId)
+  if (user_role !== "admin" || user_id !== req.params.userId)
     return res.status(403).json({
       success: false,
       message: "Invalid role",

@@ -12,8 +12,8 @@ const { get_posts } = require("../controllers/post/GetListPostController");
 const router = express.Router();
 
 router.post("/create", verifyToken, create_post);
+router.post("/get-posts/:userId", verifyToken, get_posts);
 router.put("/update/:postId/:userId", verifyToken, update_post);
 router.delete("/delete/:postId/:userId", verifyToken, delete_post);
-router.get("/get-posts", get_posts);
 
 module.exports = router;
