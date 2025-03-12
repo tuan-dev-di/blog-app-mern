@@ -13,6 +13,7 @@ const {
 const {
   delete_account,
 } = require("../controllers/user/DeleteAccountController.js");
+const { get_users } = require("../controllers/user/GetListUserController.js");
 
 //? ---------------| USING ROUTER FROM EXPRESS |---------------
 const router = express.Router();
@@ -26,5 +27,6 @@ router.post("/sign-out", sign_out);
 // Account
 router.put("/account/update/:userId", verifyToken, update_account);
 router.delete("/account/delete/:userId", verifyToken, delete_account);
+router.post("/get-users/:userId", verifyToken, get_users);
 
 module.exports = router;

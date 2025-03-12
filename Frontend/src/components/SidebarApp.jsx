@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Sidebar } from "flowbite-react";
-import { FaUserEdit, FaSignOutAlt } from "react-icons/fa";
+import { FaUserEdit, FaSignOutAlt, FaUsers } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { MdArticle } from "react-icons/md";
 
@@ -68,6 +68,11 @@ const SidebarApp = () => {
               as={"div"}
             >
               <Link to="/posts/get-posts">Posts</Link>
+            </Sidebar.Item>
+          )}
+          {userRole === "admin" && (
+            <Sidebar.Item icon={FaUsers} className="cursor-pointer" as={"div"}>
+              <Link to="/users/get-users">Users</Link>
             </Sidebar.Item>
           )}
           <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">
