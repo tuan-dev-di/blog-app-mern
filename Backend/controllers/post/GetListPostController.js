@@ -31,7 +31,7 @@ const get_posts = async (req, res) => {
     }
 
     const posts = await Post.find(query)
-      .sort({ updateAt: sortDirection })
+      .sort({ updatedAt: sortDirection })
       .skip(skip)
       .limit(limit);
     const totalPost = await Post.countDocuments(query);
