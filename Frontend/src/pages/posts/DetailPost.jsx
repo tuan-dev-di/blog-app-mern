@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
@@ -12,6 +12,7 @@ import { app } from "../../firebase";
 
 import { Label, TextInput, Select, Button } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -40,9 +41,10 @@ const DetailPost = () => {
     try {
       const data = await GET_DETAIL_POST(userId, postId);
 
-      if (data) {
-        setFormData(data.posts[0]);
-      } else toast.error(data.message, { theme: "colored" });
+      if (!data) {
+        toast.error(data.message, { theme: "colored" });
+      }
+      setFormData(data.posts[0]);
     } catch (error) {
       console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -122,7 +124,6 @@ const DetailPost = () => {
         return;
       }
 
-      console.log("DATA:", data);
       toast.success("Update post successfully!", { theme: "colored" });
       navigate(`/posts/get-posts/${postId}`);
     } catch (error) {
@@ -134,8 +135,18 @@ const DetailPost = () => {
   return (
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
       <ToastContainer position="top-right" autoClose={7000} />
-      <div className="font-semibold text-center text-4xl my-7">
-        <span>Detail of post</span>
+      <div className="flex justify-between items-center my-7">
+        <div className="font-semibold text-4xl">
+          <span>Detail of post</span>
+        </div>
+        <div className="flex gap-2">
+          <Link to="/posts/get-posts">
+            <Button className="border-2 shadow-md" color="none">
+              <IoIosArrowRoundBack className="mr-2 h-5 w-5" />
+              Back
+            </Button>
+          </Link>
+        </div>
       </div>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">

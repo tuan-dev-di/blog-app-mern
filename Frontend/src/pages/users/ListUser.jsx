@@ -32,12 +32,12 @@ const ListPost = () => {
   const list_users = useCallback(async () => {
     try {
       const data = await GET_USERS(userId, currentPage);
-      if (data) {
-        setUserList(data.users);
-        setTotalPage(data.totalPage);
-        setTotalUser(data.totalUser);
-        setUserLastMonth(data.userLastMonth);
-      } else toast.error(data.message, { theme: "colored" });
+      if (!data) toast.error(data.message, { theme: "colored" });
+
+      setUserList(data.users);
+      setTotalPage(data.totalPage);
+      setTotalUser(data.totalUser);
+      setUserLastMonth(data.userLastMonth);
     } catch (error) {
       console.log("Get User - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });

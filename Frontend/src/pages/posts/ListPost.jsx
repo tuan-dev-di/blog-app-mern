@@ -40,7 +40,6 @@ const ListPost = () => {
   const list_posts = useCallback(async () => {
     try {
       const data = await GET_POSTS(userId, currentPage);
-      console.log(data);
       if (data) {
         setUserPost(data.posts);
         setTotalPage(data.totalPage);
@@ -99,7 +98,7 @@ const ListPost = () => {
         <div className="font-semibold text-4xl">List Post</div>
         <div className="flex gap-2">
           <Button
-            className="rounded-full w-10 border-2 shadow-md"
+            className="rounded-full w-10 border-2 shadow-md mr-2"
             color="none"
             onClick={handleRefresh}
           >
@@ -113,7 +112,7 @@ const ListPost = () => {
             </Tooltip>
           </Button>
           <Link to="/posts/create-post">
-            <Button gradientMonochrome="teal">
+            <Button >
               <FaPlus className="mr-2 h-5 w-5" />
               New Post
             </Button>

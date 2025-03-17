@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   getDownloadURL,
@@ -11,6 +11,8 @@ import { app } from "../../firebase";
 
 import { Label, TextInput, Select, Button } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { IoIosArrowRoundBack } from "react-icons/io";
+
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -109,7 +111,6 @@ const CreatePost = () => {
         return;
       }
 
-      console.log("DATA:", data);
       toast.success("Create post successfully!", { theme: "colored" });
       navigate(`/posts/${data.post.slug}`);
     } catch (error) {
@@ -121,8 +122,18 @@ const CreatePost = () => {
   return (
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
       <ToastContainer position="top-right" autoClose={7000} />
-      <div className="font-semibold text-center text-4xl my-7">
-        <span>Create a new post</span>
+      <div className="flex justify-between items-center my-7">
+        <div className="font-semibold text-4xl">
+          <span>Create a new post</span>
+        </div>
+        <div className="flex gap-2">
+          <Link to="/posts/get-posts">
+            <Button className="border-2 shadow-md" color="none">
+              <IoIosArrowRoundBack className="mr-2 h-5 w-5" />
+              Back
+            </Button>
+          </Link>
+        </div>
       </div>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
