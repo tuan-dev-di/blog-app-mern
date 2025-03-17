@@ -129,6 +129,7 @@ const ListPost = () => {
                 <Table.HeadCell>Title</Table.HeadCell>
                 <Table.HeadCell>Category</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
+                <Table.HeadCell>Updated At</Table.HeadCell>
                 <Table.HeadCell></Table.HeadCell>
                 <Table.HeadCell></Table.HeadCell>
               </Table.Head>
@@ -152,6 +153,13 @@ const ListPost = () => {
                     <Table.Cell>{post.category}</Table.Cell>
                     <Table.Cell>
                       {new Date(post.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {new Date(post.updatedAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
