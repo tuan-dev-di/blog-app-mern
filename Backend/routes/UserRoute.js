@@ -22,7 +22,7 @@ const router = express.Router();
 router.post("/google-auth", google_auth);
 router.post("/sign-in", sign_in);
 router.post("/sign-up", sign_up);
-router.post("/sign-out", sign_out);
+router.post("/sign-out/:userId", sign_out);
 
 // Account
 router.put("/account/update/:userId", verifyToken, update_account);

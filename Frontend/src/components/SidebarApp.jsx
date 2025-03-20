@@ -17,6 +17,7 @@ const SidebarApp = () => {
 
   const curUser = useSelector((state) => state.user.currentUser);
   const userRole = curUser.user.role;
+  const userId = curUser.user._id;
 
   const [tab, setTab] = useState("");
   useEffect(() => {
@@ -29,7 +30,7 @@ const SidebarApp = () => {
   const handleSignout = async () => {
     try {
       // Sign out with firebase sign out
-      const { ok, data } = await SIGN_OUT();
+      const { ok, data } = await SIGN_OUT(userId);
 
       if (!ok) {
         dispatch(signOutFailure(data.message));
