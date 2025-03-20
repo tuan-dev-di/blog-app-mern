@@ -130,7 +130,6 @@ const ListPost = () => {
                 <Table.HeadCell>Created At</Table.HeadCell>
                 <Table.HeadCell>Updated At</Table.HeadCell>
                 <Table.HeadCell></Table.HeadCell>
-                <Table.HeadCell></Table.HeadCell>
               </Table.Head>
               <Table.Body>
                 {userPost.map((post) => (

@@ -30,6 +30,17 @@ const DetailPost = () => {
   const [postImageURL, setPostImageURL] = useState(null);
   const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
 
+  const created = new Date(formData?.createdAt).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+  const updated = new Date(formData?.updatedAt).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
   const { postId } = useParams();
 
   const curUser = useSelector((state) => state.user.currentUser);
@@ -147,6 +158,10 @@ const DetailPost = () => {
             </Button>
           </Link>
         </div>
+      </div>
+      <div className="flex flex-col italic gap-2 mb-2 text-right text-gray-400">
+        <span>Date Created: {created}</span>
+        <span>Date Updated: {updated}</span>
       </div>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
