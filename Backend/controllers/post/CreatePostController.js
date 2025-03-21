@@ -45,9 +45,9 @@ const create_post = async (req, res) => {
   // Title is existed
   const titleExisted = await Post.findOne({ title });
   if (titleExisted)
-    return res.status(200).json({
+    return res.status(400).json({
       success: false,
-      message: "This title is already existed, please try again!",
+      message: "This title has been used, please try again!",
     });
 
   //? ---------------| CHECK CONTENT |---------------

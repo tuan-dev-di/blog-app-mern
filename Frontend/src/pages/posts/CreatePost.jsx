@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import {
   getDownloadURL,
@@ -22,6 +23,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { CREATE_POST } from "../../apis/post";
 
 const CreatePost = () => {
+  const curUser = useSelector((state) => state.user.currentUser);
+  const userId = curUser.user._id;
+
   const filePicker = useRef();
   const navigate = useNavigate();
 
@@ -105,14 +109,16 @@ const CreatePost = () => {
     e.preventDefault();
 
     try {
-      const { ok, data } = await CREATE_POST(formData);
+      const { ok, data } = await CREATE_POST(userId, formData);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         return;
       }
 
       toast.success("Create post successfully!", { theme: "colored" });
-      navigate(`/posts/${data.post.slug}`);
+      setTimeout(() => {
+        navigate("/posts/get-posts");
+      }, 3000);
     } catch (error) {
       console.log("Create Post - ERROR", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -121,7 +127,7 @@ const CreatePost = () => {
 
   return (
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex justify-between items-center my-7">
         <div className="font-semibold text-4xl">
           <span>Create a new post</span>

@@ -1,6 +1,7 @@
 import { callApi } from "./base";
 
-export const CREATE_POST = (data) => callApi("/posts/create", "POST", data);
+export const CREATE_POST = (userId, data) =>
+  callApi(`/posts/create/${userId}`, "POST", data);
 export const UPDATE_POST = (postId, userId, data) =>
   callApi(`/posts/update/${postId}/${userId}`, "PUT", data);
 
