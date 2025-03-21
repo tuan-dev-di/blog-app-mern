@@ -35,6 +35,13 @@ const update_account = async (req, res) => {
   }
 
   //? ---------------| CHECK EMAIL |---------------
+  const emailExisted = await User.findOne({ email });
+  if (emailExisted)
+    return res.status(400).json({
+      success: false,
+      message: `Email: '${email}' has been used`,
+    });
+
   if (email)
     if (!checkRegexEmail(email))
       return res.status(400).json({
