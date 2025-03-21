@@ -85,6 +85,9 @@ const ListPost = () => {
       setUserPost((prev) =>
         prev ? prev.filter((post) => post._id !== postIdToDelete) : []
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
       console.log("Delete Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -93,7 +96,7 @@ const ListPost = () => {
 
   return (
     <div className="relative mx-auto p-7 w-full">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex justify-between items-center">
         <div className="font-semibold text-4xl">List Post</div>
         <div className="flex gap-2">
@@ -112,7 +115,7 @@ const ListPost = () => {
             </Tooltip>
           </Button>
           <Link to="/posts/create-post">
-            <Button >
+            <Button>
               <FaPlus className="mr-2 h-5 w-5" />
               New Post
             </Button>

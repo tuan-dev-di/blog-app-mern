@@ -2,7 +2,9 @@ const Post = require("../../models/Post");
 
 const delete_post = async (req, res) => {
   //? ---------------| CHECK ID & ROLE |---------------
-  if (req.user.role !== "admin" || req.user.userId !== req.params.userId)
+  const user_id = req.user.userId;
+  const user_role = req.user.role;
+  if (user_role !== "admin" || user_id !== req.params.userId)
     return res.status(403).json({
       success: false,
       message: "Invalid role",
