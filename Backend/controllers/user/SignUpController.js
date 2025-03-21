@@ -46,7 +46,7 @@ const sign_up = async (req, res) => {
   if (usernameExisted)
     return res.status(400).json({
       success: false,
-      message: `Username: '${username}' has been already existed`,
+      message: `Username: '${username}' has been used`,
     });
 
   //? ---------------| CHECK PASSWORD |---------------
@@ -68,7 +68,8 @@ const sign_up = async (req, res) => {
   if (!checkRegexPassword(password))
     return res.status(400).json({
       success: false,
-      message: "Your password is not matched with Regex Pattern",
+      message:
+        "Password must have at least 1 special character, 1 number character, 1 capital letter",
     });
 
   // Encrypted Password
@@ -94,7 +95,7 @@ const sign_up = async (req, res) => {
   if (emailExisted)
     return res.status(400).json({
       success: false,
-      message: `Email: '${email}' has been already existed`,
+      message: `Email: '${email}' has been used`,
     });
 
   //? ---------------| CHECK DISPLAY NAME |---------------

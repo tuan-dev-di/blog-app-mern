@@ -57,7 +57,7 @@ const SignUp = () => {
   return (
     // Whole page Sign up
     <div className="min-h-screen mt-7">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5">
         <div className="font-semibold text-center text-6xl">
           <span>Sign Up</span>
