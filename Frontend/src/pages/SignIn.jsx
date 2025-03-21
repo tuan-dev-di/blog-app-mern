@@ -47,7 +47,9 @@ const SignIn = () => {
       toast.success("Sign in successfully!", { theme: "colored" });
 
       // replace: true => To prevent users from returning to the sign-in page with the "Back" button
-      navigate("/dashboard?tab=profile", { replace: true });
+      setTimeout(() => {
+        navigate("/dashboard?tab=profile", { replace: true });
+      }, 3000);
     } catch (error) {
       dispatch(signInFailure(error.message));
       toast.error(error.message, { theme: "colored" });
@@ -62,7 +64,7 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen mt-7">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
         <div className="font-semibold text-center text-6xl">
           <span>Sign In</span>
