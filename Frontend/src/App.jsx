@@ -13,7 +13,7 @@ import {
   SignUp,
   Dashboard,
   CreatePost,
-  DetailPost,
+  UpdatePost,
   Post,
   User,
 } from "./pages/_index";
@@ -40,8 +40,8 @@ export default function App() {
           <Route path="/posts/get-posts" element={<Post />}></Route>
           <Route path="/posts/create-post" element={<CreatePost />}></Route>
           <Route
-            path="/posts/get-posts/:postId"
-            element={<DetailPost />}
+            path="/posts/update-posts/:postId"
+            element={<UpdatePost />}
           ></Route>
 
           {/* ---------------| USERS |--------------- */}

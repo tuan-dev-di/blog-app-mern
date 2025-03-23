@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
@@ -19,33 +19,15 @@ import "react-quill/dist/quill.snow.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { UPDATE_POST, GET_DETAIL_POST } from "../../apis/post";
+import { UPDATE_POST, GET_POST_TO_UPDATE } from "../../apis/post";
 
 const DetailPost = () => {
   const filePicker = useRef();
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [postImageURL, setPostImageURL] = useState(null);
   const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
-
-  const created = new Date(formData?.createdAt).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-  const updated = new Date(formData?.updatedAt).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
 
   const { postId } = useParams();
 
@@ -54,9 +36,9 @@ const DetailPost = () => {
   const role = curUser.user.role;
 
   //? ---------------| HANDLE GET DETAIL OF POST |---------------
-  const get_details = useCallback(async () => {
+  const get_post_to_update = useCallback(async () => {
     try {
-      const data = await GET_DETAIL_POST(userId, postId);
+      const data = await GET_POST_TO_UPDATE(postId);
 
       if (!data) {
         toast.error(data.message, { theme: "colored" });
@@ -66,11 +48,11 @@ const DetailPost = () => {
       console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [userId, postId]);
+  }, [postId]);
 
   useEffect(() => {
-    if (role === "admin") get_details();
-  }, [role, get_details]);
+    if (role === "admin") get_post_to_update();
+  }, [role, get_post_to_update]);
 
   //? ---------------| CHANGE IMAGE |---------------
   const handleChangePostImage = async (e) => {
@@ -143,14 +125,36 @@ const DetailPost = () => {
 
       toast.success("Update post successfully!", { theme: "colored" });
       setTimeout(() => {
-        // navigate(`/posts/get-posts/${postId}`);
         window.location.reload();
-      });
+      }, 3000);
     } catch (error) {
       console.log("Update Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
+
+  //? ---------------| FORMAT DATE TIME |---------------
+  const formatDateTime = (dateString) => {
+    const dateObject = new Date(dateString);
+
+    const time = dateObject.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+
+    const date = dateObject.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    return `${time} - ${date}`;
+  };
+
+  const postCreated = formatDateTime(formData?.createdAt);
+  const postUpdated = formatDateTime(formData?.updatedAt);
 
   return (
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
@@ -169,8 +173,8 @@ const DetailPost = () => {
         </div>
       </div>
       <div className="flex flex-col italic gap-2 mb-2 text-right text-gray-400 text-sm">
-        <span>Date Created: {created}</span>
-        <span>Date Updated: {updated}</span>
+        <span>Date Created: {postCreated}</span>
+        <span>Date Updated: {postUpdated}</span>
       </div>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
