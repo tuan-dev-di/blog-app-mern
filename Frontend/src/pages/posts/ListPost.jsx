@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { RiDeleteBin2Line } from "react-icons/ri";
+import { RiPencilLine, RiDeleteBin2Line } from "react-icons/ri";
 import { IoRefresh } from "react-icons/io5";
 
 import { useCallback, useEffect, useState } from "react";
@@ -31,15 +31,15 @@ const ListPost = () => {
   // const postPerPage = 7;
 
   /*
-   * Set delete function with modal
+   * Set modal
    */
-  const [postIdToDelete, setPostIdToDelete] = useState("");
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [postId, setPostId] = useState("");
+  const [modalType, setModalType] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   //? ---------------| GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
-      // const data = await GET_TABLE_POSTS(userId, currentPage);
       const data = await GET_POSTS(currentPage);
       if (!data) toast.error(data.message, { theme: "colored" });
 
@@ -55,9 +55,7 @@ const ListPost = () => {
 
   useEffect(() => {
     if (role === "admin") list_posts();
-    // list_posts();
   }, [role, list_posts]);
-  // }, [list_posts]);
 
   //? ---------------| HANDLE REFRESH LIST POST |---------------
   const handleRefresh = async () => {
@@ -72,10 +70,10 @@ const ListPost = () => {
 
   //? ---------------| HANDLE DELETE POST |---------------
   const handleDeletePost = async () => {
-    setDeleteModal(false);
+    setModalOpen(false);
 
     try {
-      const { ok, data } = await DELETE_POST(postIdToDelete, userId);
+      const { ok, data } = await DELETE_POST(postId, userId);
 
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
@@ -86,7 +84,7 @@ const ListPost = () => {
         theme: "colored",
       });
       setUserPost((prev) =>
-        prev ? prev.filter((post) => post._id !== postIdToDelete) : []
+        prev ? prev.filter((post) => post._id !== postId) : []
       );
       setTimeout(() => {
         window.location.reload();
@@ -136,14 +134,15 @@ const ListPost = () => {
                 <Table.HeadCell>Category</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
                 <Table.HeadCell>Updated At</Table.HeadCell>
-                <Table.HeadCell></Table.HeadCell>
+                <Table.HeadCell>Update</Table.HeadCell>
+                <Table.HeadCell>Delete</Table.HeadCell>
               </Table.Head>
               <Table.Body>
                 {userPost.map((post) => (
                   <Table.Row key={post._id}>
                     <Table.Cell>
-                      <Link to={`/posts/update-posts/${post._id}`}>
-                        {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
+                      {/* <Link to={`/posts/update-posts/${post._id}`}> */}
+                      <Link to={`/posts/get-posts/${post.slug}`}>
                         <img
                           src={post.image}
                           alt={post.title}
@@ -152,8 +151,8 @@ const ListPost = () => {
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/posts/update-posts/${post._id}`}>
-                        {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
+                      {/* <Link to={`/posts/update-posts/${post._id}`}> */}
+                      <Link to={`/posts/get-posts/${post.slug}`}>
                         {post.title}
                       </Link>
                     </Table.Cell>
@@ -189,20 +188,27 @@ const ListPost = () => {
                     <Table.Cell>
                       <Button
                         onClick={() => {
-                          setDeleteModal(true);
-                          setPostIdToDelete(post._id);
+                          setPostId(post._id);
+                          setModalType("update");
+                          setModalOpen(true);
                         }}
                         className="cursor-pointer bg-transparent border-none shadow-none sm:inline"
                         color="none"
                       >
-                        <Tooltip
-                          content="Delete"
-                          style="light"
-                          placement="bottom"
-                          trigger="hover"
-                        >
-                          <RiDeleteBin2Line className="w-5 h-5 text-red-600" />
-                        </Tooltip>
+                        <RiPencilLine className="w-5 h-5" />
+                      </Button>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        onClick={() => {
+                          setPostId(post._id);
+                          setModalType("delete");
+                          setModalOpen(true);
+                        }}
+                        className="cursor-pointer bg-transparent border-none shadow-none sm:inline"
+                        color="none"
+                      >
+                        <RiDeleteBin2Line className="w-5 h-5 text-red-600" />
                       </Button>
                     </Table.Cell>
                   </Table.Row>
@@ -224,23 +230,37 @@ const ListPost = () => {
         )}
       </div>
       <Modal
-        show={deleteModal}
+        show={modalOpen}
         size="md"
-        onClose={() => setDeleteModal(false)}
+        onClose={() => setModalOpen(false)}
         popup
       >
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
-            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600" />
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-500 dark:text-gray-400" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this post?
+              {modalType === "delete"
+                ? "Are you sure you want to delete this post?"
+                : "Are you sure you want to update this post?"}
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={handleDeletePost}>
-                Yes, I&apos;m sure
-              </Button>
-              <Button color="gray" onClick={() => setDeleteModal(false)}>
+              {modalType === "delete" ? (
+                <Button color="failure" onClick={handleDeletePost}>
+                  Yes, delete it
+                </Button>
+              ) : (
+                <Button
+                  color="info"
+                  onClick={() => {
+                    setModalOpen(false);
+                    window.location.href = `/posts/update-posts/${postId}`;
+                  }}
+                >
+                  Yes, update it
+                </Button>
+              )}
+              <Button color="gray" onClick={() => setModalOpen(false)}>
                 No, cancel
               </Button>
             </div>
