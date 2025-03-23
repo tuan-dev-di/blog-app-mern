@@ -21,6 +21,13 @@ const update_post = async (req, res) => {
   const { title, category, content, image } = req.body;
 
   //? ---------------| CHECK TITLE |---------------
+  const titleExisted = await Post.findOne({ title });
+  if (titleExisted)
+    return res.status(400).json({
+      success: false,
+      message: "This title has been used, please try again!",
+    });
+
   if (title) {
     // Title is matched with Regex Pattern
     if (!checkRegexTitle(title))
