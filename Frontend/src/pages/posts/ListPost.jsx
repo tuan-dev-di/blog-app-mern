@@ -39,22 +39,25 @@ const ListPost = () => {
   //? ---------------| GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
-      const data = await GET_POSTS(userId, currentPage);
-      if (data) {
-        setUserPost(data.posts);
-        setTotalPage(data.totalPage);
-        setTotalPost(data.totalPost);
-        setPostLastMonth(data.postLastMonth);
-      } else toast.error(data.message, { theme: "colored" });
+      // const data = await GET_TABLE_POSTS(userId, currentPage);
+      const data = await GET_POSTS(currentPage);
+      if (!data) toast.error(data.message, { theme: "colored" });
+
+      setUserPost(data.posts);
+      setTotalPage(data.totalPage);
+      setTotalPost(data.totalPost);
+      setPostLastMonth(data.postLastMonth);
     } catch (error) {
       console.log("Get Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [userId, currentPage]);
+  }, [currentPage]);
 
   useEffect(() => {
     if (role === "admin") list_posts();
+    // list_posts();
   }, [role, list_posts]);
+  // }, [list_posts]);
 
   //? ---------------| HANDLE REFRESH LIST POST |---------------
   const handleRefresh = async () => {
@@ -124,6 +127,7 @@ const ListPost = () => {
       </div>
       <div>
         {role === "admin" && userPost?.length > 0 ? (
+          // {/* {userPost?.length > 0 ? ( */}
           <div>
             <Table hoverable className="mt-7 shadow-md">
               <Table.Head className="text-base">
@@ -138,8 +142,8 @@ const ListPost = () => {
                 {userPost.map((post) => (
                   <Table.Row key={post._id}>
                     <Table.Cell>
-                      <Link to={`/posts/get-posts/${post._id}`}>
-                      {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
+                      <Link to={`/posts/update-posts/${post._id}`}>
+                        {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
                         <img
                           src={post.image}
                           alt={post.title}
@@ -148,13 +152,20 @@ const ListPost = () => {
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/posts/get-posts/${post._id}`}>
-                      {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
+                      <Link to={`/posts/update-posts/${post._id}`}>
+                        {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
                         {post.title}
                       </Link>
                     </Table.Cell>
                     <Table.Cell>{post.category}</Table.Cell>
                     <Table.Cell>
+                      {new Date(post.createdAt).toLocaleTimeString("en-GB", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                      })}
+                      {" - "}
                       {new Date(post.createdAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
@@ -162,6 +173,13 @@ const ListPost = () => {
                       })}
                     </Table.Cell>
                     <Table.Cell>
+                      {new Date(post.updatedAt).toLocaleTimeString("en-GB", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                      })}
+                      {" - "}
                       {new Date(post.updatedAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
