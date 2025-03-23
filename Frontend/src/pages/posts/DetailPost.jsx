@@ -34,11 +34,17 @@ const DetailPost = () => {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   });
   const updated = new Date(formData?.updatedAt).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   });
 
   const { postId } = useParams();
@@ -136,7 +142,10 @@ const DetailPost = () => {
       }
 
       toast.success("Update post successfully!", { theme: "colored" });
-      navigate(`/posts/get-posts/${postId}`);
+      setTimeout(() => {
+        // navigate(`/posts/get-posts/${postId}`);
+        window.location.reload();
+      });
     } catch (error) {
       console.log("Update Post - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -145,7 +154,7 @@ const DetailPost = () => {
 
   return (
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex justify-between items-center my-7">
         <div className="font-semibold text-4xl">
           <span>Detail of post</span>
@@ -159,7 +168,7 @@ const DetailPost = () => {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col italic gap-2 mb-2 text-right text-gray-400">
+      <div className="flex flex-col italic gap-2 mb-2 text-right text-gray-400 text-sm">
         <span>Date Created: {created}</span>
         <span>Date Updated: {updated}</span>
       </div>

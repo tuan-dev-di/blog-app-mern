@@ -157,6 +157,13 @@ const DetailAccount = () => {
 
       dispatch(deleteUserSuccess(data));
       toast.success("Delete account successfully!", { theme: "colored" });
+
+      localStorage.clear();
+      sessionStorage.clear();
+
+      setTimeout(() => {
+        navigate("/sign-in");
+      });
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
       toast.error(error.message, { theme: "colored" });
@@ -171,7 +178,7 @@ const DetailAccount = () => {
 
   return (
     <div className="max-w-lg mx-auto p-3 w-full flex flex-col gap-2">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <input
           type="file"

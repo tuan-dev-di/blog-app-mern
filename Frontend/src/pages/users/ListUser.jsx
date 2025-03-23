@@ -61,7 +61,7 @@ const ListPost = () => {
 
   return (
     <div className="relative mx-auto p-7 w-full">
-      <ToastContainer position="top-right" autoClose={7000} />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex justify-between items-center">
         <div className="font-semibold text-4xl">List User</div>
         <div className="flex gap-2">

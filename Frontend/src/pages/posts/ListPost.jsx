@@ -139,6 +139,7 @@ const ListPost = () => {
                   <Table.Row key={post._id}>
                     <Table.Cell>
                       <Link to={`/posts/get-posts/${post._id}`}>
+                      {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
                         <img
                           src={post.image}
                           alt={post.title}
@@ -148,6 +149,7 @@ const ListPost = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Link to={`/posts/get-posts/${post._id}`}>
+                      {/* <Link to={`/posts/get-posts/${post.slug}`}> */}
                         {post.title}
                       </Link>
                     </Table.Cell>
