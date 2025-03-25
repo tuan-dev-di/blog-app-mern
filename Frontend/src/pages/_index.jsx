@@ -13,6 +13,7 @@ export { default as Post } from "./posts/Post";
 export { default as ListPost } from "./posts/ListPost";
 export { default as CreatePost } from "./posts/CreatePost";
 export { default as UpdatePost } from "./posts/UpdatePost";
+export { default as DetailPost } from "./posts/DetailPost";
 
 // ---------------| USER |---------------
 export { default as User } from "./users/User";

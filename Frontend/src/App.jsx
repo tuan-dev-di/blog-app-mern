@@ -14,6 +14,7 @@ import {
   Dashboard,
   CreatePost,
   UpdatePost,
+  DetailPost,
   Post,
   User,
 } from "./pages/_index";
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/project" element={<Project />}></Route>
         <Route path="/sign-in" element={<SignIn />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
+        <Route path="/posts/get-posts/detail/:postSlug" element={<DetailPost />}></Route>
 
         {/* ---------------| DASHBOARD |--------------- */}
         <Route element={<PrivateRoute />}>

@@ -1,13 +1,13 @@
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { RiPencilLine, RiDeleteBin2Line } from "react-icons/ri";
 import { IoRefresh } from "react-icons/io5";
-
-import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +18,8 @@ const ListPost = () => {
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
   const role = curUser.user.role;
+
+  const navigate = useNavigate();
 
   /*
    * Set pagination
@@ -141,8 +143,7 @@ const ListPost = () => {
                 {userPost.map((post) => (
                   <Table.Row key={post._id}>
                     <Table.Cell>
-                      {/* <Link to={`/posts/update-posts/${post._id}`}> */}
-                      <Link to={`/posts/get-posts/${post.slug}`}>
+                      <Link to={`/posts/get-posts/detail/${post.slug}`}>
                         <img
                           src={post.image}
                           alt={post.title}
@@ -151,8 +152,7 @@ const ListPost = () => {
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
-                      {/* <Link to={`/posts/update-posts/${post._id}`}> */}
-                      <Link to={`/posts/get-posts/${post.slug}`}>
+                      <Link to={`/posts/get-posts/detail/${post.slug}`}>
                         {post.title}
                       </Link>
                     </Table.Cell>
@@ -254,7 +254,7 @@ const ListPost = () => {
                   color="info"
                   onClick={() => {
                     setModalOpen(false);
-                    window.location.href = `/posts/update-posts/${postId}`;
+                    navigate(`/posts/update-posts/${postId}`);
                   }}
                 >
                   Yes, update it

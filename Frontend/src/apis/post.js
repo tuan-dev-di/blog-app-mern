@@ -27,10 +27,12 @@ export const GET_POSTS = async (page = 1, limit = 7) => {
 };
 
 export const GET_POST_TO_UPDATE = async (postId) => {
-  const response = await callApi(
-    `/posts/get-posts?postId=${postId}`,
-    "GET"
-  );
+  const response = await callApi(`/posts/get-posts?postId=${postId}`, "GET");
+  return response?.data;
+};
+
+export const GET_POST_DETAIL = async (slug) => {
+  const response = await callApi(`/posts/get-posts?slug=${slug}`, "GET");
   return response?.data;
 };
 
