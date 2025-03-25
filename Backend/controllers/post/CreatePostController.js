@@ -12,6 +12,7 @@ const create_post = async (req, res) => {
   //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
   const user_role = req.user.role;
+
   if (user_role !== "admin" || user_id !== req.params.userId)
     return res.status(403).json({
       success: false,
@@ -95,10 +96,11 @@ const create_post = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      message: "Create post successfully!",
       post: post,
     });
   } catch (error) {
-    console.log("Create Post - ERROR:", error.message);
+    console.log("Create post error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

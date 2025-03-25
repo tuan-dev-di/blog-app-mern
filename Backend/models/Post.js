@@ -16,7 +16,7 @@ const PostSchema = new Schema(
     },
     category: {
       type: String,
-      default: "uncategorized",
+      default: "un-categorized",
     },
     content: {
       type: String,

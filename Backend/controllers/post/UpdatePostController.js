@@ -14,7 +14,7 @@ const update_post = async (req, res) => {
   if (user_role !== "admin" || user_id !== req.params.userId)
     return res.status(403).json({
       success: false,
-      message: "You are not allowed to update this post",
+      message: "Invalid role",
     });
 
   const updateData = {};
@@ -97,7 +97,7 @@ const update_post = async (req, res) => {
       post: post,
     });
   } catch (error) {
-    console.log("Update Post - ERROR:", error.message);
+    console.log("Update post error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

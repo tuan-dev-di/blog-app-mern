@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 
 const get_users = async (req, res) => {
+  //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
   const user_role = req.user.role;
 
@@ -47,7 +48,7 @@ const get_users = async (req, res) => {
       userLastMonth,
     });
   } catch (error) {
-    console.log("Get User - ERROR:", error.message);
+    console.log("Get user error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

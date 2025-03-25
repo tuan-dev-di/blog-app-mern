@@ -158,7 +158,7 @@ const sign_up = async (req, res) => {
         accessToken: accessToken,
       });
   } catch (error) {
-    console.log("Sign Up - ERROR:", error.message);
+    console.log("Sign up error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

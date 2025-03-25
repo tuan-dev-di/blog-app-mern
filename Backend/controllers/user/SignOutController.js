@@ -28,9 +28,9 @@ const sign_out = async (req, res) => {
         httpOnly: true,
         secure: true,
       })
-      .json({ success: true, message: "Sign out successfully" });
+      .json({ success: true, message: "Sign out successfully!" });
   } catch (error) {
-    console.log("Sign Out - ERROR:", error.message);
+    console.log("Sign out error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

@@ -4,6 +4,7 @@ const delete_post = async (req, res) => {
   //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
   const user_role = req.user.role;
+
   if (user_role !== "admin" || user_id !== req.params.userId)
     return res.status(403).json({
       success: false,
@@ -23,10 +24,10 @@ const delete_post = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Post is deleted successfully",
+      message: "Delete post successfully!",
     });
   } catch (error) {
-    console.log("Delete Post - ERROR:", error.message);
+    console.log("Delete post error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

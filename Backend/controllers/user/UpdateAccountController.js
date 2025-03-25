@@ -13,7 +13,7 @@ const update_account = async (req, res) => {
   if (req.user.userId !== req.params.userId)
     return res.status(403).json({
       success: false,
-      message: "You are not allowed to update this account",
+      message: "Invalid role",
     });
 
   const updateData = {};
@@ -93,7 +93,7 @@ const update_account = async (req, res) => {
       user: user,
     });
   } catch (error) {
-    console.log("Update Account - ERROR:", error);
+    console.log("Update account error:", error);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",

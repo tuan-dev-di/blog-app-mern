@@ -46,7 +46,7 @@ const get_posts = async (req, res) => {
       postLastMonth,
     });
   } catch (error) {
-    console.log("Get Post - ERROR:", error.message);
+    console.log("Get post error:", error.message);
     return res.status(400).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
