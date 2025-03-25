@@ -32,7 +32,7 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
       data: jsonData,
     };
   } catch (error) {
-    console.log("ERROR:", error.message);
+    console.log("Base API error:", error.message);
 
     return {
       ok: false,

@@ -202,7 +202,7 @@ const CreatePost = () => {
             />
           </div>
 
-          {/* ---------------| POST IMAGE |--------------- */}
+          {/* ---------------| POST'S IMAGE |--------------- */}
           <div>
             <Label className="text-lg">Image</Label>
             <div>
