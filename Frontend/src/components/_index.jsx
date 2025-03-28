@@ -6,3 +6,4 @@ export { default as PrivateRoute } from "./PrivateRoute";
 export { default as SidebarApp } from "./SidebarApp";
 export { default as Theme } from "./ThemeProvider";
 export { default as AdminPrivateRoute } from "./AdminPrivateRoute";
+export { default as Introduce } from "./Introduce";
