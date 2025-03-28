@@ -5,7 +5,7 @@ const {
   checkRegexTitle,
   checkEmptyContent,
   checkLengthContent,
-  checkRegexContent,
+  // checkRegexContent,
 } = require("../../utilities/ValidationPost");
 
 const create_post = async (req, res) => {
@@ -67,11 +67,11 @@ const create_post = async (req, res) => {
     });
 
   // Content is matched with Regex Pattern
-  if (!checkRegexContent(content))
-    return res.status(400).json({
-      success: false,
-      message: "Content is not match with Regex Pattern",
-    });
+  // if (!checkRegexContent(content))
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "Content is not match with Regex Pattern",
+  //   });
 
   //? ---------------| CREATE SLUG FROM TITLE |---------------
   const slug = title

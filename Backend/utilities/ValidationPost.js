@@ -24,11 +24,14 @@ const checkLengthContent = (content) => {
   return content.length < 50 || content.length > 5000;
 };
 
-const checkRegexContent = (content) => {
-  const contentRegexPattern = /^[A-Z][a-zA-Z0-9\s]*\S$/;
-  const convertContent = convert(content, { wordwrap: false });
-  return contentRegexPattern.test(convertContent);
-};
+// const checkRegexContent = (content) => {
+  
+//   // const contentRegexPattern = /^[A-Z][a-zA-Z0-9\s]*\S$/;
+//   const contentRegexPattern =
+//     /^[A-Z][a-zA-Z0-9]*(?: [a-zA-Z0-9\*\_\-\[\]\(\)\.\,\?\!\#]+)*$/;
+//   const convertContent = convert(content, { wordwrap: false });
+//   return contentRegexPattern.test(convertContent);
+// };
 
 module.exports = {
   checkEmptyTitle,
@@ -36,5 +39,5 @@ module.exports = {
   checkRegexTitle,
   checkEmptyContent,
   checkLengthContent,
-  checkRegexContent,
+  // checkRegexContent,
 };

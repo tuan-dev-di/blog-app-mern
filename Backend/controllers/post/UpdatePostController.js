@@ -3,7 +3,7 @@ const {
   checkRegexTitle,
   checkLengthTitle,
   checkLengthContent,
-  checkRegexContent,
+  // checkRegexContent,
 } = require("../../utilities/ValidationPost");
 
 const update_post = async (req, res) => {
@@ -54,11 +54,11 @@ const update_post = async (req, res) => {
       });
 
     // Content is matched with Regex Pattern
-    if (!checkRegexContent(content))
-      return res.status(400).json({
-        success: false,
-        message: "Content is not match with Regex Pattern",
-      });
+    // if (!checkRegexContent(content))
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Content is not match with Regex Pattern",
+    //   });
   }
 
   //? ---------------| CREATE A NEW SLUG WITH TITLE |---------------
