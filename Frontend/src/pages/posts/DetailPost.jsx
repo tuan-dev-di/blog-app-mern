@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GET_POST_DETAIL } from "../../apis/post";
-import { Introduce } from "../../components/_index";
+import { Introduce, Comment } from "../../components/_index";
 
 const DetailPost = () => {
   const { postSlug } = useParams();
@@ -101,8 +101,11 @@ const DetailPost = () => {
         className="max-w-2xl mx-auto p-3 post-content"
         dangerouslySetInnerHTML={{ __html: post?.content }}
       ></div>
-      <div className="mx-auto max-w-6xl w-full">
+      <div className="mx-auto max-w-6xl w-full my-4">
         <Introduce />
+      </div>
+      <div className="mx-auto max-w-6xl w-full my-4">
+        <Comment postId={post._id} />
       </div>
     </div>
   );

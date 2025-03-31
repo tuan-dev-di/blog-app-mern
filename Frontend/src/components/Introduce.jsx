@@ -4,7 +4,7 @@ import { Button } from "flowbite-react";
 
 const Introduce = () => {
   return (
-    <div className="flex flex-col sm:flex-row p-5 border border-teal-400 rounded-tl-3xl rounded-br-3xl justify-center items-center text-center my-4">
+    <div className="flex flex-col sm:flex-row p-5 border border-teal-400 rounded-tl-3xl rounded-br-3xl justify-center items-center text-center">
       <div className="flex-1 flex flex-col justify-center">
         <h2 className="text-2xl font-semibold">
           Do you want to be a Web Developer with JavaScript?
@@ -12,7 +12,7 @@ const Introduce = () => {
         <p className="text-gray-400">
           Check this place, you will find many free courses!
         </p>
-        <Button asChild gradientDuoTone="pinkToOrange">
+        <Button gradientDuoTone="pinkToOrange">
           <Link className="block" to="https://fullstack.edu.vn/">
             F8 - Học Lập Trình Để Đi Làm
           </Link>

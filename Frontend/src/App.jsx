@@ -4,6 +4,7 @@ import {
   HeaderComponent,
   PrivateRoute,
   AdminPrivateRoute,
+  ScrollToTop,
 } from "./components/_index";
 import {
   Home,
@@ -22,6 +23,7 @@ import {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <HeaderComponent />
       <Routes>
         {/* ---------------| COMMON |--------------- */}
@@ -30,7 +32,10 @@ export default function App() {
         <Route path="/project" element={<Project />}></Route>
         <Route path="/sign-in" element={<SignIn />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
-        <Route path="/posts/get-posts/detail/:postSlug" element={<DetailPost />}></Route>
+        <Route
+          path="/posts/get-posts/detail/:postSlug"
+          element={<DetailPost />}
+        ></Route>
 
         {/* ---------------| DASHBOARD |--------------- */}
         <Route element={<PrivateRoute />}>
