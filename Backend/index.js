@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 //? ---------------| IMPORT ROUTES |---------------
 const user_route = require("./routes/UserRoute");
 const post_route = require("./routes/PostRoute");
+const comment_route = require("./routes/CommentRoute");
 
 //? ---------------| CALL PORT FROM .ENV |---------------
 const app = express();
@@ -48,6 +49,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth/users", user_route);
 app.use("/api/posts", post_route);
+app.use("/api/comments", comment_route);
 
 // app.use((error, req, res, next) => {
 //   const statusCode = error.statusCode || 500;

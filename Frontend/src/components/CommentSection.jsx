@@ -1,19 +1,48 @@
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { Label, Textarea, Button } from "flowbite-react";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { CREATE_COMMENT } from "../apis/comment";
+
 const CommentSection = ({ postId }) => {
   const curUser = useSelector((state) => state?.user?.currentUser);
+  const user_id = curUser.user._id;
 
-  const [comment, setComment] = useState("");
+  const [content, setContent] = useState("");
 
   //? ---------------| HANDLE SUBMIT COMMENT |---------------
-  const handleSubmitComment = (e) => {};
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    if (content.length > 300) {
+      toast.error("Comment is contain only 300 characters", {
+        theme: "colored",
+      });
+      return;
+    }
+
+    try {
+      const { ok, data } = await CREATE_COMMENT(postId, user_id, content);
+      if (!ok) {
+        toast.error(data.message, { theme: "colored" });
+        return;
+      }
+
+      toast.success("Comment successfully", { theme: "colored" });
+    } catch (error) {
+      console.log("Create Comment - ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  };
 
   return (
     <div className="max-w-2xl w-full mx-auto p-2">
+      <ToastContainer position="top-right" autoClose={3000} />
       {curUser ? (
         <div className="flex items-center gap-2 my-5">
           <p>Signed in as: </p>
@@ -53,12 +82,12 @@ const CommentSection = ({ postId }) => {
             placeholder="Add your comment..."
             rows={4}
             maxLength="300"
-            onChange={(e) => setComment(e.target.value)}
-            value={comment}
+            onChange={(e) => setContent(e.target.value)}
+            value={content}
           />
           <div className="flex justify-between items-center mt-3">
             <p className="italic text-sm text-gray-500">
-              {300 - comment.length} character remaining
+              {300 - content.length} character remaining
             </p>
             <Button outline gradientDuoTone="greenToBlue" type="submit">
               Comment
@@ -68,6 +97,10 @@ const CommentSection = ({ postId }) => {
       )}
     </div>
   );
+};
+
+CommentSection.propTypes = {
+  postId: PropTypes.string.isRequired,
 };
 
 export default CommentSection;
