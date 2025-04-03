@@ -20,7 +20,7 @@ const {
 const router = express.Router();
 
 router.post("/create/:postId/:userId", verifyToken, create_comment);
-router.get("/get-comments/", get_comments);
+router.get("/get-comments/:postId", get_comments);
 router.put("/update/:commentId/:postId/:userId", verifyToken, update_comment);
 router.delete("/delete/:commentId/:userId", verifyToken, delete_comment);
 

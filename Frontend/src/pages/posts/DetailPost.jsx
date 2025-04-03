@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GET_POST_DETAIL } from "../../apis/post";
-import { Introduce, Comment } from "../../components/_index";
+import { Introduce, CommentSection } from "../../components/_index";
 
 const DetailPost = () => {
   const { postSlug } = useParams();
@@ -19,7 +19,6 @@ const DetailPost = () => {
     setLoading(true);
     try {
       const data = await GET_POST_DETAIL(postSlug);
-      console.log("DATA:", data);
 
       if (!data) toast.error(data.message, { theme: "colored" });
 
@@ -105,7 +104,7 @@ const DetailPost = () => {
         <Introduce />
       </div>
       <div className="mx-auto max-w-6xl w-full my-4">
-        <Comment postId={post._id} />
+        <CommentSection postId={post._id} />
       </div>
     </div>
   );

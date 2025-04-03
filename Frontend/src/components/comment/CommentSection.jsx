@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -8,13 +8,33 @@ import { Label, Textarea, Button } from "flowbite-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { CREATE_COMMENT } from "../apis/comment";
+import { CREATE_COMMENT, GET_COMMENTS } from "../../apis/comment";
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
   const curUser = useSelector((state) => state?.user?.currentUser);
   const user_id = curUser.user._id;
 
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(""); // Content of comment
+  const [comments, setComments] = useState([]); // List of comments in post detail
+
+  //? ---------------| HANDLE GET LIST COMMENT |---------------
+  const get_comments = useCallback(async () => {
+    try {
+      const data = await GET_COMMENTS(postId);
+
+      if (!data) toast.error(data.message, { theme: "colored" });
+
+      setComments(data.comments);
+    } catch (error) {
+      console.log("Get Comments - ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  }, [postId]);
+
+  useEffect(() => {
+    get_comments();
+  }, [get_comments]);
 
   //? ---------------| HANDLE SUBMIT COMMENT |---------------
   const handleSubmitComment = async (e) => {
@@ -34,11 +54,14 @@ const CommentSection = ({ postId }) => {
       }
 
       toast.success("Comment successfully", { theme: "colored" });
+      setContent(""); // Set content in comment box to null after post comment
     } catch (error) {
       console.log("Create Comment - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
+
+  //? ---------------| HANDLE SUBMIT COMMENT |---------------
 
   return (
     <div className="max-w-2xl w-full mx-auto p-2">
@@ -75,7 +98,10 @@ const CommentSection = ({ postId }) => {
         </div>
       )}
       {curUser && (
-        <form onSubmit={handleSubmitComment}>
+        <form
+          onSubmit={handleSubmitComment}
+          className="border border-teal-400 rounded-xl p-5 my-3"
+        >
           <Label className="text-base" value="Your comment" />
           <Textarea
             id="comment"
@@ -94,6 +120,21 @@ const CommentSection = ({ postId }) => {
             </Button>
           </div>
         </form>
+      )}
+      {comments.length === 0 ? (
+        <p className="text-sm my-5 italic">
+          This post has no comments yet. Be the first to share your thoughts!
+        </p>
+      ) : (
+        <div>
+          <span className="flex items-center gap-1 ">
+            <p className="font-bold">Comments:</p>
+            <div className="text-cyan-600">{comments.length}</div>
+          </span>
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
+        </div>
       )}
     </div>
   );
