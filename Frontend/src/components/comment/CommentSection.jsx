@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { Label, Textarea, Button } from "flowbite-react";
@@ -8,10 +8,11 @@ import { Label, Textarea, Button } from "flowbite-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { CREATE_COMMENT, GET_COMMENTS } from "../../apis/comment";
+import { CREATE_COMMENT, GET_COMMENTS, LIKE_COMMENT } from "../../apis/comment";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
+  const navigate = useNavigate();
   const curUser = useSelector((state) => state?.user?.currentUser);
   const user_id = curUser.user._id;
 
@@ -61,7 +62,33 @@ const CommentSection = ({ postId }) => {
     }
   };
 
-  //? ---------------| HANDLE SUBMIT COMMENT |---------------
+  //? ---------------| HANDLE LIKE COMMENT |---------------
+  const handleLikeComment = async (commentId, user_id) => {
+    try {
+      if (!curUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const data = await LIKE_COMMENT(commentId, user_id);
+      if (!data) toast.error(data.message, { theme: "colored" });
+
+      setComments(
+        comments.map((comment) =>
+          comment._id === commentId
+            ? {
+                ...comment,
+                likes: data.likes,
+                numberOfLikes: data.likes.length,
+              }
+            : comment
+        )
+      );
+    } catch (error) {
+      console.log("LIKE ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  };
 
   return (
     <div className="max-w-2xl w-full mx-auto p-2">
@@ -132,7 +159,11 @@ const CommentSection = ({ postId }) => {
             <div className="text-cyan-600">{comments.length}</div>
           </span>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment
+              key={comment._id}
+              comment={comment}
+              onLike={handleLikeComment}
+            />
           ))}
         </div>
       )}

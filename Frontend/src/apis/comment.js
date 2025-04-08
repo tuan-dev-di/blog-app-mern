@@ -12,3 +12,11 @@ export const GET_USER = async (userId) => {
   const response = await callApi(`/auth/users/${userId}`, "GET");
   return response?.data?.rest;
 };
+
+export const LIKE_COMMENT = async (commentId, userId) => {
+  const response = await callApi(
+    `/comments/like-comment/${commentId}/${userId}`,
+    "PUT"
+  );
+  return response?.data?.comment;
+};
