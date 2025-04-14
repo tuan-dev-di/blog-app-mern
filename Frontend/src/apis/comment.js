@@ -3,6 +3,11 @@ import { callApi } from "./base";
 export const CREATE_COMMENT = (postId, userId, content) =>
   callApi(`/comments/create/${postId}/${userId}`, "POST", { content });
 
+export const UPDATE_COMMENT = (commentId, userId, content) =>
+  callApi(`/comments/update/${commentId}/${userId}`, "PUT", {
+    content,
+  });
+
 export const GET_COMMENTS = async (postId) => {
   const response = await callApi(`/comments/get-comments/${postId}`, "GET");
   return response?.data;

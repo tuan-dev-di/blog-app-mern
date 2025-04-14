@@ -10,12 +10,12 @@ const {
 const {
   get_comments,
 } = require("../controllers/comment/GetListCommentController");
-// const {
-//   update_comment,
-// } = require("../controllers/comment/UpdateCommentController");
-// const {
-//   delete_comment,
-// } = require("../controllers/comment/DeleteCommentController");
+const {
+  update_comment,
+} = require("../controllers/comment/UpdateCommentController");
+const {
+  delete_comment,
+} = require("../controllers/comment/DeleteCommentController");
 
 //Like comment functions
 const {
@@ -28,8 +28,8 @@ const router = express.Router();
 // Comment
 router.post("/create/:postId/:userId", verifyToken, create_comment);
 router.get("/get-comments/:postId", get_comments);
-// router.put("/update/:commentId/:postId/:userId", verifyToken, update_comment);
-// router.delete("/delete/:commentId/:userId", verifyToken, delete_comment);
+router.put("/update/:commentId/:userId", verifyToken, update_comment);
+router.delete("/delete/:commentId/:userId", verifyToken, delete_comment);
 
 // Like Comment
 router.put("/like-comment/:commentId/:userId", verifyToken, like_comment);

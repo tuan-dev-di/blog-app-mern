@@ -55,12 +55,24 @@ const CommentSection = ({ postId }) => {
       }
 
       toast.success("Comment successfully", { theme: "colored" });
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
       setContent(""); // Set content in comment box to null after post comment
     } catch (error) {
       console.log("Create Comment - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
+
+  //? ---------------| HANDLE SUBMIT EDIT COMMENT |---------------
+  const handleSubmitEditComment = async (comment, editedComment) => {
+    setComments(
+      comments.map((c) => c._id === comment._id ? {
+        ...c, content: editedComment
+      } : c)
+    )
+  }
 
   //? ---------------| HANDLE LIKE COMMENT |---------------
   const handleLikeComment = async (commentId, user_id) => {
@@ -163,6 +175,7 @@ const CommentSection = ({ postId }) => {
               key={comment._id}
               comment={comment}
               onLike={handleLikeComment}
+              onEdit={handleSubmitEditComment}
             />
           ))}
         </div>
