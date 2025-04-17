@@ -1,7 +1,9 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+//? ---------------| IMPORT GOOGLE SERVICES |---------------
 import {
   getDownloadURL,
   getStorage,
@@ -10,13 +12,17 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Button, Modal } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdEdit } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import {
   updateUserStart,
   updateUserSuccess,
@@ -27,17 +33,14 @@ import {
 } from "../../redux/user/userSlice";
 import { DELETE_ACCOUNT, UPDATE_ACCOUNT } from "../../apis/user";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 const DetailAccount = () => {
-  const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id; // Get Id of user's account
   const loading = useSelector((state) => state.user.loading);
+  const [formData, setFormData] = useState({});
 
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrl, setProfileImageUrl] = useState(null);
@@ -71,7 +74,7 @@ const DetailAccount = () => {
         setProfileImageUploadProgress(progress.toFixed(0));
       },
       (error) => {
-        console.log("ERROR Upload File:", error);
+        console.log("Upload file error:", error);
         toast.error(
           "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
           { theme: "colored" }
@@ -118,7 +121,7 @@ const DetailAccount = () => {
     }
 
     if (Object.keys(formData).length === 0) {
-      toast.warn("Nothing changes", { theme: "colored" });
+      toast.warn("Nothing changes!", { theme: "colored" });
       return;
     }
 
@@ -177,9 +180,13 @@ const DetailAccount = () => {
   };
 
   return (
+    // Whole page Detail Account
     <div className="max-w-lg mx-auto p-3 w-full flex flex-col gap-2">
       <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* Form Update Account*/}
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        {/* ---------------| CHANGE IMAGE |--------------- */}
         <input
           type="file"
           accept="image/*"
@@ -227,6 +234,8 @@ const DetailAccount = () => {
         <p className="my-4 text-center text-2xl">
           <strong>{curUser.user.displayName}</strong>
         </p>
+
+        {/* ---------------| USERNAME |--------------- */}
         <div>
           <Label className="text-base" value="Username" />
           <TextInput
@@ -238,6 +247,8 @@ const DetailAccount = () => {
             disabled
           />
         </div>
+
+        {/* ---------------| EMAIL |--------------- */}
         <div>
           <Label className="text-base" value="Email" />
           <TextInput
@@ -250,6 +261,8 @@ const DetailAccount = () => {
             // disabled
           />
         </div>
+
+        {/* ---------------| PASSWORD |--------------- */}
         <div>
           <Label className="text-base" value="Password" />
           <div className="relative">
@@ -269,6 +282,8 @@ const DetailAccount = () => {
             </Button>
           </div>
         </div>
+
+        {/* ---------------| DISPLAY NAME |--------------- */}
         <div>
           <Label className="text-base" value="Display Name" />
           <TextInput
@@ -280,16 +295,19 @@ const DetailAccount = () => {
             onChange={handleUpdate}
           />
         </div>
+
+        {/* Button submit Update Account */}
         <Button
           gradientDuoTone="greenToBlue"
           className="mt-3"
           type="submit"
           disabled={loading || profileImageUploading}
         >
-          {/* Update Account */}
           {loading ? "Updating..." : "Update Account"}
         </Button>
       </form>
+
+      {/* Button submit Delete Account */}
       <Button
         color="failure"
         className="mt-3"
@@ -298,6 +316,8 @@ const DetailAccount = () => {
       >
         Delete Account
       </Button>
+
+      {/* Modal to confirm Delete Account --- SEVERE */}
       <Modal
         show={deleteModal}
         size="md"

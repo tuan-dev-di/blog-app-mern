@@ -1,14 +1,16 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Label, Textarea, Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import {
   CREATE_COMMENT,
   DELETE_COMMENT,
@@ -73,7 +75,7 @@ const CommentSection = ({ postId }) => {
       }, 3000);
       setContent(""); // Set content in comment box to null after post comment
     } catch (error) {
-      console.log("Create Comment - ERROR:", error.message);
+      console.log("Create comment error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
@@ -117,7 +119,7 @@ const CommentSection = ({ postId }) => {
       }, 3000);
       setComments(comments.filter((comment) => comment._id !== commentId));
     } catch (error) {
-      console.log("Delete Comment - ERROR:", error.message);
+      console.log("Delete comment error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
@@ -145,14 +147,16 @@ const CommentSection = ({ postId }) => {
         )
       );
     } catch (error) {
-      console.log("LIKE ERROR:", error.message);
+      console.log("Like comment error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
 
   return (
+    // Whole Comment Section
     <div className="max-w-2xl w-full mx-auto p-2">
       <ToastContainer position="top-right" autoClose={3000} />
+      {/* Show Avatar - Username of account */}
       {curUser ? (
         <div className="flex items-center gap-2 my-5">
           <p>Signed in as: </p>
@@ -184,6 +188,8 @@ const CommentSection = ({ postId }) => {
           to comment.
         </div>
       )}
+
+      {/* ---------------| AREA CREATE COMMENT |---------------*/}
       {curUser && (
         <form
           onSubmit={handleSubmitComment}
@@ -208,6 +214,8 @@ const CommentSection = ({ postId }) => {
           </div>
         </form>
       )}
+
+      {/* ---------------| AREA LIST OF COMMENT |---------------*/}
       {comments.length === 0 ? (
         <p className="text-sm my-5 italic">
           This post has no comments yet. Be the first to share your thoughts!
@@ -232,6 +240,8 @@ const CommentSection = ({ postId }) => {
           ))}
         </div>
       )}
+
+      {/* Modal to confirm Delete Comment --- SEVERE */}
       <Modal
         show={modalOpen}
         size="xl"

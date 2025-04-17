@@ -1,15 +1,17 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Button, Spinner } from "flowbite-react";
 import { HiMail } from "react-icons/hi";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-
-import { SIGN_UP } from "../apis/auth";
-import OAuth from "../components/OAuth";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
+import { SIGN_UP } from "../apis/auth";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  //? ---------------| GET USERNAME, PASSWORD, EMAIL & DISPLAY NAME |---------------
+  //? ---------------| GET ATTRIBUTE |---------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -62,7 +64,10 @@ const SignUp = () => {
         <div className="font-semibold text-center text-6xl">
           <span>Sign Up</span>
         </div>
+
+        {/* Form Sign Up */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
+          {/* ---------------| USERNAME |--------------- */}
           <div>
             <Label className="text-lg">
               Username<span className="text-red-500 ml-1">*</span>
@@ -76,6 +81,8 @@ const SignUp = () => {
               onChange={handleChange}
             />
           </div>
+
+          {/* ---------------| PASSWORD |--------------- */}
           <div>
             <Label className="text-lg">
               Password<span className="text-red-500 ml-1">*</span>
@@ -98,6 +105,8 @@ const SignUp = () => {
               </Button>
             </div>
           </div>
+
+          {/* ---------------| EMAIL |--------------- */}
           <div>
             <Label className="text-lg">
               Email<span className="text-red-500 ml-1">*</span>
@@ -111,6 +120,8 @@ const SignUp = () => {
               onChange={handleChange}
             />
           </div>
+
+          {/* ---------------| DISPLAY NAME |--------------- */}
           <div>
             <Label className="text-lg">
               Display Name<span className="text-red-500 ml-1">*</span>
@@ -138,8 +149,12 @@ const SignUp = () => {
             )}
           </Button>
           <p className="font-sans text-center">Or</p>
-          <OAuth></OAuth>
+
+          {/* Using Gooogle Authentication to Sign In/Up */}
+          <OAuth />
         </form>
+
+        {/* Navigate to Sign In page */}
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-in" className="text-blue-500">
             Sign In

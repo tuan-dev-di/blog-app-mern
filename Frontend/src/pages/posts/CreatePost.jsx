@@ -1,7 +1,9 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+//? ---------------| IMPORT GOOGLE SERVICES |---------------
 import {
   getDownloadURL,
   getStorage,
@@ -10,16 +12,16 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Select, Button } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { IoIosArrowRoundBack } from "react-icons/io";
-
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { CREATE_POST } from "../../apis/post";
 
 const CreatePost = () => {
@@ -34,27 +36,16 @@ const CreatePost = () => {
   const [postImageURL, setPostImageURL] = useState(null);
   const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
 
-  //? ---------------| CHANGE IMAGE |---------------
+  //? ---------------| HANDLE CHANGE IMAGE OF POST |---------------
   const handleChangePostImage = async (e) => {
     let file = e.target.files[0];
     if (!file) return;
-
-    // if (uploadedPostImage) await deleteFile(uploadedPostImage);
 
     setPostImage(file);
     setPostImageURL(URL.createObjectURL(file));
   };
 
-  // const deleteFile = async (fileURL) => {
-  //   try {
-  //     const storage = getStorage(app);
-  //     const fileRef = ref(storage, fileURL);
-  //     await deleteObject(fileRef);
-  //   } catch (error) {
-  //     console.log("ERROR Delete File:", error);
-  //   }
-  // };
-
+  //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
   const uploadFile = useCallback(async () => {
     if (!postImage) return;
 
@@ -120,14 +111,17 @@ const CreatePost = () => {
         navigate("/posts/get-posts");
       }, 3000);
     } catch (error) {
-      console.log("Create Post - ERROR", error.message);
+      console.log("Create post error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
 
   return (
+    // Whole page Create Post
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
       <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* Top site to notice */}
       <div className="flex justify-between items-center my-7">
         <div className="font-semibold text-4xl">
           <span>Create a new post</span>
@@ -141,6 +135,8 @@ const CreatePost = () => {
           </Link>
         </div>
       </div>
+
+      {/* Form Create Post*/}
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
           {/* ---------------| TITLE & CATEGORY |--------------- */}

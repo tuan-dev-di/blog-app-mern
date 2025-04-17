@@ -1,10 +1,15 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Button, Spinner } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import {
   signInStart,
   signInSuccess,
@@ -13,16 +18,13 @@ import {
 import { SIGN_IN } from "../apis/auth";
 import OAuth from "../components/OAuth";
 
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 const SignIn = () => {
   const [formData, setFormData] = useState({});
   const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //? ---------------| GET USERNAME & PASSWORD |---------------
+  //? ---------------| GET ATTRIBUTE |---------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -63,13 +65,17 @@ const SignIn = () => {
   };
 
   return (
+    // Whole page Sign in
     <div className="min-h-screen mt-7">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
         <div className="font-semibold text-center text-6xl">
           <span>Sign In</span>
         </div>
+
+        {/* Form Sign In */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
+          {/* ---------------| USERNAME |--------------- */}
           <div>
             <Label className="text-lg" value="Username" />
             <TextInput
@@ -81,6 +87,8 @@ const SignIn = () => {
               required
             />
           </div>
+
+          {/* ---------------| PASSWORD |--------------- */}
           <div>
             <Label className="text-lg" value="Password" />
             <div className="relative">
@@ -116,8 +124,12 @@ const SignIn = () => {
             )}
           </Button>
           <p className="font-sans text-center">Or</p>
+
+          {/* Using Gooogle Authentication to Sign In/Up */}
           <OAuth />
         </form>
+
+        {/* Navigate to Sign Up page */}
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-up" className="text-blue-500">
             Sign Up

@@ -12,7 +12,3 @@ export const GET_USERS = async (userId, page = 1, limit = 7) => {
   );
   return response?.data;
 };
-// export const GET_USERS = async (userId) => {
-//   const response = await callApi(`/auth/users/get-users/${userId}`, "POST");
-//   return response?.data;
-// };

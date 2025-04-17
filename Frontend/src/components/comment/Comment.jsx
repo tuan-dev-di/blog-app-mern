@@ -1,17 +1,19 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import PropTypes from "prop-types";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Button, Textarea } from "flowbite-react";
 import { FaHeart } from "react-icons/fa";
 import { RiPencilLine, RiDeleteBin6Line } from "react-icons/ri";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { GET_USER, UPDATE_COMMENT } from "../../apis/comment";
 
 const Comment = ({ comment, onLike, onEdit, onDelete }) => {
@@ -73,6 +75,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   };
 
   return (
+    // Whole List comment contains avatar - username of another user
     <div className="flex p-4 border-b dark:border-gray-500 text-sm">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-shrink-0 mr-3">
@@ -95,6 +98,8 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
             {moment(comment.createdAt).fromNow()}
           </span>
         </div>
+
+        {/* ---------------| AREA UPDATE COMMENT |---------------*/}
         {isEditComment ? (
           <div>
             <Textarea
@@ -130,6 +135,8 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
               >
                 <FaHeart className="text-lg" />
               </button>
+
+              {/* ---------------| DISPLAY NUMBER OF LIKES COMMENT |---------------*/}
               <p className="text-gray-600 text-sm">
                 {comment.numberOfLikes > 0 &&
                   comment.numberOfLikes +
@@ -149,7 +156,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
 
               {curUser && activeCommentId === comment_id && (
                 <div className="flex gap-2 items-center">
-                  {/* Delete */}
+                  {/* ---------------| DELETE COMMENT |---------------*/}
                   {(user_role === "admin" ||
                     (user_role === "user" && user_id === userId_comment)) && (
                     <Button
@@ -169,7 +176,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                     </Button>
                   )}
 
-                  {/* Edit */}
+                  {/* ---------------| UPDATE COMMENT |---------------*/}
                   {user_id === userId_comment && (
                     <Button
                       className="flex items-center border-none bg-transparent group px-2 py-1"
@@ -188,15 +195,14 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                     </Button>
                   )}
 
-                  {/* Cancel */}
+                  {/* ---------------| CANCEL DISPLAY FUNCTION |---------------*/}
                   <Button
-                    // className="flex items-center border-none bg-transparent text-gray-500 hover:text-black px-2 py-1 group-hover:text-red-600"
                     color="red"
                     size="xs"
                     pill
                     onClick={() => setActiveCommentId(null)}
                   >
-                    <MdOutlineCancel className="group-hover:text-red-600 scale-150" />
+                    <MdOutlineCancel className="scale-150" />
                   </Button>
                 </div>
               )}

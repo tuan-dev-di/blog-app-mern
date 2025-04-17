@@ -1,17 +1,18 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
-import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 
+//? ---------------| IMPORT COMPONENTS |---------------
+import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { RiPencilLine, RiDeleteBin2Line } from "react-icons/ri";
 import { IoRefresh } from "react-icons/io5";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { GET_POSTS, DELETE_POST } from "../../apis/post";
 
 const ListPost = () => {
@@ -50,7 +51,7 @@ const ListPost = () => {
       setTotalPost(data.totalPost);
       setPostLastMonth(data.postLastMonth);
     } catch (error) {
-      console.log("Get Post - ERROR:", error.message);
+      console.log("Get post error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   }, [currentPage]);
@@ -92,12 +93,13 @@ const ListPost = () => {
         window.location.reload();
       }, 3000);
     } catch (error) {
-      console.log("Delete Post - ERROR:", error.message);
+      console.log("Delete post error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
 
   return (
+    // Whole page List Post
     <div className="relative mx-auto p-7 w-full">
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex justify-between items-center">
@@ -125,9 +127,10 @@ const ListPost = () => {
           </Link>
         </div>
       </div>
+
+      {/* Table: Display data of list post */}
       <div>
         {role === "admin" && userPost?.length > 0 ? (
-          // {/* {userPost?.length > 0 ? ( */}
           <div>
             <Table hoverable className="mt-7 shadow-md">
               <Table.Head className="text-base">
@@ -229,6 +232,8 @@ const ListPost = () => {
           </p>
         )}
       </div>
+
+      {/* Modal to confirm Update/Delete Post --- SEVERE */}
       <Modal
         show={modalOpen}
         size="md"

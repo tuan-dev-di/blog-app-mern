@@ -1,7 +1,9 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+//? ---------------| IMPORT GOOGLE SERVICES |---------------
 import {
   getDownloadURL,
   getStorage,
@@ -10,15 +12,16 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Select, Button } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { UPDATE_POST, GET_POST_TO_UPDATE } from "../../apis/post";
 
 const DetailPost = () => {
@@ -54,7 +57,7 @@ const DetailPost = () => {
     if (role === "admin") get_post_to_update();
   }, [role, get_post_to_update]);
 
-  //? ---------------| CHANGE IMAGE |---------------
+  //? ---------------| HANDLE CHANGE IMAGE OF POST |---------------
   const handleChangePostImage = async (e) => {
     let file = e.target.files[0];
     if (!file) return;
@@ -79,7 +82,7 @@ const DetailPost = () => {
         setPostImageUploadProgress(progress.toFixed(0));
       },
       (error) => {
-        console.log("ERROR Upload File:", error);
+        console.log("Upload file error:", error);
         toast.error(
           "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
           { theme: "colored" }
@@ -128,7 +131,7 @@ const DetailPost = () => {
         window.location.reload();
       }, 3000);
     } catch (error) {
-      console.log("Update Post - ERROR:", error.message);
+      console.log("Update post error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
@@ -157,8 +160,11 @@ const DetailPost = () => {
   const postUpdated = formatDateTime(formData?.updatedAt);
 
   return (
+    // Whole page Update Post
     <div className="min-h-screen p-7 mx-auto max-w-4xl">
       <ToastContainer position="top-right" autoClose={3000} />
+
+      {/* Top site to notice */}
       <div className="flex justify-between items-center my-7">
         <div className="font-semibold text-4xl">
           <span>Detail of post</span>
@@ -176,6 +182,8 @@ const DetailPost = () => {
         <span>Date Created: {postCreated}</span>
         <span>Date Updated: {postUpdated}</span>
       </div>
+
+      {/* Form Update Post*/}
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 justify-between">
           {/* ---------------| TITLE & CATEGORY |--------------- */}
@@ -240,7 +248,7 @@ const DetailPost = () => {
             />
           </div>
 
-          {/* ---------------| POST IMAGE |--------------- */}
+          {/* ---------------| POST'S IMAGE |--------------- */}
           <div>
             <Label className="text-lg">Image</Label>
             <div>

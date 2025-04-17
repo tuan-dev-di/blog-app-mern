@@ -1,12 +1,16 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+//? ---------------| IMPORT GOOGLE SERVICES |---------------
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Button } from "flowbite-react";
 import { FaGoogle } from "react-icons/fa";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signInFailure, signInSuccess } from "../redux/user/userSlice";
 import { GOOGLE_AUTH } from "../apis/auth";
 
@@ -15,6 +19,7 @@ const OAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //? ---------------| HANDLE USING GOOGLE AUTHENTICATION |---------------
   const handleGoogle = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({

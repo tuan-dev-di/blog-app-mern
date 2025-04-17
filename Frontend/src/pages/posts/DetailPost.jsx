@@ -1,11 +1,13 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Spinner, Button } from "flowbite-react";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { GET_POST_DETAIL } from "../../apis/post";
 import { Introduce, CommentSection } from "../../components/_index";
 
@@ -25,7 +27,7 @@ const DetailPost = () => {
       setLoading(false);
       setPost(data.posts[0]);
     } catch (error) {
-      console.log("Post Detail - ERROR:", error.message);
+      console.log("Post detail error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   }, [postSlug]);
@@ -103,6 +105,8 @@ const DetailPost = () => {
       <div className="mx-auto max-w-6xl w-full my-4">
         <Introduce />
       </div>
+
+      {/* ---------------| COMMENT |--------------- */}
       <div className="mx-auto max-w-6xl w-full my-4">
         <CommentSection postId={post._id} />
       </div>

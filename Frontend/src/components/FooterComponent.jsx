@@ -4,8 +4,10 @@ import Ami_Chill from "../assets/Ami_ChillChill.jpg";
 
 const FooterComponent = () => {
   return (
+    // Whole Footer
     <Footer container className="border-t-2">
       <div className="w-full">
+        {/* ---------------| LOGO INFORMATION |---------------*/}
         <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1 ">
           <div className="mt-5">
             <Footer.Brand
@@ -15,6 +17,8 @@ const FooterComponent = () => {
               name="Arys Domi"
             />
           </div>
+
+          {/* ---------------| CONTACT INFORMATION |---------------*/}
           <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6 mt-5">
             <div>
               <Footer.Title title="about" />

@@ -1,12 +1,14 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Button, Table, Tooltip, Pagination } from "flowbite-react";
 import { IoRefresh } from "react-icons/io5";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { GET_USERS } from "../../apis/user";
 
 const ListPost = () => {
@@ -39,7 +41,7 @@ const ListPost = () => {
       setTotalUser(data.totalUser);
       setUserLastMonth(data.userLastMonth);
     } catch (error) {
-      console.log("Get User - ERROR:", error.message);
+      console.log("Get user error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   }, [userId, currentPage]);

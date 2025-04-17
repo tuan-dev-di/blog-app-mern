@@ -29,6 +29,7 @@ export const LIKE_COMMENT = async (commentId, userId) => {
   return response?.data?.comment;
 };
 
+//? ---------------| EXAMPLE |---------------
 // export const METHOD_MODEL = async (variable, variable) => {
 //   try {
 //     const response = await callApi(`/model/method/${variable}/${variable}`, "METHOD");

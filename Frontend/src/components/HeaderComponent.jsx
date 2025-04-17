@@ -1,6 +1,8 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import {
   Navbar,
   TextInput,
@@ -12,7 +14,6 @@ import {
 } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { IoMoonSharp, IoSunny } from "react-icons/io5";
-
 import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
@@ -23,7 +24,9 @@ const Header = () => {
   const theme = useSelector((state) => state.theme.theme);
 
   return (
+    // Whole Header
     <Navbar className="border-b-2 ">
+      {/* ---------------| LOGO |---------------*/}
       <Link
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
@@ -32,6 +35,8 @@ const Header = () => {
           Arys Domi&apos;s Blog
         </span>
       </Link>
+
+      {/* ---------------| SEARCH INPUT |---------------*/}
       <form action="">
         <TextInput
           type="text"
@@ -43,6 +48,8 @@ const Header = () => {
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch></AiOutlineSearch>
       </Button>
+
+      {/* ---------------| TOGGLE BUTTON CHANGE THEME |---------------*/}
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-13 h-10 hidden sm:inline"
@@ -70,6 +77,8 @@ const Header = () => {
             </Tooltip>
           )}
         </Button>
+
+        {/* ---------------| PROFILE |---------------*/}
         {curUser !== null ? (
           <Dropdown
             arrowIcon={false}
@@ -99,6 +108,8 @@ const Header = () => {
           </Link>
         )}
       </div>
+
+      {/* ---------------| NAVIGATE PAGES |---------------*/}
       <NavbarCollapse>
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/">Home</Link>

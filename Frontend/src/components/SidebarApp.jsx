@@ -1,12 +1,15 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Sidebar } from "flowbite-react";
 import { FaUserEdit, FaSignOutAlt, FaUsers } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { MdArticle } from "react-icons/md";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
 import { SIGN_OUT } from "../apis/auth";
 
@@ -44,7 +47,7 @@ const SidebarApp = () => {
       console.log("Sign out successfully!");
       navigate("/sign-in");
     } catch (error) {
-      console.log("SidebarApp - ERROR:", error.message);
+      console.log("Sign out error:", error.message);
       dispatch(signOutFailure(error.message));
     }
   };
