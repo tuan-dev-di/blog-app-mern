@@ -6,13 +6,15 @@ import { useSelector } from "react-redux";
 import { Button, Textarea } from "flowbite-react";
 import { FaHeart } from "react-icons/fa";
 import { RiPencilLine, RiDeleteBin6Line } from "react-icons/ri";
+import { BsThreeDots } from "react-icons/bs";
+import { MdOutlineCancel } from "react-icons/md";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { GET_USER, UPDATE_COMMENT } from "../../apis/comment";
 
-const Comment = ({ comment, onLike, onEdit }) => {
+const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const [user, setUser] = useState({});
   const userId_comment = comment.userId;
   const comment_id = comment._id;
@@ -23,6 +25,7 @@ const Comment = ({ comment, onLike, onEdit }) => {
 
   const [isEditComment, setIsEditComment] = useState(false);
   const [editComment, setEditComment] = useState(comment.content);
+  const [activeCommentId, setActiveCommentId] = useState(null);
 
   //? ---------------| GET USER WHO COMMENTED |---------------
   const get_user = useCallback(async () => {
@@ -57,7 +60,7 @@ const Comment = ({ comment, onLike, onEdit }) => {
         toast.error(data.message, { theme: "colored" });
         return;
       }
-      
+
       onEdit(comment, editComment);
 
       toast.success("Updated comment successfully", { theme: "colored" });
@@ -133,34 +136,69 @@ const Comment = ({ comment, onLike, onEdit }) => {
                     " " +
                     (comment.numberOfLikes === 1 ? "Like" : "Likes")}
               </p>
-              {curUser &&
-                (user_role === "admin" ||
-                  (user_role === "user" && user_id === comment.userId)) && (
+              {curUser && activeCommentId !== comment_id && (
+                <Button
+                  className="border-none"
+                  color="gray"
+                  pill
+                  onClick={() => setActiveCommentId(comment_id)}
+                >
+                  <BsThreeDots className="scale-150" />
+                </Button>
+              )}
+
+              {curUser && activeCommentId === comment_id && (
+                <div className="flex gap-2 items-center">
+                  {/* Delete */}
+                  {(user_role === "admin" ||
+                    (user_role === "user" && user_id === userId_comment)) && (
+                    <Button
+                      className="flex items-center border-none bg-transparent group"
+                      color="gray"
+                      size="xs"
+                      pill
+                      onClick={() => {
+                        onDelete(comment_id);
+                        setActiveCommentId(null);
+                      }}
+                    >
+                      <RiDeleteBin6Line className="mr-1 h-4 w-4 group-hover:text-red-600" />
+                      <span className="text-gray-800 group-hover:text-red-600">
+                        Delete
+                      </span>
+                    </Button>
+                  )}
+
+                  {/* Edit */}
+                  {user_id === userId_comment && (
+                    <Button
+                      className="flex items-center border-none bg-transparent group px-2 py-1"
+                      color="gray"
+                      size="xs"
+                      pill
+                      onClick={() => {
+                        handleEditComment();
+                        setActiveCommentId(null);
+                      }}
+                    >
+                      <RiPencilLine className="mr-1 h-4 w-4 group-hover:text-blue-600" />
+                      <span className="text-gray-800 group-hover:text-blue-600">
+                        Edit
+                      </span>
+                    </Button>
+                  )}
+
+                  {/* Cancel */}
                   <Button
-                    className="flex items-center border-none bg-transparent group"
-                    color="gray"
+                    // className="flex items-center border-none bg-transparent text-gray-500 hover:text-black px-2 py-1 group-hover:text-red-600"
+                    color="red"
                     size="xs"
                     pill
+                    onClick={() => setActiveCommentId(null)}
                   >
-                    <RiDeleteBin6Line className="mr-1 h-4 w-4 group-hover:text-red-600" />
-                    <span className="text-gray-800 group-hover:text-red-600">
-                      Delete
-                    </span>
+                    <MdOutlineCancel className="group-hover:text-red-600 scale-150" />
                   </Button>
-                )}
-              {curUser && user_id === userId_comment && (
-                <Button
-                  className="flex items-center border-none bg-transparent group px-2 py-1"
-                  color="gray"
-                  size="xs"
-                  pill
-                  onClick={handleEditComment}
-                >
-                  <RiPencilLine className="mr-1 h-4 w-4 group-hover:text-blue-600" />
-                  <span className="text-gray-800 group-hover:text-blue-600">
-                    Edit
-                  </span>
-                </Button>
+                </div>
               )}
             </div>
           </div>
@@ -173,6 +211,7 @@ const Comment = ({ comment, onLike, onEdit }) => {
 Comment.propTypes = {
   onLike: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
   comment: PropTypes.shape({
     _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])

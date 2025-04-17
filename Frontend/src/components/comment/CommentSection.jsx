@@ -3,12 +3,18 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { Label, Textarea, Button } from "flowbite-react";
+import { Label, Textarea, Button, Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { CREATE_COMMENT, GET_COMMENTS, LIKE_COMMENT } from "../../apis/comment";
+import {
+  CREATE_COMMENT,
+  DELETE_COMMENT,
+  GET_COMMENTS,
+  LIKE_COMMENT,
+} from "../../apis/comment";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
@@ -18,6 +24,8 @@ const CommentSection = ({ postId }) => {
 
   const [content, setContent] = useState(""); // Content of comment
   const [comments, setComments] = useState([]); // List of comments in post detail
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deleteComment, setDeleteComment] = useState(null);
 
   //? ---------------| HANDLE GET LIST COMMENT |---------------
   const get_comments = useCallback(async () => {
@@ -48,6 +56,11 @@ const CommentSection = ({ postId }) => {
     }
 
     try {
+      if (!curUser) {
+        navigate("/sign-in");
+        return;
+      }
+
       const { ok, data } = await CREATE_COMMENT(postId, user_id, content);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
@@ -68,11 +81,46 @@ const CommentSection = ({ postId }) => {
   //? ---------------| HANDLE SUBMIT EDIT COMMENT |---------------
   const handleSubmitEditComment = async (comment, editedComment) => {
     setComments(
-      comments.map((c) => c._id === comment._id ? {
-        ...c, content: editedComment
-      } : c)
-    )
-  }
+      comments.map((c) =>
+        c._id === comment._id
+          ? {
+              ...c,
+              content: editedComment,
+            }
+          : c
+      )
+    );
+  };
+  //? ---------------| HANDLE SUBMIT EDIT COMMENT |---------------
+  const handleDeleteComment = async (commentId) => {
+    setModalOpen(false);
+
+    try {
+      if (!curUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const { ok, data } = await DELETE_COMMENT(commentId, user_id);
+
+      if (!ok) {
+        toast.error(data.message, { theme: "colored" });
+        return;
+      }
+
+      toast.success("Delete comment successfully!", {
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.log("Delete Comment - ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  };
 
   //? ---------------| HANDLE LIKE COMMENT |---------------
   const handleLikeComment = async (commentId, user_id) => {
@@ -176,10 +224,41 @@ const CommentSection = ({ postId }) => {
               comment={comment}
               onLike={handleLikeComment}
               onEdit={handleSubmitEditComment}
+              onDelete={(commentId) => {
+                setModalOpen(true);
+                setDeleteComment(commentId);
+              }}
             />
           ))}
         </div>
       )}
+      <Modal
+        show={modalOpen}
+        size="xl"
+        onClose={() => setModalOpen(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600 " />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this comment?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => handleDeleteComment(deleteComment)}
+              >
+                Yes, delete it!
+              </Button>
+              <Button color="gray" onClick={() => setModalOpen(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
