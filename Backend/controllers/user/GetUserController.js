@@ -1,8 +1,10 @@
 const User = require("../../models/User");
 
 const get_user = async (req, res) => {
+  const param_user_id = req.params.userId;
+
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(param_user_id);
 
     if (!user)
       return res.status(400).json({
@@ -18,8 +20,8 @@ const get_user = async (req, res) => {
       rest,
     });
   } catch (error) {
-    console.log("Get User - ERROR:", error.message);
-    return res.status(400).json({
+    console.log("Get user error:", error.message);
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });

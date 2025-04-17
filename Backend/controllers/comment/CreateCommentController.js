@@ -1,23 +1,21 @@
 const Comment = require("../../models/Comment");
 
 const create_comment = async (req, res) => {
-  //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
+  const param_user_id = req.params.userId;
 
-  //? ---------------| GET POST ID |---------------
   const post_id = req.params.postId;
 
-  //? ---------------| GET COMMENT CONTENT |---------------
   const { content } = req.body;
   try {
-    if (user_id !== req.params.userId)
+    if (user_id !== param_user_id)
       return res.status(403).json({
         success: false,
         message: "You are not allowed to create a comment",
       });
 
     if (!post_id)
-      return res.status(403).json({
+      return res.status(404).json({
         success: false,
         message: "Post is not found",
       });
@@ -38,7 +36,7 @@ const create_comment = async (req, res) => {
     });
   } catch (error) {
     console.log("Create comment error:", error.message);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });

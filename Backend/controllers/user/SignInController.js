@@ -1,6 +1,5 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
-
 const User = require("../../models/User");
 const {
   checkEmptyUsername,
@@ -55,12 +54,13 @@ const sign_in = async (req, res) => {
       })
       .json({
         success: true,
+        message: "Sign in successfully!",
         user: user,
         accessToken: accessToken,
       });
   } catch (error) {
     console.log("Sign in error:", error.message);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });

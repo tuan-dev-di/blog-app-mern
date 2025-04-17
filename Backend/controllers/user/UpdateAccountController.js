@@ -10,13 +10,14 @@ const {
 } = require("../../utilities/ValidationUser.js");
 
 const update_account = async (req, res) => {
-  if (req.user.userId !== req.params.userId)
+  const user_id = req.user.userId;
+  const param_user_id = req.params.userId;
+  if (user_id !== param_user_id)
     return res.status(403).json({
       success: false,
       message: "Invalid role",
     });
 
-  const updateData = {};
   const { username, password, email, displayName, profileImage } = req.body;
 
   //? ---------------| CHECK PASSWORD |---------------
@@ -65,6 +66,7 @@ const update_account = async (req, res) => {
   }
 
   //? ---------------| CHECK IF ANY FIELDS HAS BEEN CHANGED FROM USER, ONLY DATA ON THAT FIELD WILL BE UPDATED |---------------
+  const updateData = {};
   if (username) updateData.username = username;
   if (password) updateData.password = await argon2.hash(password);
   if (email) updateData.email = email;
@@ -94,7 +96,7 @@ const update_account = async (req, res) => {
     });
   } catch (error) {
     console.log("Update account error:", error);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });

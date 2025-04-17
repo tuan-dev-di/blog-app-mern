@@ -40,14 +40,16 @@ const get_posts = async (req, res) => {
     });
 
     return res.status(200).json({
+      success: true,
+      message: "Get list of post successfully!",
       posts,
       totalPage: Math.ceil(totalPost / limit),
       totalPost,
       postLastMonth,
     });
   } catch (error) {
-    console.log("Get post error:", error.message);
-    return res.status(400).json({
+    console.log("Get list of post error:", error.message);
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });

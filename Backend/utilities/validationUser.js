@@ -1,6 +1,8 @@
 //? ---------------| VALIDATION USERNAME |---------------
+// return !something đã bao gồm: undefined, null và rỗng
+// Thay vào đó sẽ sử dụng: return !something || something.trim() === "" để tránh khoảng trắng bị nhập dư bởi user
 const checkEmptyUsername = (username) => {
-  return !username || username === "";
+  return !username || username.trim() === "";
 };
 
 const checkLengthUsername = (username) => {
@@ -15,7 +17,7 @@ const checkRegexUsername = (username) => {
 
 //? ---------------| VALIDATION PASSWORD |---------------
 const checkEmptyPassword = (password) => {
-  return !password || password === "";
+  return !password || password.trim() === "";
 };
 
 const checkLengthPassword = (password) => {
@@ -30,18 +32,19 @@ const checkRegexPassword = (password) => {
 
 //? ---------------| VALIDATION EMAIL |---------------
 const checkEmptyEmail = (email) => {
-  return !email || email === "";
+  return !email || email.trim() === "";
 };
 
 const checkRegexEmail = (email) => {
+  const lowercaseEmail = email.trim().toLowerCase();
   const emailRegexPattern =
     /^[a-zA-Z0-9](?!.*[.\-_]{2})([a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegexPattern.test(email);
+  return emailRegexPattern.test(lowercaseEmail);
 };
 
 //? ---------------| VALIDATION DISPLAY NAME |---------------
 const checkEmptyDisplayName = (displayName) => {
-  return !displayName || displayName === "";
+  return !displayName || displayName.trim() === "";
 };
 
 const checkLengthDisplayName = (displayName) => {
@@ -49,9 +52,10 @@ const checkLengthDisplayName = (displayName) => {
 };
 
 const checkRegexDisplayName = (name) => {
+  const nameTrimmed = name.trim()
   const displayNameRegexPattern =
     /^[a-zA-ZĂÂÁÀẢÃẠẮẰẲẴẶẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌƠỚỜỞỠỢÔỐỒỔỖỘÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴăâắằẳẵặấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọơớờởỡợôốồổỗộúùủũụưứừửữựýỳỷỹỵ ]{2,50}(?<![ .'-])$/;
-  return displayNameRegexPattern.test(name);
+  return displayNameRegexPattern.test(nameTrimmed);
 };
 
 module.exports = {

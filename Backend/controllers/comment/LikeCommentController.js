@@ -3,7 +3,7 @@ const Comment = require("../../models/Comment");
 const like_comment = async (req, res) => {
   const user_id = req.user.userId;
   if (!user_id)
-    return res.status(403).json({
+    return res.status(404).json({
       success: false,
       message: "User not found",
     });
@@ -33,10 +33,16 @@ const like_comment = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Comment saved successfully",
+      message: "Like comment successfully!",
       comment,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("Like comment error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: `${error.message}` || "Internal Server Error",
+    });
+  }
 };
 
 module.exports = { like_comment };

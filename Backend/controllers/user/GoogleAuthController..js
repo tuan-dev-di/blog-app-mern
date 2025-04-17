@@ -37,6 +37,7 @@ const google_auth = async (req, res) => {
         })
         .json({
           success: true,
+          message: "Sign in with Google Auth successfully!",
           user: user,
           accessToken: accessToken,
         });
@@ -78,14 +79,15 @@ const google_auth = async (req, res) => {
         })
         .json({
           success: true,
-          message: `Welcome - ${newUser.username}`,
+          // message: `Welcome - ${newUser.username}`,
+          message: `Sign up successfully by Google Auth with - ${newUser.username}`,
           user: user,
           accessToken: accessToken,
         });
     }
   } catch (error) {
     console.log("Google Auth error:", error.message);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });

@@ -1,8 +1,11 @@
 const { convert } = require("html-to-text");
+// return !something đã bao gồm: undefined, null và rỗng
+// Thay vào đó sẽ sử dụng: return !something || something.trim() === "" để tránh khoảng trắng bị nhập dư bởi user
+
 
 //? ---------------| VALIDATION TITLE |---------------
 const checkEmptyTitle = (title) => {
-  return !title || title === "";
+  return !title || title.trim() === "";
 };
 
 const checkLengthTitle = (title) => {
@@ -17,7 +20,7 @@ const checkRegexTitle = (title) => {
 //? ---------------| VALIDATION CONTENT |---------------
 
 const checkEmptyContent = (content) => {
-  return !content || content === "";
+  return !content || content.trim() === "";
 };
 
 const checkLengthContent = (content) => {

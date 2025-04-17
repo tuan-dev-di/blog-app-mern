@@ -38,8 +38,8 @@ const update_comment = async (req, res) => {
       comment: comment,
     });
   } catch (error) {
-    console.log("Update comment - ERROR:", error.message);
-    return res.status(400).json({
+    console.log("Update comment error", error.message);
+    return res.status(500).json({
       success: false,
       message: `${error.message}` || "Internal Server Error",
     });
