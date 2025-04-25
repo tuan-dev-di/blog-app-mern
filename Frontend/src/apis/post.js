@@ -13,6 +13,11 @@ export const GET_POSTS = async (page = 1, limit = 7) => {
   return response?.data;
 };
 
+export const GET_RECENT_POSTS = async (limit = 3) => {
+  const response = await callApi(`/posts/get-posts?limit=${limit}`, "GET");
+  return response?.data;
+};
+
 export const GET_POST_TO_UPDATE = async (postId) => {
   const response = await callApi(`/posts/get-posts?postId=${postId}`, "GET");
   return response?.data;
