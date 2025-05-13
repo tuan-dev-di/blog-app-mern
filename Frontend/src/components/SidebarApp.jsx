@@ -63,7 +63,8 @@ const SidebarApp = () => {
             className="cursor-pointer"
             as={"div"}
           >
-            <Link to="/dashboard?tab=profile">Profile</Link>
+            {/* <Link to="/dashboard?tab=profile">Profile</Link> */}
+            <Link to="/profile">Profile</Link>
           </Sidebar.Item>
           {userRole === "admin" && (
             <Sidebar.Item icon={FaUsers} className="cursor-pointer" as={"div"}>
@@ -79,9 +80,9 @@ const SidebarApp = () => {
               <Link to="/posts/get-posts">Posts</Link>
             </Sidebar.Item>
           )}
-          <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">
+          {/* <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">
             Settings
-          </Sidebar.Item>
+          </Sidebar.Item> */}
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           <Sidebar.Item

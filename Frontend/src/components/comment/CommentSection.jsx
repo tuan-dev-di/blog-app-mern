@@ -170,7 +170,8 @@ const CommentSection = ({ postId }) => {
             }}
           />
           <Link
-            to="/dashboard?tab=profile"
+            // to="/dashboard?tab=profile"
+            to="/profile"
             className="text-sm text-cyan-600 hover:underline"
           >
             {curUser.user.username} - {curUser.user.email}

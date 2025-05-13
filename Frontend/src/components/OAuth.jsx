@@ -41,7 +41,8 @@ const OAuth = () => {
       }
 
       dispatch(signInSuccess(data));
-      navigate("/dashboard?tab=profile");
+      // navigate("/dashboard?tab=profile");
+      navigate("/profile");
     } catch (error) {
       dispatch(signInFailure(error.message));
     }

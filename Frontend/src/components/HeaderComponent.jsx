@@ -88,7 +88,8 @@ const Header = () => {
             }
           >
             <Dropdown.Header>
-              <Link to="/dashboard?tab=profile">
+              {/* <Link to="/dashboard?tab=profile"> */}
+              <Link to="/profile">
                 {/* Display Name */}
                 <span className="block text-sm">
                   {curUser.user.displayName}

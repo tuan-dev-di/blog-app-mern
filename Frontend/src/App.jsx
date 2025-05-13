@@ -12,7 +12,7 @@ import {
   Project,
   SignIn,
   SignUp,
-  Dashboard,
+  Profile,
   CreatePost,
   UpdatePost,
   DetailPost,
@@ -37,9 +37,9 @@ export default function App() {
           element={<DetailPost />}
         ></Route>
 
-        {/* ---------------| DASHBOARD |--------------- */}
+        {/* ---------------| Profile |--------------- */}
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
         </Route>
 
         <Route element={<AdminPrivateRoute allowedRoles={["admin"]} />}>

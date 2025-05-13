@@ -5,9 +5,9 @@ export { default as SignUp } from "./SignUp";
 export { default as Project } from "./Project";
 export { default as Home } from "./Home";
 
-// ---------------| DASHBOARD |---------------
-export { default as Dashboard } from "./dashboard/Dashboard";
-export { default as DetailAccount } from "./dashboard/DetailAccount";
+// ---------------| Profile |---------------
+export { default as Profile } from "./profile/Profile";
+export { default as DetailAccount } from "./profile/DetailAccount";
 
 // ---------------| POST |---------------
 export { default as Post } from "./posts/Post";
