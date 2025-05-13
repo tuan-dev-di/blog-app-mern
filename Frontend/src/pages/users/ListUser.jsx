@@ -115,7 +115,7 @@ const ListPost = () => {
                     <Table.Cell>{user.email}</Table.Cell>
                     <Table.Cell>
                       <span
-                        className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                        className={`px-4 py-2 text-sm font-semibold rounded-full ${
                           user.role === "admin"
                             ? "bg-blue-100 text-blue-700"
                             : "bg-green-100 text-green-700"

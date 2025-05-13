@@ -66,17 +66,17 @@ const SidebarApp = () => {
             <Link to="/dashboard?tab=profile">Profile</Link>
           </Sidebar.Item>
           {userRole === "admin" && (
+            <Sidebar.Item icon={FaUsers} className="cursor-pointer" as={"div"}>
+              <Link to="/users/get-users">Users</Link>
+            </Sidebar.Item>
+          )}
+          {userRole === "admin" && (
             <Sidebar.Item
               icon={MdArticle}
               className="cursor-pointer"
               as={"div"}
             >
               <Link to="/posts/get-posts">Posts</Link>
-            </Sidebar.Item>
-          )}
-          {userRole === "admin" && (
-            <Sidebar.Item icon={FaUsers} className="cursor-pointer" as={"div"}>
-              <Link to="/users/get-users">Users</Link>
             </Sidebar.Item>
           )}
           <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">

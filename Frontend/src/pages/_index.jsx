@@ -18,3 +18,4 @@ export { default as DetailPost } from "./posts/DetailPost";
 
 // ---------------| USER |---------------
 export { default as User } from "./users/User";
+
