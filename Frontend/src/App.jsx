@@ -18,6 +18,7 @@ import {
   DetailPost,
   Post,
   User,
+  Comment,
 } from "./pages/_index";
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
         {/* ---------------| Profile |--------------- */}
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/comments/get-comments" element={<Comment />}></Route>
         </Route>
 
         <Route element={<AdminPrivateRoute allowedRoles={["admin"]} />}>

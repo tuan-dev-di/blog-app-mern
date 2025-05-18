@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Sidebar } from "flowbite-react";
 import { FaUserEdit, FaSignOutAlt, FaUsers } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
 import { MdArticle } from "react-icons/md";
-
+import { LiaCommentSolid } from "react-icons/lia";
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
 import { SIGN_OUT } from "../apis/auth";
@@ -63,7 +62,6 @@ const SidebarApp = () => {
             className="cursor-pointer"
             as={"div"}
           >
-            {/* <Link to="/dashboard?tab=profile">Profile</Link> */}
             <Link to="/profile">Profile</Link>
           </Sidebar.Item>
           {userRole === "admin" && (
@@ -80,9 +78,13 @@ const SidebarApp = () => {
               <Link to="/posts/get-posts">Posts</Link>
             </Sidebar.Item>
           )}
-          {/* <Sidebar.Item icon={IoMdSettings} className="cursor-pointer">
-            Settings
-          </Sidebar.Item> */}
+          <Sidebar.Item
+            icon={LiaCommentSolid}
+            className="cursor-pointer"
+            as={"div"}
+          >
+            <Link to="/comments/get-comments">Comments</Link>
+          </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           <Sidebar.Item

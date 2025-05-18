@@ -5,7 +5,7 @@ export { default as SignUp } from "./SignUp";
 export { default as Project } from "./Project";
 export { default as Home } from "./Home";
 
-// ---------------| Profile |---------------
+// ---------------| PROFILE |---------------
 export { default as Profile } from "./profile/Profile";
 export { default as DetailAccount } from "./profile/DetailAccount";
 
@@ -18,4 +18,9 @@ export { default as DetailPost } from "./posts/DetailPost";
 
 // ---------------| USER |---------------
 export { default as User } from "./users/User";
+
+// ---------------| COMMENT |---------------
+export { default as Comment } from "./comment/Comment";
+export { default as ListComment } from "./comment/ListComment";
+
 
