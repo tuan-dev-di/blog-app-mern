@@ -50,7 +50,6 @@ const SignIn = () => {
 
       // replace: true => To prevent users from returning to the sign-in page with the "Back" button
       setTimeout(() => {
-        // navigate("/dashboard?tab=profile", { replace: true });
         navigate("/profile", { replace: true });
       }, 3000);
     } catch (error) {

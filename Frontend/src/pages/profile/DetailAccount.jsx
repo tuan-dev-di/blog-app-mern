@@ -137,7 +137,6 @@ const DetailAccount = () => {
       dispatch(updateUserSuccess(data));
       setProfileImageUploadProgress(false);
       toast.success("Update profile successfully!", { theme: "colored" });
-      // navigate("/dashboard?tab=profile");
       navigate("/profile");
     } catch (error) {
       dispatch(updateUserFailure(error.message));
