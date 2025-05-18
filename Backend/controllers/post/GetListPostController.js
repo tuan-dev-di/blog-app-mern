@@ -42,10 +42,10 @@ const get_posts = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Get list of post successfully!",
-      posts,
+      postLastMonth,
       totalPage: Math.ceil(totalPost / limit),
       totalPost,
-      postLastMonth,
+      posts,
     });
   } catch (error) {
     console.log("Get list of post error:", error.message);

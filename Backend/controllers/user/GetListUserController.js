@@ -1,10 +1,9 @@
 const User = require("../../models/User");
 
 const get_users = async (req, res) => {
+  const param_user_id = req.params.userId;
   const user_id = req.user.userId;
   const user_role = req.user.role;
-  const param_user_id = req.params.userId;
-
 
   if (user_role !== "admin" || user_id !== param_user_id)
     return res.status(403).json({
@@ -45,10 +44,10 @@ const get_users = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Get list of user successfully!",
-      users: userWithoutPassword,
+      userLastMonth,
       totalPage: Math.ceil(totalUser / limit),
       totalUser,
-      userLastMonth,
+      users: userWithoutPassword,
     });
   } catch (error) {
     console.log("Get list of user error:", error.message);
