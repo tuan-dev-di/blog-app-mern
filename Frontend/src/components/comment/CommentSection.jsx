@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   CREATE_COMMENT,
   DELETE_COMMENT,
-  GET_COMMENTS,
+  GET_COMMENTS_IN_POST,
   LIKE_COMMENT,
 } from "../../apis/comment";
 import Comment from "./Comment";
@@ -32,7 +32,7 @@ const CommentSection = ({ postId }) => {
   //? ---------------| HANDLE GET LIST COMMENT |---------------
   const get_comments = useCallback(async () => {
     try {
-      const data = await GET_COMMENTS(postId);
+      const data = await GET_COMMENTS_IN_POST(postId);
 
       if (!data) toast.error(data.message, { theme: "colored" });
 
@@ -169,11 +169,7 @@ const CommentSection = ({ postId }) => {
                 "https://i.pinimg.com/736x/90/d1/ac/90d1ac48711f63c6a290238c8382632f.jpg";
             }}
           />
-          <Link
-            // to="/dashboard?tab=profile"
-            to="/profile"
-            className="text-sm text-cyan-600 hover:underline"
-          >
+          <Link to="/profile" className="text-sm text-cyan-600 hover:underline">
             {curUser.user.username} - {curUser.user.email}
           </Link>
         </div>

@@ -11,6 +11,9 @@ const {
   get_comments,
 } = require("../controllers/comment/GetListCommentController");
 const {
+  get_comments_in_post,
+} = require("../controllers/comment/GetCommentInPostController");
+const {
   update_comment,
 } = require("../controllers/comment/UpdateCommentController");
 const {
@@ -27,7 +30,8 @@ const router = express.Router();
 
 // Comment
 router.post("/create/:postId/:userId", verifyToken, create_comment);
-router.get("/get-comments/:postId", get_comments);
+router.post("/:userId/get-comments", verifyToken, get_comments);
+router.get("/get-comments-in-post/:postId", get_comments_in_post);
 router.put("/update/:commentId/:userId", verifyToken, update_comment);
 router.delete("/delete/:commentId/:userId", verifyToken, delete_comment);
 

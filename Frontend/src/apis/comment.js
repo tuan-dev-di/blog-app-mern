@@ -3,8 +3,19 @@ import { callApi } from "./base";
 export const CREATE_COMMENT = (postId, userId, content) =>
   callApi(`/comments/create/${postId}/${userId}`, "POST", { content });
 
-export const GET_COMMENTS = async (postId) => {
-  const response = await callApi(`/comments/get-comments/${postId}`, "GET");
+export const GET_COMMENTS_IN_POST = async (postId) => {
+  const response = await callApi(
+    `/comments/get-comments-in-post/${postId}`,
+    "GET"
+  );
+  return response?.data;
+};
+
+export const GET_COMMENT_FOR_ADMIN = async (userId, page = 1, limit = 7) => {
+  const response = await callApi(
+    `/comments/${userId}/get-comments?page=${page}&limit=${limit}`,
+    "POST"
+  );
   return response?.data;
 };
 
