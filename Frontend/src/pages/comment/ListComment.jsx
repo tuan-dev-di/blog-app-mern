@@ -11,7 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_COMMENT_FOR_ADMIN } from "../../apis/comment";
+import { GET_COMMENT_LIST } from "../../apis/comment";
 
 const ListPost = () => {
   const curUser = useSelector((state) => state.user.currentUser);
@@ -23,6 +23,7 @@ const ListPost = () => {
    * Set 7 items per page
    */
   const [commentList, setCommentList] = useState([]);
+  const [totalComment, setTotalComment] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,10 +32,14 @@ const ListPost = () => {
   //? ---------------| GET LIST POST |---------------
   const list_comments_for_admin = useCallback(async () => {
     try {
-      const data = await GET_COMMENT_FOR_ADMIN(userId, currentPage);
+      const data = await GET_COMMENT_LIST(userId, currentPage);
       if (!data) toast.error(data.message, { theme: "colored" });
-
-      setCommentList(data.comments);
+      const merged = data.comments.map((comment, index) => ({
+        ...comment,
+        ...data.extraComments?.[index], // gộp thêm postInformation & userInformation
+      }));
+      setCommentList(merged);
+      setTotalComment(data.totalComment);
       setTotalPage(data.totalPage);
     } catch (error) {
       console.log("Get comment error:", error.message);
@@ -43,8 +48,8 @@ const ListPost = () => {
   }, [userId, currentPage]);
 
   useEffect(() => {
-    if (role === "admin") list_comments_for_admin();
-  }, [role, list_comments_for_admin]);
+    list_comments_for_admin();
+  }, [list_comments_for_admin]);
 
   //? ---------------| HANDLE REFRESH LIST COMMENT |---------------
   const handleRefresh = async () => {
@@ -60,6 +65,8 @@ const ListPost = () => {
   const handleDeleteComment = () => {
     console.log("COMMENT ID:", commentId);
   };
+
+  console.log("COMMENT:", commentList);
 
   return (
     <div className="relative mx-auto p-7 w-full">
@@ -83,8 +90,15 @@ const ListPost = () => {
           </Button>
         </div>
       </div>
+      <span className="flex flex-col mt-7 text-left text-base">
+        {role === "admin" ? (
+          <p>All Comments: {totalComment}</p>
+        ) : (
+          <p>All Your Comments: {totalComment}</p>
+        )}
+      </span>
       <div>
-        {role === "admin" && commentList.length > 0 ? (
+        {commentList.length > 0 ? (
           <div>
             <Table hoverable className="mt-7 shadow-md">
               <Table.Head className="text-base">
@@ -93,21 +107,32 @@ const ListPost = () => {
                 <Table.HeadCell>Likes</Table.HeadCell>
                 <Table.HeadCell>Author</Table.HeadCell>
                 <Table.HeadCell>Created At</Table.HeadCell>
+                <Table.HeadCell>Updated At</Table.HeadCell>
                 <Table.HeadCell>Delete</Table.HeadCell>
               </Table.Head>
               <Table.Body>
                 {commentList.map((comment) => (
                   <Table.Row key={comment._id}>
                     <Table.Cell className="max-w-44 whitespace-normal break-words">
-                      {comment.postId?.title}
+                      {comment.postInformation?.title}
                     </Table.Cell>
                     <Table.Cell className="max-w-44 whitespace-normal break-words">
                       {comment.content}
                     </Table.Cell>
                     <Table.Cell>{comment.numberOfLikes}</Table.Cell>
-                    <Table.Cell>{comment.userId?.username}</Table.Cell>
+                    <Table.Cell>{comment.userInformation?.username}</Table.Cell>
                     <Table.Cell>
                       {new Date(comment.createdAt).toLocaleDateString("en-GB", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {new Date(comment.updatedAt).toLocaleDateString("en-GB", {
                         hour: "2-digit",
                         minute: "2-digit",
                         second: "2-digit",

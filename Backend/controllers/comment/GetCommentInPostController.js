@@ -10,6 +10,7 @@ const get_comments_in_post = async (req, res) => {
     });
 
   try {
+    //? ---------------| GET TOTAL AND DATA OF COMMENTS |---------------
     const totalComment = await Comment.countDocuments({ postId: post_id });
     const comments = await Comment.find({ postId: post_id }).sort({
       createdAt: -1,

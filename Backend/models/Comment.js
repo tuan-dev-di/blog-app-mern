@@ -8,13 +8,11 @@ const CommentSchema = new Schema(
       max: 300,
     },
     postId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
+      type: String,
       required: true,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
     likes: {
