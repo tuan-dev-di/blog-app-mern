@@ -31,7 +31,6 @@ const ListPost = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalPost, setTotalPost] = useState(0);
   const [postLastMonth, setPostLastMonth] = useState(0);
-  // const postPerPage = 7;
 
   /*
    * Set modal

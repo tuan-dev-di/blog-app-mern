@@ -19,6 +19,7 @@ import {
   Post,
   User,
   Comment,
+  Overview,
 } from "./pages/_index";
 
 export default function App() {
@@ -45,6 +46,9 @@ export default function App() {
         </Route>
 
         <Route element={<AdminPrivateRoute allowedRoles={["admin"]} />}>
+          {/* ---------------| OVERVIEW |--------------- */}
+          <Route path="/overview" element={<Overview />}></Route>
+
           {/* ---------------| POSTS |--------------- */}
           <Route path="/posts/get-posts" element={<Post />}></Route>
           <Route path="/posts/create-post" element={<CreatePost />}></Route>

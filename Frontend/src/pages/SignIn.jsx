@@ -50,7 +50,8 @@ const SignIn = () => {
 
       // replace: true => To prevent users from returning to the sign-in page with the "Back" button
       setTimeout(() => {
-        navigate("/profile", { replace: true });
+        if (data?.user?.role === "admin") navigate("/overview", { replace: true });
+        else navigate("/profile", { replace: true });
       }, 3000);
     } catch (error) {
       dispatch(signInFailure(error.message));

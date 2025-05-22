@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const AdminPrivateRoute = ({ allowedRoles = [] }) => {
   const curUser = useSelector((state) => state.user.currentUser);
-  const userRole = curUser.user.role;
+  const userRole = curUser?.user.role;
 
   if (!curUser || userRole !== "admin") {
     return <Navigate to="sign-in" />;

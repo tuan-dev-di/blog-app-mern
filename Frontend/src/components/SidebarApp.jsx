@@ -1,13 +1,13 @@
 //? ---------------| IMPORT LIBRARIES |---------------
-import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Sidebar } from "flowbite-react";
 import { FaUserEdit, FaSignOutAlt, FaUsers } from "react-icons/fa";
-import { MdArticle } from "react-icons/md";
-import { LiaCommentSolid } from "react-icons/lia";
+import { MdArticle, MdSpaceDashboard } from "react-icons/md";
+import { BiSolidCommentDetail } from "react-icons/bi";
+
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
 import { SIGN_OUT } from "../apis/auth";
@@ -15,18 +15,10 @@ import { SIGN_OUT } from "../apis/auth";
 const SidebarApp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const curUser = useSelector((state) => state.user.currentUser);
   const userRole = curUser.user.role;
   const userId = curUser.user._id;
-
-  const [tab, setTab] = useState("");
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const tabFromURL = urlParams.get("tab");
-    if (tabFromURL) setTab(tabFromURL);
-  }, [location.search]);
 
   //? ---------------| HANDLE SIGN OUT |---------------
   const handleSignout = async () => {
@@ -55,8 +47,16 @@ const SidebarApp = () => {
     <Sidebar className="w-full md:w-60">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
+          {userRole === "admin" && (
+            <Sidebar.Item
+              icon={MdSpaceDashboard}
+              className="cursor-pointer"
+              as={"div"}
+            >
+              <Link to="/overview">Overview</Link>
+            </Sidebar.Item>
+          )}
           <Sidebar.Item
-            active={tab === "profile"}
             icon={FaUserEdit}
             label={userRole}
             className="cursor-pointer"
@@ -79,7 +79,7 @@ const SidebarApp = () => {
             </Sidebar.Item>
           )}
           <Sidebar.Item
-            icon={LiaCommentSolid}
+            icon={BiSolidCommentDetail}
             className="cursor-pointer"
             as={"div"}
           >
