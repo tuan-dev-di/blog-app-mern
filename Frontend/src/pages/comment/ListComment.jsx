@@ -1,6 +1,7 @@
 //? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
@@ -11,9 +12,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_COMMENT_LIST } from "../../apis/comment";
+import { GET_COMMENT_LIST, DELETE_COMMENT } from "../../apis/comment";
 
 const ListPost = () => {
+  const navigate = useNavigate();
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
   const role = curUser.user.role;
@@ -36,7 +38,7 @@ const ListPost = () => {
       if (!data) toast.error(data.message, { theme: "colored" });
       const merged = data.comments.map((comment, index) => ({
         ...comment,
-        ...data.extraComments?.[index], // gộp thêm postInformation & userInformation
+        ...data.extraComments?.[index],
       }));
       setCommentList(merged);
       setTotalComment(data.totalComment);
@@ -62,11 +64,34 @@ const ListPost = () => {
     if (page >= 1 && page <= totalPage) setCurrentPage(page);
   };
 
-  const handleDeleteComment = () => {
-    console.log("COMMENT ID:", commentId);
-  };
+  const handleDeleteComment = async () => {
+    setModalOpen(false);
 
-  console.log("COMMENT:", commentList);
+    try {
+      if (!curUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const { ok, data } = await DELETE_COMMENT(commentId, userId);
+
+      if (!ok) {
+        toast.error(data.message, { theme: "colored" });
+        return;
+      }
+
+      toast.success("Delete comment successfully!", {
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    } catch (error) {
+      console.log("Delete comment error:", error.message);
+      toast.error(error.message, { theme: "colored" });
+    }
+  };
 
   return (
     <div className="relative mx-auto p-7 w-full">
