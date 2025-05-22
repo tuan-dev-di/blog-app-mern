@@ -127,7 +127,25 @@ const ListPost = () => {
           </Link>
         </div>
       </div>
-
+      <span className="flex flex-col mt-7 text-left text-base">
+        {role === "admin" ? (
+          <p>
+            All Posts: <strong>{totalPost}</strong>
+          </p>
+        ) : (
+          <p>You have no permission to know</p>
+        )}
+      </span>
+      <span className="flex flex-col text-left text-base">
+        {role === "admin" ? (
+          <p>
+            Post in last month:{" "}
+            <strong >{postLastMonth}</strong>
+          </p>
+        ) : (
+          <p>You have no permission to know</p>
+        )}
+      </span>
       {/* Table: Display data of list post */}
       <div>
         {role === "admin" && userPost?.length > 0 ? (

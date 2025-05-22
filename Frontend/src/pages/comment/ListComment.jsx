@@ -117,9 +117,13 @@ const ListPost = () => {
       </div>
       <span className="flex flex-col mt-7 text-left text-base">
         {role === "admin" ? (
-          <p>All Comments: {totalComment}</p>
+          <p>
+            All Comments: <strong>{totalComment}</strong>
+          </p>
         ) : (
-          <p>All Your Comments: {totalComment}</p>
+          <p>
+            All Your Comments: <strong>{totalComment}</strong>
+          </p>
         )}
       </span>
       <div>
