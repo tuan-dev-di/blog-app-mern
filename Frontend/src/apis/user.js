@@ -5,9 +5,17 @@ export const UPDATE_ACCOUNT = (userId, data) =>
 export const DELETE_ACCOUNT = (userId, data) =>
   callApi(`/auth/users/account/delete/${userId}`, "DELETE", data);
 
-export const GET_USERS = async (userId, page = 1, limit = 7) => {
+export const GET_USERS = async (userId, page, limit) => {
   const response = await callApi(
     `/auth/users/get-users/${userId}?page=${page}&limit=${limit}`,
+    "POST"
+  );
+  return response?.data;
+};
+
+export const GET_USERS_OVERVIEW = async (userId, limit) => {
+  const response = await callApi(
+    `/auth/users/get-users/${userId}?limit=${limit}`,
     "POST"
   );
   return response?.data;

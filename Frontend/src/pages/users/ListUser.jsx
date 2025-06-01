@@ -18,13 +18,14 @@ const ListPost = () => {
 
   /*
    * Set pagination
-   * Set 7 posts per page
+   * Set 7 users per page
    */
   const [userList, setUserList] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [totalUser, setTotalUser] = useState(0);
   const [userLastMonth, setUserLastMonth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const limitUsers = 7;
 
   /*
    * Set delete function with modal
@@ -33,7 +34,7 @@ const ListPost = () => {
   //? ---------------| GET LIST POST |---------------
   const list_users = useCallback(async () => {
     try {
-      const data = await GET_USERS(userId, currentPage);
+      const data = await GET_USERS(userId, currentPage, limitUsers);
       if (!data) toast.error(data.message, { theme: "colored" });
 
       setUserList(data.users);
@@ -44,7 +45,7 @@ const ListPost = () => {
       console.log("Get user error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [userId, currentPage]);
+  }, [userId, currentPage, limitUsers]);
 
   useEffect(() => {
     if (role === "admin") list_users();

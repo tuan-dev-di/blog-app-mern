@@ -14,7 +14,7 @@ const {
   delete_account,
 } = require("../controllers/user/DeleteAccountController.js");
 const { get_users } = require("../controllers/user/GetListUserController.js");
-// const { get_user } = require("../controllers/user/GetUserController.js");
+const { get_user } = require("../controllers/user/GetUserController.js");
 
 //? ---------------| USING ROUTER FROM EXPRESS |---------------
 const router = express.Router();
@@ -29,6 +29,6 @@ router.post("/sign-out/:userId", sign_out);
 router.put("/account/update/:userId", verifyToken, update_account);
 router.delete("/account/delete/:userId", verifyToken, delete_account);
 router.post("/get-users/:userId", verifyToken, get_users);
-// router.get("/:userId", get_user);
+router.get("/:userId", get_user);
 
 module.exports = router;

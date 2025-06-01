@@ -30,11 +30,12 @@ const ListPost = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [commentId, setCommentId] = useState("");
+  const limitComments = 7
 
   //? ---------------| GET LIST POST |---------------
-  const list_comments_for_admin = useCallback(async () => {
+  const list_comments = useCallback(async () => {
     try {
-      const data = await GET_COMMENT_LIST(userId, currentPage);
+      const data = await GET_COMMENT_LIST(userId, currentPage, limitComments);
       if (!data) toast.error(data.message, { theme: "colored" });
       const merged = data.comments.map((comment, index) => ({
         ...comment,
@@ -47,15 +48,15 @@ const ListPost = () => {
       console.log("Get comment error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [userId, currentPage]);
+  }, [userId, currentPage, limitComments]);
 
   useEffect(() => {
-    list_comments_for_admin();
-  }, [list_comments_for_admin]);
+    list_comments();
+  }, [list_comments]);
 
   //? ---------------| HANDLE REFRESH LIST COMMENT |---------------
   const handleRefresh = async () => {
-    await list_comments_for_admin();
+    await list_comments();
     toast.success("List Comments Refreshed!", { theme: "colored" });
   };
 
@@ -131,7 +132,7 @@ const ListPost = () => {
           <div>
             <Table hoverable className="mt-7 shadow-md">
               <Table.Head className="text-base">
-                <Table.HeadCell>Title&apos;s Post</Table.HeadCell>
+                <Table.HeadCell>Post&apos;s Title</Table.HeadCell>
                 <Table.HeadCell>Comment Content</Table.HeadCell>
                 <Table.HeadCell>Likes</Table.HeadCell>
                 <Table.HeadCell>Author</Table.HeadCell>

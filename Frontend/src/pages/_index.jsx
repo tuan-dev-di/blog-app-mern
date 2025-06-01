@@ -6,6 +6,7 @@ export { default as Project } from "./Project";
 export { default as Home } from "./Home";
 export { default as Overview } from "./Overview";
 
+
 // ---------------| PROFILE |---------------
 export { default as Profile } from "./profile/Profile";
 export { default as DetailAccount } from "./profile/DetailAccount";

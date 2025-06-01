@@ -31,6 +31,7 @@ const ListPost = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalPost, setTotalPost] = useState(0);
   const [postLastMonth, setPostLastMonth] = useState(0);
+  const limitPosts = 7;
 
   /*
    * Set modal
@@ -42,7 +43,7 @@ const ListPost = () => {
   //? ---------------| GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
-      const data = await GET_POSTS(currentPage);
+      const data = await GET_POSTS(currentPage, limitPosts);
       if (!data) toast.error(data.message, { theme: "colored" });
 
       setUserPost(data.posts);
@@ -53,7 +54,7 @@ const ListPost = () => {
       console.log("Get post error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [currentPage]);
+  }, [currentPage, limitPosts]);
 
   useEffect(() => {
     if (role === "admin") list_posts();

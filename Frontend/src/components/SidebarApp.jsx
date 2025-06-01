@@ -35,7 +35,6 @@ const SidebarApp = () => {
       localStorage.removeItem("user");
 
       dispatch(signOutSuccess(data.message));
-      console.log("Sign out successfully!");
       navigate("/sign-in");
     } catch (error) {
       console.log("Sign out error:", error.message);

@@ -11,9 +11,17 @@ export const GET_COMMENTS_IN_POST = async (postId) => {
   return response?.data;
 };
 
-export const GET_COMMENT_LIST = async (userId, page = 1, limit = 7) => {
+export const GET_COMMENT_LIST = async (userId, page, limit) => {
   const response = await callApi(
     `/comments/${userId}/get-comments?page=${page}&limit=${limit}`,
+    "POST"
+  );
+  return response?.data;
+};
+
+export const GET_COMMENT_OVERVIEW = async (userId, limit) => {
+  const response = await callApi(
+    `/comments/${userId}/get-comments?limit=${limit}`,
     "POST"
   );
   return response?.data;
