@@ -46,6 +46,7 @@ const get_comments = async (req, res) => {
             },
             postInformation: {
               title: post?.title || "Unknown Title Post",
+              slug: post?.slug || "Unknown Slug Post"
             },
           };
         } catch (error) {
@@ -58,6 +59,7 @@ const get_comments = async (req, res) => {
             },
             postInformation: {
               title: "ERROR",
+              slug: "ERROR",
             },
           };
         }

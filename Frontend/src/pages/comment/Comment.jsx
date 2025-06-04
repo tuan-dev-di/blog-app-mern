@@ -1,7 +1,7 @@
 //? ---------------| IMPORT LIBRARIES |---------------
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
@@ -149,7 +149,11 @@ const Comment = () => {
                   {commentList.map((comment) => (
                     <Table.Row key={comment._id}>
                       <Table.Cell className="max-w-44 whitespace-normal break-words">
-                        {comment.postInformation?.title}
+                        <Link
+                          to={`/posts/get-posts/detail/${comment.postInformation?.slug}`}
+                        >
+                          {comment.postInformation?.title}
+                        </Link>
                       </Table.Cell>
                       <Table.Cell className="max-w-44 whitespace-normal break-words">
                         {comment.content}
