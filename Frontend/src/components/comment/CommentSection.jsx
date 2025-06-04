@@ -22,7 +22,7 @@ import Comment from "./Comment";
 const CommentSection = ({ postId }) => {
   const navigate = useNavigate();
   const curUser = useSelector((state) => state?.user?.currentUser);
-  const user_id = curUser.user._id;
+  const user_id = curUser?.user?._id;
 
   const [content, setContent] = useState(""); // Content of comment
   const [comments, setComments] = useState([]); // List of comments in post detail
@@ -161,7 +161,7 @@ const CommentSection = ({ postId }) => {
         <div className="flex items-center gap-2 my-5">
           <p>Signed in as: </p>
           <img
-            src={curUser.user.profileImage}
+            src={curUser?.user?.profileImage}
             alt=""
             className="w-7 h-7 object-cover rounded-full"
             onError={(e) => {
@@ -170,7 +170,7 @@ const CommentSection = ({ postId }) => {
             }}
           />
           <Link to="/profile" className="text-sm text-cyan-600 hover:underline">
-            {curUser.user.username} - {curUser.user.email}
+            {curUser?.user?.username} - {curUser?.user?.email}
           </Link>
         </div>
       ) : (

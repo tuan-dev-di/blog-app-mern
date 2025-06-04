@@ -108,7 +108,7 @@ const Overview = () => {
                       <h3 className="uppercase text-xl">Total Users:</h3>
                       <p className="text-4xl">{totalUser}</p>
                     </div>
-                    <FaUsers className="p-2 bg-teal-700 text-white rounded-full text-7xl shadow-lg" />
+                    <FaUsers className="p-3 bg-teal-700 text-white rounded-full text-7xl shadow-lg" />
                   </div>
                   {userLastMonth >= 0 ? (
                     <div className="flex gap-2 text-base">
@@ -136,7 +136,7 @@ const Overview = () => {
                       <h3 className="uppercase text-xl">Total Posts:</h3>
                       <p className="text-4xl">{totalPost}</p>
                     </div>
-                    <MdArticle className="p-2 bg-indigo-700 text-white rounded-full text-7xl shadow-lg" />
+                    <MdArticle className="p-3 bg-indigo-700 text-white rounded-full text-7xl shadow-lg" />
                   </div>
                   {postLastMonth >= 0 ? (
                     <div className="flex gap-2 text-base">
@@ -164,7 +164,7 @@ const Overview = () => {
                       <h3 className="uppercase text-xl">Total Comments:</h3>
                       <p className="text-4xl">{totalComment}</p>
                     </div>
-                    <BiSolidCommentDetail className="p-2 bg-lime-700 text-white rounded-full text-7xl shadow-lg" />
+                    <BiSolidCommentDetail className="p-3 bg-lime-700 text-white rounded-full text-7xl shadow-lg" />
                   </div>
                 </div>
               </div>

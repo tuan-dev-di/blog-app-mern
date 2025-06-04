@@ -17,6 +17,7 @@ const DetailPost = () => {
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [recentPost, setRecentPost] = useState(null);
+  const amount_recent_post = 3;
 
   //? ---------------| GET DETAIL POST |---------------
   const post_detail = useCallback(async () => {
@@ -41,7 +42,7 @@ const DetailPost = () => {
   //? ---------------| GET RECENT POSTS |---------------
   const recent_post = useCallback(async () => {
     try {
-      const data = await GET_RECENT_POSTS(4);
+      const data = await GET_RECENT_POSTS(amount_recent_post);
 
       if (!data) {
         toast.error(data?.message || "No data here.", { theme: "colored" });
@@ -136,7 +137,7 @@ const DetailPost = () => {
 
       {/* ---------------| RECENT POSTS |--------------- */}
       <div className="flex flex-col justify-center items-center mb-5">
-        <h1 className="text-2xl mt-5">RECENT POSTS</h1>
+        <h1 className="text-3xl font-semibold text-center">RECENT POSTS</h1>
         <div className="flex flex-wrap gap-5 mt-5 justify-center">
           {/* {recentPost?.map((post) => (
             <div key={post._id}>

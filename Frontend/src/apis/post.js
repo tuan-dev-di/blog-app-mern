@@ -21,7 +21,7 @@ export const GET_POSTS_OVERVIEW = async (limit) => {
   return response?.data;
 };
 
-export const GET_RECENT_POSTS = async (limit = 3) => {
+export const GET_RECENT_POSTS = async (limit) => {
   const response = await callApi(`/posts/get-posts?limit=${limit}`, "GET");
   return response?.data;
 };

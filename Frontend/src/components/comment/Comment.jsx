@@ -22,8 +22,8 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const comment_id = comment._id;
 
   const curUser = useSelector((state) => state?.user?.currentUser);
-  const user_id = curUser.user._id;
-  const user_role = curUser.user.role;
+  const user_id = curUser?.user?._id;
+  const user_role = curUser?.user?.role;
 
   const [isEditComment, setIsEditComment] = useState(false);
   const [editComment, setEditComment] = useState(comment.content);
@@ -80,8 +80,8 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-shrink-0 mr-3">
         <img
-          src={user.profileImage}
-          alt={user.email}
+          src={user?.profileImage}
+          alt={user?.email}
           className="w-10 h-10 object-cover rounded-full"
           onError={(e) => {
             e.target.src =
@@ -92,7 +92,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
       <div className="flex-1">
         <div className="flex items-center gap-1">
           <span className="font-semibold truncate ">
-            {user ? `@${user.username}` : "Unknown User"}
+            {user ? `@${user?.username}` : "Unknown User"}
           </span>
           <span className="text-gray-400">
             {moment(comment.createdAt).fromNow()}
