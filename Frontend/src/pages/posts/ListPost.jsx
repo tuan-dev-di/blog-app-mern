@@ -139,8 +139,7 @@ const ListPost = () => {
       <span className="flex flex-col text-left text-base">
         {role === "admin" ? (
           <p>
-            Post in last month:{" "}
-            <strong >{postLastMonth}</strong>
+            Post in last month: <strong>{postLastMonth}</strong>
           </p>
         ) : (
           <p>You have no permission to know</p>
@@ -150,7 +149,7 @@ const ListPost = () => {
       <div>
         {role === "admin" && userPost?.length > 0 ? (
           <div>
-            <Table hoverable className="mt-7 shadow-md">
+            <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
               <Table.Head className="text-base">
                 <Table.HeadCell>Post Image</Table.HeadCell>
                 <Table.HeadCell>Title</Table.HeadCell>

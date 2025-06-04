@@ -2,7 +2,6 @@ const { convert } = require("html-to-text");
 // return !something đã bao gồm: undefined, null và rỗng
 // Thay vào đó sẽ sử dụng: return !something || something.trim() === "" để tránh khoảng trắng bị nhập dư bởi user
 
-
 //? ---------------| VALIDATION TITLE |---------------
 const checkEmptyTitle = (title) => {
   return !title || title.trim() === "";
@@ -28,8 +27,7 @@ const checkLengthContent = (content) => {
 };
 
 // const checkRegexContent = (content) => {
-  
-//   // const contentRegexPattern = /^[A-Z][a-zA-Z0-9\s]*\S$/;
+// const contentRegexPattern = /^[A-Z][a-zA-Z0-9\s]*\S$/;
 //   const contentRegexPattern =
 //     /^[A-Z][a-zA-Z0-9]*(?: [a-zA-Z0-9\*\_\-\[\]\(\)\.\,\?\!\#]+)*$/;
 //   const convertContent = convert(content, { wordwrap: false });

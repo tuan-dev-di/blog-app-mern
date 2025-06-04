@@ -130,7 +130,7 @@ const ListPost = () => {
       <div>
         {commentList.length > 0 ? (
           <div>
-            <Table hoverable className="mt-7 shadow-md">
+            <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
               <Table.Head className="text-base">
                 <Table.HeadCell>Post&apos;s Title</Table.HeadCell>
                 <Table.HeadCell>Comment Content</Table.HeadCell>

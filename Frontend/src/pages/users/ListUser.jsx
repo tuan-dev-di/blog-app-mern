@@ -105,7 +105,7 @@ const ListPost = () => {
       <div>
         {role === "admin" && userList.length > 0 ? (
           <div>
-            <Table hoverable className="mt-7 shadow-md">
+            <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
               <Table.Head className="text-base">
                 <Table.HeadCell>User Image</Table.HeadCell>
                 <Table.HeadCell>Full Name</Table.HeadCell>
