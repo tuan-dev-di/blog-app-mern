@@ -10,21 +10,19 @@ import PostCard from "../components/PostCard";
 
 const Home = () => {
   const [postList, setPostList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const limitPosts = 8;
 
   const list_posts = useCallback(async () => {
     try {
-      const data = await GET_POSTS(currentPage, limitPosts);
+      const data = await GET_POSTS(1, limitPosts);
       if (!data) toast.error(data.message, { theme: "colored" });
 
-      console.log("POST:", data);
       setPostList(data.posts);
     } catch (error) {
       console.log("Get post error:", error.message);
       toast.error(error.message, { theme: "colored" });
     }
-  }, [currentPage, limitPosts]);
+  }, [limitPosts]);
 
   useEffect(() => {
     list_posts();
@@ -32,6 +30,7 @@ const Home = () => {
 
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-col gap-6 p-14 px-3 max-w-screen-2xl mx-auto text-left">
         <h1 className="font-bold text-5xl lg:text-6xl pt-10">
           Welcome to Arys&apos;s Blog

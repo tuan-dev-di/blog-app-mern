@@ -1,6 +1,7 @@
 //? ---------------| IMPORT LIBRARIES |---------------
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import {
@@ -18,10 +19,30 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
-  const curUser = useSelector((state) => state.user.currentUser);
+  const curUser = useSelector((state) => state?.user?.currentUser);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useSelector((state) => state.theme.theme);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromURL = urlParams.get("searchTerm");
+
+    if (searchTermFromURL) setSearchTerm(searchTermFromURL);
+  }, [location.search]);
+
+  const handleSearching = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", searchTerm);
+
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
 
   return (
     // Whole Header
@@ -37,13 +58,15 @@ const Header = () => {
       </Link>
 
       {/* ---------------| SEARCH INPUT |---------------*/}
-      <form action="">
+      <form onSubmit={handleSearching}>
         <TextInput
           type="text"
           placeholder="Searching..."
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
-        ></TextInput>
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch></AiOutlineSearch>
@@ -84,18 +107,18 @@ const Header = () => {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt="user" img={curUser.user.profileImage} rounded />
+              <Avatar alt="user" img={curUser?.user?.profileImage} rounded />
             }
           >
             <Dropdown.Header>
               <Link to="/profile">
                 {/* Display Name */}
                 <span className="block text-sm">
-                  {curUser.user.displayName}
+                  {curUser?.user?.displayName}
                 </span>
                 {/* Email */}
                 <span className="block truncate text-sm font-medium">
-                  {curUser.user.email}
+                  {curUser?.user?.email}
                 </span>
               </Link>
             </Dropdown.Header>

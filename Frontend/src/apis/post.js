@@ -13,11 +13,16 @@ export const GET_POSTS = async (page, limit) => {
   return response?.data;
 };
 
-export const GET_POSTS_OVERVIEW = async (limit) => {
+export const SEARCH_POSTS = async (searchTerm, category, sort) => {
   const response = await callApi(
-    `/posts/get-posts?limit=${limit}`,
+    `/posts/get-posts?${searchTerm}&${category}&${sort}`,
     "GET"
   );
+  return response?.data;
+};
+
+export const GET_POSTS_OVERVIEW = async (limit) => {
+  const response = await callApi(`/posts/get-posts?limit=${limit}`, "GET");
   return response?.data;
 };
 

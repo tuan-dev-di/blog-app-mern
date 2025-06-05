@@ -20,6 +20,7 @@ import {
   User,
   Comment,
   Overview,
+  Search,
 } from "./pages/_index";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
         {/* ---------------| COMMON |--------------- */}
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/search" element={<Search />}></Route>
         <Route path="/project" element={<Project />}></Route>
         <Route path="/sign-in" element={<SignIn />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
