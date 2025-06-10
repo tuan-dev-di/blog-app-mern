@@ -14,6 +14,17 @@ export const GET_POSTS = async (page, limit) => {
 };
 
 export const SEARCH_POSTS = async (searchTerm, category, sort) => {
+  // const queryParams = new URLSearchParams();
+
+  // if (searchTerm) queryParams.append("searchTerm", searchTerm);
+  // if (category) queryParams.append("category", category);
+  // if (sort) queryParams.append("sort", sort);
+
+  // const response = await callApi(
+  //   `/posts/get-posts?${queryParams.toString()}`,
+  //   "GET"
+  // );
+  // return response?.data;
   const response = await callApi(
     `/posts/get-posts?${searchTerm}&${category}&${sort}`,
     "GET"

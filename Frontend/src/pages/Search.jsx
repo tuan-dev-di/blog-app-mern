@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { SEARCH_POSTS } from "../apis/post";
+import PostCard from "../components/PostCard";
 
 const Search = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const Search = () => {
   });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showmore, setShowmore] = useState(false);
+  //TODO const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -56,8 +57,8 @@ const Search = () => {
         setPosts(data.posts);
         setLoading(false);
 
-        if (data.posts.length === 9) setShowmore(true);
-        else setShowmore(false);
+        // if (data.posts.length === 7) setShowMore(true);
+        // else setShowMore(false);
       } catch (error) {
         console.log("Get post error:", error.message);
         toast.error(error.message, { theme: "colored" });
@@ -83,13 +84,40 @@ const Search = () => {
     e.preventDefault();
 
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set("searchTerm", sidebarSearch.searchTerm);
-    urlParams.set("category", sidebarSearch.category);
-    urlParams.set("sort", sidebarSearch.sort);
+
+    if (sidebarSearch.searchTerm && sidebarSearch.searchTerm !== null)
+      urlParams.set("searchTerm", sidebarSearch.searchTerm);
+    if (sidebarSearch.category && sidebarSearch.category !== null)
+      urlParams.set("category", sidebarSearch.category);
+    if (sidebarSearch.sort && sidebarSearch.sort !== null)
+      urlParams.set("sort", sidebarSearch.sort);
 
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
+
+  // const handleShowMore = async () => {
+  //   const numberOfPosts = posts.length;
+  //   const startIndex = numberOfPosts;
+  //   const urlParams = new URLSearchParams(location.search);
+  //   urlParams.set("startIndex", startIndex);
+  //   const searchQuery = urlParams.toString();
+  //   const res = await fetch(`/api/posts/get-posts?${searchQuery}`);
+  //   if (!res.ok) {
+  //     return;
+  //   }
+  //   if (res.ok) {
+  //     const data = await res.json();
+  //     setPosts([...posts, ...data.posts]);
+  //     console.log(...posts);
+  //     console.log(...data.posts);
+  //     if (data.posts.length === 9) {
+  //       setShowMore(true);
+  //     } else {
+  //       setShowMore(false);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -118,7 +146,7 @@ const Search = () => {
             />
             <Select
               id="category"
-              value={sidebarSearch.category}
+              value={sidebarSearch.category ?? "uncategorized"}
               onChange={handleSearch}
             >
               <option value="uncategorized">
@@ -140,7 +168,7 @@ const Search = () => {
             />
             <Select
               id="sort"
-              value={sidebarSearch.sort}
+              value={sidebarSearch.sort ?? "desc"}
               onChange={handleSearch}
               className="w-[256px]"
             >
@@ -150,7 +178,7 @@ const Search = () => {
           </div>
 
           <Button
-            className=" mt-2"
+            className="mt-2"
             outline
             gradientDuoTone="pinkToOrange"
             type="submit"
@@ -158,6 +186,30 @@ const Search = () => {
             Apply Filter
           </Button>
         </form>
+      </div>
+      <div className="p-5 flex flex-col">
+        <h1 className="text-3xl font-semibold">Results:</h1>
+        <div className="gap-5 mt-5 flex flex-wrap">
+          {!loading && posts.length === 0 && (
+            <p className="italic text-lg text-gray-400">No posts found.</p>
+          )}
+          {loading && <p className="text-xl text-gray-500">Loading...</p>}
+          {!loading &&
+            posts?.map((post) => (
+              <div key={post._id}>
+                <PostCard post={post} />
+              </div>
+            ))}
+        </div>
+        {/* {showMore && (
+          <button
+            type="button"
+            onClick={handleShowMore}
+            className="text-gray-700 hover:text-teal-700 dark:text-white   dark:hover:text-slate-700 mt-7 mb-2 font-medium rounded-full text-xl px-5 py-2.5 me-2 "
+          >
+            Show More
+          </button>
+        )} */}
       </div>
     </div>
   );
