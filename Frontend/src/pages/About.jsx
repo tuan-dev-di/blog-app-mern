@@ -4,27 +4,27 @@ const About = () => {
       <div className="max-w-2xl mx-auto p-3 text-center">
         <div>
           <h1 className="text-5xl font font-semibold text-center my-7">
-            About Arys&apos;s Blog
+            About Arys Domi
           </h1>
           <div className="text-md text-pretty text-lg p-5 text-gray-500 flex flex-col gap-6">
             <p>
-              Welcome to Arys&apos;s Blog - my personal programming website!
-              This is where I record the journey to study, explore and develop
-              programming projects - from Backend to Frontend, from ideas to
-              real products.
+              Chào mừng bạn đến với blog của Arys Domi. Trang web lập trình cá
+              nhân của mình! Đây là nơi mình ghi lại hành trình học tập, khám
+              phá và phát triển các dự án lập trình - từ Backend đến Frontend,
+              từ ý tưởng đến sản phẩm thực sự.
             </p>
 
             <p>
-              This website is built with the goal of sharing knowledge,
-              experience and programming resources that I have accumulated. I
-              want to create a clear, easy -to -understand and useful space for
-              both myself and those who are passionate about technology.
+              Trang web này được xây dựng với mục tiêu chia sẻ kiến thức, kinh
+              nghiệm và tài nguyên lập trình mà tôi đã tích lũy. Mình muốn tạo
+              ra một không gian rõ ràng, dễ hiểu và hữu ích cho cả bản thân và
+              những người cùng chung đam mê lập trình.
             </p>
 
             <p>
-              If you are studying programming or working in the industry, boldly
-              share your opinion, discuss or contribute ideas. Knowledge is
-              really valuable when spreading and developing together.
+              Nếu bạn đang học lập trình hoặc làm việc trong ngành, mình xin bạn
+              chia sẻ kinh nghiệm của bạn, thảo luận hoặc đóng góp ý tưởng. Vì đó là
+              những nguồn tài nguyên quý giá đáng học hỏi.
             </p>
           </div>
         </div>

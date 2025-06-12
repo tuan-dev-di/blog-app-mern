@@ -1,5 +1,7 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+
 const ThemeProvider = ({ children }) => {
   const { theme } = useSelector((state) => state.theme);
 

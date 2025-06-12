@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Label, TextInput, Button, Spinner } from "flowbite-react";
+import { Label, TextInput, Button, Spinner, Tooltip } from "flowbite-react";
 import { HiMail } from "react-icons/hi";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,7 +19,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  //? ---------------| GET ATTRIBUTE |---------------
+  //? ---------------| HANDLE GET ATTRIBUTE TO SIGN UP |---------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -39,10 +39,11 @@ const SignUp = () => {
         return;
       }
 
+      toast.success("Đăng ký thành công!", { theme: "colored" });
+
       setTimeout(() => {
         navigate("/sign-in");
       }, 3000);
-      toast.success("Sign up successfully!", { theme: "colored" });
     } catch (error) {
       toast.error(error.message, { theme: "colored" });
     } finally {
@@ -62,19 +63,27 @@ const SignUp = () => {
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5">
         <div className="font-semibold text-center text-6xl">
-          <span>Sign Up</span>
+          <span>Đăng Ký</span>
         </div>
 
         {/* Form Sign Up */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           {/* ---------------| USERNAME |--------------- */}
           <div>
-            <Label className="text-lg">
-              Username<span className="text-red-500 ml-1">*</span>
+            <Label className="text-lg flex">
+              Tên tài khoản
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
             </Label>
             <TextInput
               id="username"
-              placeholder="Enter your username"
+              placeholder="Ví dụ: Example"
               type="text"
               icon={FaUser}
               required
@@ -84,13 +93,21 @@ const SignUp = () => {
 
           {/* ---------------| PASSWORD |--------------- */}
           <div>
-            <Label className="text-lg">
-              Password<span className="text-red-500 ml-1">*</span>
+            <Label className="text-lg flex">
+              Mật khẩu
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
             </Label>
             <div className="relative">
               <TextInput
                 id="password"
-                placeholder="Enter your password"
+                placeholder="Ví dụ: P@ssw0rd"
                 type={showPassword ? "text" : "password"}
                 icon={FaLock}
                 required
@@ -108,12 +125,20 @@ const SignUp = () => {
 
           {/* ---------------| EMAIL |--------------- */}
           <div>
-            <Label className="text-lg">
-              Email<span className="text-red-500 ml-1">*</span>
+            <Label className="text-lg flex">
+              Email
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
             </Label>
             <TextInput
               id="email"
-              placeholder="Enter your email address"
+              placeholder="Ví dụ: example@gmail.com"
               type="email"
               icon={HiMail}
               required
@@ -123,12 +148,20 @@ const SignUp = () => {
 
           {/* ---------------| DISPLAY NAME |--------------- */}
           <div>
-            <Label className="text-lg">
-              Display Name<span className="text-red-500 ml-1">*</span>
+            <Label className="text-lg flex">
+              Tên hiển thị
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
             </Label>
             <TextInput
               id="displayName"
-              placeholder="Enter your display name"
+              placeholder="Ví dụ: Nguyễn Văn A"
               type="text"
               required
               onChange={handleChange}
@@ -142,24 +175,24 @@ const SignUp = () => {
             {loading ? (
               <div>
                 <Spinner size="sm" />
-                <span className="pl-3">Loading...</span>
+                <span className="pl-3">Đang đăng ký...</span>
               </div>
             ) : (
-              "Continue"
+              "Tiếp tục"
             )}
           </Button>
-          <p className="font-sans text-center">Or</p>
+          <p className="font-sans text-center">Hoặc</p>
 
           {/* Using Gooogle Authentication to Sign In/Up */}
           <OAuth />
         </form>
 
         {/* Navigate to Sign In page */}
-        <div className="flex gap-2 mt-5 text-base">
+        <div className="flex gap-1 mt-5 text-base">
           <Link to="/sign-in" className="text-blue-500">
-            Sign In
+            Đăng nhập
           </Link>
-          <span>if you have an account!</span>
+          <span>nếu bạn đã có tài khoản rồi!</span>
         </div>
       </div>
     </div>

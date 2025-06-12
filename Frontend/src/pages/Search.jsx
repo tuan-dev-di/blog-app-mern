@@ -24,6 +24,7 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   //TODO const [showMore, setShowMore] = useState(false);
 
+  //? ---------------| HANDLE GET RESULT FROM SEARCHING |---------------
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromURL = urlParams.get("searchTerm");
@@ -67,6 +68,8 @@ const Search = () => {
     fetchPosts();
   }, [location.search]);
 
+  //? ---------------| HANDLE GET ATTRIBUTE TO SEARCH |---------------
+  // If user search with title, URL will display title, other will not display
   const handleSearch = (e) => {
     if (e.target.id === "title")
       setSidebarSearch({ ...sidebarSearch, searchTerm: e.target.value });
@@ -80,6 +83,7 @@ const Search = () => {
     }
   };
 
+  //? ---------------| HANDLE SEARCH WITH EACH ATTRIBUTE |---------------
   const handleSubmitSearch = (e) => {
     e.preventDefault();
 
@@ -133,7 +137,7 @@ const Search = () => {
               id="title"
               value={sidebarSearch.searchTerm}
               onChange={handleSearch}
-              placeholder="Title searching"
+              placeholder="Tìm kiếm theo tiêu đề"
               type="text"
               className="w-[256px]"
             />
@@ -150,7 +154,7 @@ const Search = () => {
               onChange={handleSearch}
             >
               <option value="uncategorized">
-                ----- Language | Framework -----
+                --- Ngôn ngữ | Framework ---
               </option>
               <option value="javascript-vuejs">JavaScript | VueJS</option>
               <option value="javascript-reactjs">JavaScript | ReactJS</option>
@@ -172,8 +176,8 @@ const Search = () => {
               onChange={handleSearch}
               className="w-[256px]"
             >
-              <option value="desc">LASTEST</option>
-              <option value="asc">OLDEST</option>
+              <option value="desc">Gần đây nhất</option>
+              <option value="asc">Cũ hơn</option>
             </Select>
           </div>
 
@@ -183,7 +187,7 @@ const Search = () => {
             gradientDuoTone="pinkToOrange"
             type="submit"
           >
-            Apply Filter
+            Áp dụng
           </Button>
         </form>
       </div>
@@ -191,9 +195,9 @@ const Search = () => {
         <h1 className="text-3xl font-semibold">Results:</h1>
         <div className="gap-5 mt-5 flex flex-wrap">
           {!loading && posts.length === 0 && (
-            <p className="italic text-lg text-gray-400">No posts found.</p>
+            <p className="italic text-lg text-gray-400">Không tìm thấy.</p>
           )}
-          {loading && <p className="text-xl text-gray-500">Loading...</p>}
+          {loading && <p className="text-xl text-gray-500">Đang tải...</p>}
           {!loading &&
             posts?.map((post) => (
               <div key={post._id}>

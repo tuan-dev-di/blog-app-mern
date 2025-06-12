@@ -61,7 +61,7 @@ const Header = () => {
       <form onSubmit={handleSearching}>
         <TextInput
           type="text"
-          placeholder="Searching..."
+          placeholder="Tìm kiếm..."
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
           value={searchTerm}
@@ -69,7 +69,7 @@ const Header = () => {
         />
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
-        <AiOutlineSearch></AiOutlineSearch>
+        <AiOutlineSearch />
       </Button>
 
       {/* ---------------| TOGGLE BUTTON CHANGE THEME |---------------*/}
@@ -82,18 +82,18 @@ const Header = () => {
         >
           {theme === "light" ? (
             <Tooltip
-              content="Dark Mode"
+              content="Giao diện tối"
               style="light"
-              placement="bottom"
+              placement="left"
               trigger="hover"
             >
               <IoMoonSharp />
             </Tooltip>
           ) : (
             <Tooltip
-              content="Light Mode"
+              content="Giao diện sáng"
               style="dark"
-              placement="bottom"
+              placement="left"
               trigger="hover"
             >
               <IoSunny />
@@ -126,7 +126,7 @@ const Header = () => {
         ) : (
           <Link to="/sign-in">
             <Button gradientDuoTone="purpleToBlue" color="gray" pill>
-              Sign In
+              Đăng Nhập
             </Button>
           </Link>
         )}
@@ -135,7 +135,7 @@ const Header = () => {
       {/* ---------------| NAVIGATE PAGES |---------------*/}
       <NavbarCollapse>
         <Navbar.Link active={path === "/"} as={"div"}>
-          <Link to="/">Home</Link>
+          <Link to="/">Trang chủ</Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/about"} as={"div"}>
           <Link to="/about">About</Link>

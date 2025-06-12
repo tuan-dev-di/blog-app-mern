@@ -105,7 +105,7 @@ const Overview = () => {
                 <div className="flex flex-col p-3 gap-3 md:w-80 w-full rounded-md shadow-md dark:bg-slate-800">
                   <div className="flex justify-between">
                     <div className="">
-                      <h3 className="uppercase text-xl">Total Users:</h3>
+                      <h3 className="uppercase text-xl">Tất cả người dùng:</h3>
                       <p className="text-4xl">{totalUser}</p>
                     </div>
                     <FaUsers className="p-3 bg-teal-700 text-white rounded-full text-7xl shadow-lg" />
@@ -116,7 +116,7 @@ const Overview = () => {
                         <FaArrowUpLong />
                         {userLastMonth}
                       </span>
-                      <p className="">Last Month</p>
+                      <p className="">Tháng vừa qua</p>
                     </div>
                   ) : (
                     <div className="flex gap-2 text-base">
@@ -124,7 +124,7 @@ const Overview = () => {
                         <FaArrowDownLong />
                         {userLastMonth}
                       </span>
-                      <p className="">Last Month</p>
+                      <p className="">Tháng vừa qua</p>
                     </div>
                   )}
                 </div>
@@ -133,7 +133,7 @@ const Overview = () => {
                 <div className="flex flex-col p-3 gap-3 md:w-80 w-full rounded-md shadow-md dark:bg-slate-800">
                   <div className="flex justify-between">
                     <div className="">
-                      <h3 className="uppercase text-xl">Total Posts:</h3>
+                      <h3 className="uppercase text-xl">Tất cả bài viết:</h3>
                       <p className="text-4xl">{totalPost}</p>
                     </div>
                     <MdArticle className="p-3 bg-indigo-700 text-white rounded-full text-7xl shadow-lg" />
@@ -144,7 +144,7 @@ const Overview = () => {
                         <FaArrowUpLong />
                         {postLastMonth}
                       </span>
-                      <p className="">Last Month</p>
+                      <p className="">Tháng vừa qua</p>
                     </div>
                   ) : (
                     <div className="flex gap-2 text-base">
@@ -152,7 +152,7 @@ const Overview = () => {
                         <FaArrowDownLong />
                         {postLastMonth}
                       </span>
-                      <p className="">Last Month</p>
+                      <p className="">Tháng vừa qua</p>
                     </div>
                   )}
                 </div>
@@ -161,7 +161,7 @@ const Overview = () => {
                 <div className="flex flex-col p-3 gap-3 md:w-80 w-full rounded-md shadow-md dark:bg-slate-800">
                   <div className="flex justify-between">
                     <div className="">
-                      <h3 className="uppercase text-xl">Total Comments:</h3>
+                      <h3 className="uppercase text-xl">Tất cả bình luận:</h3>
                       <p className="text-4xl">{totalComment}</p>
                     </div>
                     <BiSolidCommentDetail className="p-3 bg-lime-700 text-white rounded-full text-7xl shadow-lg" />
@@ -174,15 +174,17 @@ const Overview = () => {
                 {/* ---------------| RECENT USER |---------------*/}
                 <div className="p-3 w-full md:w-auto font-semibold text-base rounded-md shadow-md dark:bg-slate-800 ">
                   <div className="flex justify-between p-3 font-semibold text-base">
-                    <h3 className="uppercase text-center p-2">Recent Users</h3>
+                    <h3 className="uppercase text-center p-2">
+                      Người dùng gần đây
+                    </h3>
                     <Button outline gradientDuoTone="purpleToBlue">
-                      <Link to="/users/get-users">See All</Link>
+                      <Link to="/users/get-users">Xem tất cả</Link>
                     </Button>
                   </div>
                   <Table hoverable>
                     <Table.Head>
-                      <Table.HeadCell>User Image</Table.HeadCell>
-                      <Table.HeadCell>Username</Table.HeadCell>
+                      <Table.HeadCell>Ảnh đại diện</Table.HeadCell>
+                      <Table.HeadCell>Tài khoản</Table.HeadCell>
                     </Table.Head>
                     <Table.Body>
                       {userList.map((user) => (
@@ -209,20 +211,18 @@ const Overview = () => {
                 <div className="p-3 w-full md:w-auto font-semibold text-base rounded-md shadow-md dark:bg-slate-800 ">
                   <div className="flex justify-between p-3 font-semibold text-base">
                     <h3 className="uppercase text-center p-2">
-                      Recent Comments
+                      Các bình luận gần đây
                     </h3>
                     <Button outline gradientDuoTone="purpleToBlue">
-                      <Link to="/comments/get-comments">See All</Link>
+                      <Link to="/comments/get-comments">Xem tất cả</Link>
                     </Button>
                   </div>
                   <Table hoverable>
                     <Table.Head>
-                      <Table.HeadCell className="w-48">
-                        Post&apos;s Title
-                      </Table.HeadCell>
-                      <Table.HeadCell>Comment</Table.HeadCell>
-                      <Table.HeadCell>Likes</Table.HeadCell>
-                      <Table.HeadCell>Author</Table.HeadCell>
+                      <Table.HeadCell className="w-48">Tiêu đề</Table.HeadCell>
+                      <Table.HeadCell>Bình luận</Table.HeadCell>
+                      <Table.HeadCell>Lượt thích</Table.HeadCell>
+                      <Table.HeadCell>Tác giả</Table.HeadCell>
                     </Table.Head>
                     <Table.Body>
                       {commentList.map((comment) => (
@@ -246,17 +246,19 @@ const Overview = () => {
                 {/* ---------------| RECENT POSTS |---------------*/}
                 <div className="p-3 w-full md:w-auto font-semibold text-base rounded-md shadow-md dark:bg-slate-800 ">
                   <div className="flex justify-between p-3 font-semibold text-base">
-                    <h3 className="uppercase text-center p-2">Recent Posts</h3>
+                    <h3 className="uppercase text-center p-2">
+                      Bài viết gần đây
+                    </h3>
                     <Button outline gradientDuoTone="purpleToBlue">
-                      <Link to="/posts/get-posts">See All</Link>
+                      <Link to="/posts/get-posts">Xem tất cả</Link>
                     </Button>
                   </div>
                   <Table hoverable>
                     <Table.Head>
-                      <Table.HeadCell>Post&apos;s Image</Table.HeadCell>
-                      <Table.HeadCell>Title</Table.HeadCell>
-                      <Table.HeadCell>Category</Table.HeadCell>
-                      <Table.HeadCell>Created At</Table.HeadCell>
+                      <Table.HeadCell>Ảnh minh họa</Table.HeadCell>
+                      <Table.HeadCell>Tiêu đề</Table.HeadCell>
+                      <Table.HeadCell>Thể loại</Table.HeadCell>
+                      <Table.HeadCell>Tạo vào</Table.HeadCell>
                     </Table.Head>
                     <Table.Body>
                       {postList.map((post) => (
@@ -277,19 +279,13 @@ const Overview = () => {
                           </Table.Cell>
                           <Table.Cell>{post.category}</Table.Cell>
                           <Table.Cell>
-                            {new Date(post.createdAt).toLocaleTimeString(
-                              "en-GB",
-                              {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit",
-                                hour12: false,
-                              }
-                            )}
-                            {" - "}
                             {new Date(post.createdAt).toLocaleDateString(
                               "en-GB",
                               {
+                                hour12: false,
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
                                 day: "2-digit",
                                 month: "2-digit",
                                 year: "numeric",
@@ -305,7 +301,7 @@ const Overview = () => {
             </div>
           ) : (
             <p className="italic font-semibold text-red-700 mt-2">
-              You have no permission or list is empty!
+              Bạn không có quyền hoặc danh sách rỗng!
             </p>
           )}
         </div>

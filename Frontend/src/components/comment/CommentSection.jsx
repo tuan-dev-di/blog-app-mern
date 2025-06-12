@@ -51,7 +51,7 @@ const CommentSection = ({ postId }) => {
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     if (content.length > 300) {
-      toast.error("Comment is contain only 300 characters", {
+      toast.error("Bình luận tối đa chứa 300 ký tự", {
         theme: "colored",
       });
       return;
@@ -69,7 +69,7 @@ const CommentSection = ({ postId }) => {
         return;
       }
 
-      toast.success("Comment successfully", { theme: "colored" });
+      toast.success("Đã bình luận", { theme: "colored" });
       setTimeout(() => {
         window.location.reload();
       }, 3000);
@@ -93,7 +93,7 @@ const CommentSection = ({ postId }) => {
       )
     );
   };
-  //? ---------------| HANDLE SUBMIT EDIT COMMENT |---------------
+  //? ---------------| HANDLE SUBMIT DELETE COMMENT |---------------
   const handleDeleteComment = async (commentId) => {
     setModalOpen(false);
 
@@ -110,7 +110,7 @@ const CommentSection = ({ postId }) => {
         return;
       }
 
-      toast.success("Delete comment successfully!", {
+      toast.success("Đã xóa bình luận!", {
         theme: "colored",
       });
 
@@ -147,7 +147,7 @@ const CommentSection = ({ postId }) => {
         )
       );
     } catch (error) {
-      console.log("Like comment error:", error.message);
+      console.log("Đã thích", error.message);
       toast.error(error.message, { theme: "colored" });
     }
   };
@@ -159,7 +159,7 @@ const CommentSection = ({ postId }) => {
       {/* Show Avatar - Username of account */}
       {curUser ? (
         <div className="flex items-center gap-2 my-5">
-          <p>Signed in as: </p>
+          <p>Đăng nhập bởi: </p>
           <img
             src={curUser?.user?.profileImage}
             alt=""
@@ -175,14 +175,14 @@ const CommentSection = ({ postId }) => {
         </div>
       ) : (
         <div className="text-sm italic">
-          You must be
+          Bạn phải
           <Link
             className="mx-1 text-sm text-cyan-600 hover:underline"
             to={"/sign-in"}
           >
-            sign in
+            đăng nhập
           </Link>
-          to comment.
+          để bình luận.
         </div>
       )}
 
@@ -192,10 +192,10 @@ const CommentSection = ({ postId }) => {
           onSubmit={handleSubmitComment}
           className="border border-teal-400 rounded-xl p-5 my-3"
         >
-          <Label className="text-base" value="Your comment" />
+          <Label className="text-base" value="Bình luận" />
           <Textarea
             id="comment"
-            placeholder="Add your comment..."
+            placeholder="Nhập bình luận của bạn..."
             rows={4}
             maxLength="300"
             onChange={(e) => setContent(e.target.value)}
@@ -203,10 +203,10 @@ const CommentSection = ({ postId }) => {
           />
           <div className="flex justify-between items-center mt-3">
             <p className="italic text-sm text-gray-500">
-              {300 - content.length} character remaining
+              {300 - content.length} ký tự còn lại
             </p>
             <Button outline gradientDuoTone="greenToBlue" type="submit">
-              Comment
+              Đăng bình luận
             </Button>
           </div>
         </form>
@@ -215,12 +215,12 @@ const CommentSection = ({ postId }) => {
       {/* ---------------| AREA LIST OF COMMENT |---------------*/}
       {comments.length === 0 ? (
         <p className="text-sm my-5 italic">
-          This post has no comments yet. Be the first to share your thoughts!
+          Bài viết này chưa có bình luận nào. Hãy là người đầu tiên nhé!
         </p>
       ) : (
         <div>
           <span className="flex items-center gap-1 ">
-            <p className="font-bold">Comments:</p>
+            <p className="font-bold">Các bình luận:</p>
             <div className="text-cyan-600">{comments.length}</div>
           </span>
           {comments.map((comment) => (
@@ -250,17 +250,17 @@ const CommentSection = ({ postId }) => {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600 " />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this comment?
+              Bạn có chắc là muốn xóa bình luận này?
             </h3>
             <div className="flex justify-center gap-4">
               <Button
                 color="failure"
                 onClick={() => handleDeleteComment(deleteComment)}
               >
-                Yes, delete it!
+                Có, xóa đi!
               </Button>
               <Button color="gray" onClick={() => setModalOpen(false)}>
-                No, cancel
+                Không
               </Button>
             </div>
           </div>

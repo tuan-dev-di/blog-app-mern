@@ -1,6 +1,8 @@
 //? ---------------| IMPORT LIBRARIES |---------------
 import PropTypes from "prop-types";
 import moment from "moment";
+import "moment/dist/locale/vi";
+moment.locale("vi");
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -29,7 +31,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const [editComment, setEditComment] = useState(comment.content);
   const [activeCommentId, setActiveCommentId] = useState(null);
 
-  //? ---------------| GET USER WHO COMMENTED |---------------
+  //? ---------------| HANDLE GET USER WHO COMMENTED |---------------
   const get_user = useCallback(async () => {
     try {
       const data = await GET_USER(userId_comment);
@@ -65,12 +67,13 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
 
       onEdit(comment, editComment);
 
-      toast.success("Updated comment successfully", { theme: "colored" });
+      toast.success("Đã sửa bình luận", { theme: "colored" });
       setTimeout(() => {
         window.location.reload();
       }, 3000);
     } catch (error) {
       console.log("Update comment - ERROR:", error.message);
+      toast.error(error.message, { theme: "colored" });
     }
   };
 
@@ -90,9 +93,10 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
         />
       </div>
       <div className="flex-1">
+        {/* ---------------| AREA AUTHOR |---------------*/}
         <div className="flex items-center gap-1">
           <span className="font-semibold truncate ">
-            {user ? `@${user?.username}` : "Unknown User"}
+            {user ? `@${user?.username}` : "Không rõ người dùng"}
           </span>
           <span className="text-gray-400">
             {moment(comment.createdAt).fromNow()}
@@ -114,10 +118,10 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                 gradientDuoTone="greenToBlue"
                 onClick={handleSubmit}
               >
-                Save
+                Lưu lại
               </Button>
               <Button color="red" onClick={() => setIsEditComment(false)}>
-                Cancel
+                Không
               </Button>
             </div>
           </div>
@@ -171,7 +175,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                     >
                       <RiDeleteBin6Line className="mr-1 h-4 w-4 group-hover:text-red-600" />
                       <span className="text-gray-800 group-hover:text-red-600">
-                        Delete
+                        Xóa
                       </span>
                     </Button>
                   )}
@@ -190,7 +194,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                     >
                       <RiPencilLine className="mr-1 h-4 w-4 group-hover:text-blue-600" />
                       <span className="text-gray-800 group-hover:text-blue-600">
-                        Edit
+                        Sửa
                       </span>
                     </Button>
                   )}

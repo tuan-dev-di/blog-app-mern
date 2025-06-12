@@ -13,7 +13,7 @@ import {
 import { app } from "../../firebase";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Label, TextInput, Select, Button } from "flowbite-react";
+import { Label, TextInput, Select, Button, Tooltip } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
@@ -64,7 +64,7 @@ const CreatePost = () => {
       (error) => {
         console.log("ERROR Upload File:", error);
         toast.error(
-          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
+          "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
           { theme: "colored" }
         );
         setPostImage(null);
@@ -86,7 +86,7 @@ const CreatePost = () => {
     if (postImage) uploadFile();
   }, [postImage, uploadFile]);
 
-  //? ---------------| HANDLE CREATE POST |---------------
+  //? ---------------| HANDLE GET ATTRIBUTE TO CREATE POST |---------------
   // React Quill doesn't support id prop
   const handleCreatePost = (e) => {
     setFormData({
@@ -95,7 +95,7 @@ const CreatePost = () => {
     });
   };
 
-  //? ---------------| HANDLE SUBMIT CREATE |---------------
+  //? ---------------| HANDLE SUBMIT CREATE POST|---------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -106,7 +106,7 @@ const CreatePost = () => {
         return;
       }
 
-      toast.success("Create post successfully!", { theme: "colored" });
+      toast.success("Tạo bài viết mới thành công!", { theme: "colored" });
       setTimeout(() => {
         navigate("/posts/get-posts");
       }, 3000);
@@ -124,13 +124,13 @@ const CreatePost = () => {
       {/* Top site to notice */}
       <div className="flex justify-between items-center my-7">
         <div className="font-semibold text-4xl">
-          <span>Create a new post</span>
+          <span>Tạo mới bài viết</span>
         </div>
         <div className="flex gap-2">
           <Link to="/posts/get-posts">
             <Button className="border-2 shadow-md" color="none">
               <IoIosArrowRoundBack className="mr-2 h-5 w-5" />
-              Back
+              Quay lại
             </Button>
           </Link>
         </div>
@@ -143,29 +143,36 @@ const CreatePost = () => {
           <div>
             <div className="flex gap-4 sm:flex-row items-start">
               <div className="flex flex-col flex-1">
-                <Label className="text-lg">
-                  Title<span className="text-red-700 ml-1">*</span>
+                <Label className="text-lg flex">
+                  Tiêu đề
+                  <Tooltip
+                    content="Bắt buộc"
+                    style="light"
+                    placement="right"
+                    trigger="hover"
+                  >
+                    <span className="text-red-500 ml-1">*</span>
+                  </Tooltip>
                 </Label>
                 <TextInput
                   id="title"
                   type="text"
                   className="flex-1 w-[500px]"
-                  placeholder="Enter a title"
+                  placeholder="Nhập tiêu đề"
                   onChange={handleCreatePost}
                   required
                 />
+
               </div>
               <div className="flex flex-col flex-1">
-                <Label className="text-lg">
-                  Category<span className="text-red-700 ml-1">*</span>
-                </Label>
+                <Label className="text-lg">Thể loại</Label>
                 <Select
                   id="category"
                   className="flex-1"
                   onChange={handleCreatePost}
                 >
                   <option value="uncategorized">
-                    ----- Language | Framework -----
+                    --- Ngôn ngữ | Framework ---
                   </option>
                   <option value="javascript-vuejs">JavaScript | VueJS</option>
                   <option value="javascript-reactjs">
@@ -182,12 +189,20 @@ const CreatePost = () => {
 
           {/* ---------------| CONTENT |--------------- */}
           <div>
-            <Label className="text-lg">
-              Content<span className="text-red-700 ml-1">*</span>
+            <Label className="text-lg flex">
+              Nội dung bài viết
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
             </Label>
             <ReactQuill
               theme="snow"
-              placeholder="Enter your content"
+              placeholder="Nhập nội dung bài viết của bạn"
               className="h-64 mb-10"
               onChange={(value) => {
                 setFormData({
@@ -200,7 +215,7 @@ const CreatePost = () => {
 
           {/* ---------------| POST'S IMAGE |--------------- */}
           <div>
-            <Label className="text-lg">Image</Label>
+            <Label className="text-lg">Ảnh minh họa</Label>
             <div>
               <input
                 type="file"
@@ -268,11 +283,12 @@ const CreatePost = () => {
                         />
                       </svg>
                       <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>{" "}
-                        or drag and drop
+                        <span className="font-semibold">
+                          Nhấp hoặc kéo hoặc thả hình ảnh vào khung này
+                        </span>
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF
+                        SVG, PNG, JPG hoặc GIF
                       </p>
                     </>
                   )}
@@ -282,7 +298,7 @@ const CreatePost = () => {
           </div>
         </div>
         <Button className="mt-5" gradientDuoTone="purpleToBlue" type="submit">
-          Publish
+          Xuất bản
         </Button>
       </form>
     </div>

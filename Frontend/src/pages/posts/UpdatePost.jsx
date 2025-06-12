@@ -13,7 +13,7 @@ import {
 import { app } from "../../firebase";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Label, TextInput, Select, Button } from "flowbite-react";
+import { Label, TextInput, Select, Button, Tooltip } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
@@ -66,6 +66,7 @@ const DetailPost = () => {
     setPostImageURL(URL.createObjectURL(file));
   };
 
+  //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
   const uploadFile = useCallback(async () => {
     if (!postImage) return;
 
@@ -84,7 +85,7 @@ const DetailPost = () => {
       (error) => {
         console.log("Upload file error:", error);
         toast.error(
-          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
+          "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
           { theme: "colored" }
         );
         setPostImage(null);
@@ -106,7 +107,7 @@ const DetailPost = () => {
     if (postImage) uploadFile();
   }, [postImage, uploadFile]);
 
-  //? ---------------| HANDLE UPDATE POST |---------------
+  //? ---------------| HANDLE GET ATTRIBUTE TO UPDATE POST |---------------
   // React Quill doesn't support id prop
   const handleUpdatePost = (e) => {
     setFormData({
@@ -126,7 +127,7 @@ const DetailPost = () => {
         return;
       }
 
-      toast.success("Update post successfully!", { theme: "colored" });
+      toast.success("Cập nhật bài viết thành công!", { theme: "colored" });
       setTimeout(() => {
         window.location.reload();
       }, 3000);
@@ -140,20 +141,17 @@ const DetailPost = () => {
   const formatDateTime = (dateString) => {
     const dateObject = new Date(dateString);
 
-    const time = dateObject.toLocaleTimeString("en-GB", {
+    const time = dateObject.toLocaleDateString("en-GB", {
+      hour12: false,
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: false,
-    });
-
-    const date = dateObject.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
 
-    return `${time} - ${date}`;
+    return `${time}`;
   };
 
   const postCreated = formatDateTime(formData?.createdAt);
@@ -167,20 +165,20 @@ const DetailPost = () => {
       {/* Top site to notice */}
       <div className="flex justify-between items-center my-7">
         <div className="font-semibold text-4xl">
-          <span>Detail of post</span>
+          <span>Cập nhật bài viết</span>
         </div>
         <div className="flex gap-2">
           <Link to="/posts/get-posts">
             <Button className="border-2 shadow-md" color="none">
               <IoIosArrowRoundBack className="mr-2 h-5 w-5" />
-              Back
+              Quay lại
             </Button>
           </Link>
         </div>
       </div>
       <div className="flex flex-col italic gap-2 mb-2 text-right text-gray-400 text-sm">
-        <span>Date Created: {postCreated}</span>
-        <span>Date Updated: {postUpdated}</span>
+        <span>Tạo vào: {postCreated}</span>
+        <span>Cập nhật vào: {postUpdated}</span>
       </div>
 
       {/* Form Update Post*/}
@@ -191,22 +189,28 @@ const DetailPost = () => {
             <div className="flex gap-4 sm:flex-row items-start">
               <div className="flex flex-col flex-1">
                 <Label className="text-lg">
-                  Title<span className="text-red-700 ml-1">*</span>
+                  Tiêu đề
+                  <Tooltip
+                    content="Bắt buộc"
+                    style="light"
+                    placement="right"
+                    trigger="hover"
+                  >
+                    <span className="text-red-500 ml-1">*</span>
+                  </Tooltip>
                 </Label>
                 <TextInput
                   id="title"
                   type="text"
                   className="flex-1 w-[500px]"
-                  placeholder="Enter a title"
+                  placeholder="Nhập tiêu đề"
                   onChange={handleUpdatePost}
                   value={formData?.title || ""}
                   required
                 />
               </div>
               <div className="flex flex-col flex-1">
-                <Label className="text-lg">
-                  Category<span className="text-red-700 ml-1">*</span>
-                </Label>
+                <Label className="text-lg">Thể loại</Label>
                 <Select
                   id="category"
                   className="flex-1"
@@ -214,7 +218,7 @@ const DetailPost = () => {
                   value={formData?.category || ""}
                 >
                   <option value="uncategorized">
-                    ----- Language | Framework -----
+                    --- Ngôn ngữ | Framework ---
                   </option>
                   <option value="javascript-vuejs">JavaScript | VueJS</option>
                   <option value="javascript-reactjs">
@@ -232,11 +236,19 @@ const DetailPost = () => {
           {/* ---------------| CONTENT |--------------- */}
           <div>
             <Label className="text-lg">
-              Content<span className="text-red-700 ml-1">*</span>
+              Nội dung bài viết
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
             </Label>
             <ReactQuill
               theme="snow"
-              placeholder="Enter your content"
+              placeholder="Nhập nội dung bài viết của bạn"
               className="h-64 mb-10"
               value={formData?.content || ""}
               onChange={(value) => {
@@ -250,7 +262,7 @@ const DetailPost = () => {
 
           {/* ---------------| POST'S IMAGE |--------------- */}
           <div>
-            <Label className="text-lg">Image</Label>
+            <Label className="text-lg">Ảnh minh họa</Label>
             <div>
               <input
                 type="file"
@@ -315,11 +327,12 @@ const DetailPost = () => {
                         />
                       </svg>
                       <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>{" "}
-                        or drag and drop
+                        <span className="font-semibold">
+                          Nhấp hoặc kéo hoặc thả hình ảnh vào khung này
+                        </span>
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF
+                        SVG, PNG, JPG hoặc GIF
                       </p>
                     </>
                   )}
@@ -329,7 +342,7 @@ const DetailPost = () => {
           </div>
         </div>
         <Button className="mt-5" gradientDuoTone="purpleToBlue" type="submit">
-          Update this post
+          Cập nhật bài viết này
         </Button>
       </form>
     </div>

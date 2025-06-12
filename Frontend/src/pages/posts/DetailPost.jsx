@@ -17,9 +17,9 @@ const DetailPost = () => {
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [recentPost, setRecentPost] = useState(null);
-  const amount_recent_post = 3;
+  const amount_recent_post = 4;
 
-  //? ---------------| GET DETAIL POST |---------------
+  //? ---------------| HANDLE GET DETAIL POST |---------------
   const post_detail = useCallback(async () => {
     setLoading(true);
     try {
@@ -39,13 +39,15 @@ const DetailPost = () => {
     post_detail();
   }, [post_detail]);
 
-  //? ---------------| GET RECENT POSTS |---------------
+  //? ---------------| HANDLE GET RECENT POSTS |---------------
   const recent_post = useCallback(async () => {
     try {
       const data = await GET_RECENT_POSTS(amount_recent_post);
 
       if (!data) {
-        toast.error(data?.message || "No data here.", { theme: "colored" });
+        toast.error(data?.message || "Không có bài viết nào.", {
+          theme: "colored",
+        });
         return;
       }
 
@@ -72,20 +74,17 @@ const DetailPost = () => {
   const formatDateTime = (dateString) => {
     const dateObject = new Date(dateString);
 
-    const time = dateObject.toLocaleTimeString("en-GB", {
+    const time = dateObject.toLocaleDateString("en-GB", {
+      hour12: false,
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: false,
-    });
-
-    const date = dateObject.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
 
-    return `${time} - ${date}`;
+    return `${time}`;
   };
 
   const postCreated = formatDateTime(post?.createdAt);
@@ -109,7 +108,7 @@ const DetailPost = () => {
 
       {/* ---------------| CREATED TIME |--------------- */}
       <span className="flex flex-col italic p-3 text-center text-gray-400 text-xs">
-        Created At: {postCreated}
+        Tạo vào: {postCreated}
       </span>
 
       {/* ---------------| IMAGE |--------------- */}
@@ -137,7 +136,7 @@ const DetailPost = () => {
 
       {/* ---------------| RECENT POSTS |--------------- */}
       <div className="flex flex-col justify-center items-center mb-5">
-        <h1 className="text-3xl font-semibold text-center">RECENT POSTS</h1>
+        <h1 className="text-3xl font-semibold text-center">Bài viết gần đây</h1>
         <div className="flex flex-wrap gap-5 mt-5 justify-center">
           {/* {recentPost?.map((post) => (
             <div key={post._id}>

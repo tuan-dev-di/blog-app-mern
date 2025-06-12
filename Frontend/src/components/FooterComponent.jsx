@@ -1,3 +1,4 @@
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Footer } from "flowbite-react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
 import Ami_Chill from "../assets/Ami_ChillChill.jpg";

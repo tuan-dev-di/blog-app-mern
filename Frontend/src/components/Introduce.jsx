@@ -1,5 +1,7 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { Link } from "react-router-dom";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { Button } from "flowbite-react";
 
 const Introduce = () => {
@@ -7,10 +9,10 @@ const Introduce = () => {
     <div className="flex flex-col sm:flex-row p-5 border border-teal-400 rounded-tl-3xl rounded-br-3xl justify-center items-center text-center">
       <div className="flex-1 flex flex-col justify-center">
         <h2 className="text-2xl font-semibold">
-          Do you want to be a Web Developer with JavaScript?
+          Bạn có muốn trở thành lập trình viên web với JavaScript không?
         </h2>
         <p className="text-gray-400">
-          Check this place, you will find many free courses!
+          Hãy đến đây, bạn sẽ tìm được rất nhiều khóa học miễn phí!
         </p>
         <Button gradientDuoTone="pinkToOrange">
           <Link className="block" to="https://fullstack.edu.vn/">

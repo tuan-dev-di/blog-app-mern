@@ -21,18 +21,14 @@ const User = () => {
    * Set pagination
    * Set 7 users per page
    */
+  const limitUsers = 7;
   const [userList, setUserList] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [totalUser, setTotalUser] = useState(0);
   const [userLastMonth, setUserLastMonth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const limitUsers = 7;
 
-  /*
-   * Set delete function with modal
-   */
-
-  //? ---------------| GET LIST POST |---------------
+  //? ---------------| HANDLE GET LIST POST |---------------
   const list_users = useCallback(async () => {
     try {
       const data = await GET_USERS(userId, currentPage, limitUsers);
@@ -55,7 +51,9 @@ const User = () => {
   //? ---------------| HANDLE REFRESH LIST USER |---------------
   const handleRefresh = async () => {
     await list_users();
-    toast.success("List Users Refreshed!", { theme: "colored" });
+    toast.success("Danh sách người dùng đã được tải lại!", {
+      theme: "colored",
+    });
   };
 
   //? ---------------| HANDLE CHANGE PAGE |---------------
@@ -71,7 +69,9 @@ const User = () => {
       <div className="relative mx-auto p-7 w-full">
         <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex justify-between items-center">
-          <div className="font-semibold text-4xl">List User</div>
+          <div className="font-semibold text-4xl">
+            Danh sách thành viên người dùng
+          </div>
           <div className="flex gap-2">
             <Button
               className="rounded-full w-10 border-2 shadow-md"
@@ -79,9 +79,9 @@ const User = () => {
               onClick={handleRefresh}
             >
               <Tooltip
-                content="Refresh"
+                content="Làm mới"
                 style="light"
-                placement="bottom"
+                placement="left"
                 trigger="hover"
               >
                 <IoRefresh className="w-4 h-4" />
@@ -92,19 +92,20 @@ const User = () => {
         <span className="flex flex-col mt-7 text-left text-base">
           {role === "admin" ? (
             <p>
-              All Users: <strong>{totalUser}</strong>
+              Tổng người dùng: <strong>{totalUser}</strong>
             </p>
           ) : (
-            <p>You have no permission to know</p>
+            <p>Quyền truy cập của bạn không được cho phép!</p>
           )}
         </span>
         <span className="flex flex-col text-left text-base">
           {role === "admin" ? (
             <p>
-              New member in last month: <strong>{userLastMonth}</strong>
+              Thành viên mới trong tháng vừa qua:{" "}
+              <strong>{userLastMonth}</strong>
             </p>
           ) : (
-            <p>You have no permission to know</p>
+            <p>Quyền truy cập của bạn không được cho phép!</p>
           )}
         </span>
         <div>
@@ -112,13 +113,13 @@ const User = () => {
             <div>
               <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
                 <Table.Head className="text-base">
-                  <Table.HeadCell>User Image</Table.HeadCell>
-                  <Table.HeadCell>Full Name</Table.HeadCell>
-                  <Table.HeadCell>Username</Table.HeadCell>
+                  <Table.HeadCell>Ảnh đại diện</Table.HeadCell>
+                  <Table.HeadCell>Tên người dùng</Table.HeadCell>
+                  <Table.HeadCell>Tài khoản</Table.HeadCell>
                   <Table.HeadCell>Email</Table.HeadCell>
-                  <Table.HeadCell>Role</Table.HeadCell>
-                  <Table.HeadCell>Created At</Table.HeadCell>
-                  <Table.HeadCell>Updated At</Table.HeadCell>
+                  <Table.HeadCell>Chức vụ</Table.HeadCell>
+                  <Table.HeadCell>Đăng ký vào</Table.HeadCell>
+                  <Table.HeadCell>Cập nhật vào</Table.HeadCell>
                 </Table.Head>
                 <Table.Body>
                   {userList.map((user) => (
@@ -150,6 +151,10 @@ const User = () => {
                       </Table.Cell>
                       <Table.Cell>
                         {new Date(user.createdAt).toLocaleDateString("en-GB", {
+                          hour12: false,
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric",
@@ -157,6 +162,10 @@ const User = () => {
                       </Table.Cell>
                       <Table.Cell>
                         {new Date(user.updatedAt).toLocaleDateString("en-GB", {
+                          hour12: false,
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric",
@@ -171,12 +180,14 @@ const User = () => {
                   currentPage={currentPage}
                   totalPages={totalPage}
                   onPageChange={handlePageChange}
+                  previousLabel="Trước đó"
+                  nextLabel="Tiếp theo"
                 />
               </div>
             </div>
           ) : (
             <p className="italic font-semibold text-red-700 mt-2">
-              You have no permission or list user is empty!
+              Bạn không có quyền hoặc danh sách rỗng!
             </p>
           )}
         </div>

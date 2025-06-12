@@ -52,7 +52,7 @@ const SidebarApp = () => {
               className="cursor-pointer"
               as={"div"}
             >
-              <Link to="/overview">Overview</Link>
+              <Link to="/overview">Tổng quát</Link>
             </Sidebar.Item>
           )}
           <Sidebar.Item
@@ -61,11 +61,11 @@ const SidebarApp = () => {
             className="cursor-pointer"
             as={"div"}
           >
-            <Link to="/profile">Profile</Link>
+            <Link to="/profile">Hồ sơ cá nhân</Link>
           </Sidebar.Item>
           {userRole === "admin" && (
             <Sidebar.Item icon={FaUsers} className="cursor-pointer" as={"div"}>
-              <Link to="/users/get-users">Users</Link>
+              <Link to="/users/get-users">Người dùng</Link>
             </Sidebar.Item>
           )}
           {userRole === "admin" && (
@@ -74,7 +74,7 @@ const SidebarApp = () => {
               className="cursor-pointer"
               as={"div"}
             >
-              <Link to="/posts/get-posts">Posts</Link>
+              <Link to="/posts/get-posts">Bài viết</Link>
             </Sidebar.Item>
           )}
           <Sidebar.Item
@@ -82,7 +82,7 @@ const SidebarApp = () => {
             className="cursor-pointer"
             as={"div"}
           >
-            <Link to="/comments/get-comments">Comments</Link>
+            <Link to="/comments/get-comments">Bình luận</Link>
           </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
@@ -91,7 +91,7 @@ const SidebarApp = () => {
             className="cursor-pointer"
             onClick={handleSignout}
           >
-            Sign Out
+            Đăng xuất
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>

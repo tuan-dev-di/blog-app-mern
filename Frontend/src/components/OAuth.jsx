@@ -54,7 +54,7 @@ const OAuth = () => {
       type="button"
       onClick={handleGoogle}
     >
-      Continue with Google
+      Tiếp tục với Google
       <FaGoogle className="ml-2 h-5 w-5" />
     </Button>
   );

@@ -76,7 +76,7 @@ const DetailAccount = () => {
       (error) => {
         console.log("Upload file error:", error);
         toast.error(
-          "Couldn't upload file - Only get file JPEG, JPG, PNG, GIF - File must be less than 4MB",
+          "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
           { theme: "colored" }
         );
         setProfileImageUploadProgress(null);
@@ -101,7 +101,7 @@ const DetailAccount = () => {
     if (profileImageFile) uploadFile();
   }, [profileImageFile, uploadFile]);
 
-  //? ---------------| HANDLE UPDATE ACCOUNT |---------------
+  //? ---------------| HANDLE GET ATTRIBUTE TO UPDATE ACCOUNT |---------------
   const handleUpdate = (e) => {
     setFormData({
       ...formData,
@@ -114,14 +114,14 @@ const DetailAccount = () => {
     e.preventDefault();
 
     if (profileImageUploading) {
-      toast.error("Please wait for the profile image to be uploaded", {
+      toast.error("Vui lòng chờ ảnh đại diện úp lên!", {
         theme: "colored",
       });
       return;
     }
 
     if (Object.keys(formData).length === 0) {
-      toast.warn("Nothing changes!", { theme: "colored" });
+      toast.warn("Không có gì thay đổi!", { theme: "colored" });
       return;
     }
 
@@ -136,7 +136,7 @@ const DetailAccount = () => {
 
       dispatch(updateUserSuccess(data));
       setProfileImageUploadProgress(false);
-      toast.success("Update profile successfully!", { theme: "colored" });
+      toast.success("Cập nhật hồ sơ thành công!", { theme: "colored" });
       navigate("/profile");
     } catch (error) {
       dispatch(updateUserFailure(error.message));
@@ -159,7 +159,7 @@ const DetailAccount = () => {
       }
 
       dispatch(deleteUserSuccess(data));
-      toast.success("Delete account successfully!", { theme: "colored" });
+      toast.success("Xóa tài khoản thành công!", { theme: "colored" });
 
       localStorage.clear();
       sessionStorage.clear();
@@ -185,7 +185,7 @@ const DetailAccount = () => {
       <ToastContainer position="top-right" autoClose={3000} />
 
       {/* Form Update Account*/}
-      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         {/* ---------------| CHANGE IMAGE |--------------- */}
         <input
           type="file"
@@ -237,7 +237,7 @@ const DetailAccount = () => {
 
         {/* ---------------| USERNAME |--------------- */}
         <div>
-          <Label className="text-base" value="Username" />
+          <Label className="text-base" value="Tên tài khoản" />
           <TextInput
             id="username"
             defaultValue={curUser.user.username}
@@ -264,11 +264,11 @@ const DetailAccount = () => {
 
         {/* ---------------| PASSWORD |--------------- */}
         <div>
-          <Label className="text-base" value="Password" />
+          <Label className="text-base" value="Mật khẩu" />
           <div className="relative">
             <TextInput
               id="password"
-              placeholder="Change Password"
+              placeholder="Đổi mật khẩu"
               type={showPassword ? "text" : "password"}
               icon={FaLock}
               onChange={handleUpdate}
@@ -285,7 +285,7 @@ const DetailAccount = () => {
 
         {/* ---------------| DISPLAY NAME |--------------- */}
         <div>
-          <Label className="text-base" value="Display Name" />
+          <Label className="text-base" value="Tên hiển thị" />
           <TextInput
             id="displayName"
             defaultValue={curUser.user.displayName}
@@ -303,7 +303,7 @@ const DetailAccount = () => {
           type="submit"
           disabled={loading || profileImageUploading}
         >
-          {loading ? "Updating..." : "Update Account"}
+          {loading ? "Đang cập nhật..." : "Cập nhật"}
         </Button>
       </form>
 
@@ -314,7 +314,7 @@ const DetailAccount = () => {
         type="submit"
         onClick={() => setDeleteModal(true)}
       >
-        Delete Account
+        Xóa tài khoản
       </Button>
 
       {/* Modal to confirm Delete Account --- SEVERE */}
@@ -329,14 +329,14 @@ const DetailAccount = () => {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600 " />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this account?
+              Bạn có chắc là muốn xóa tài khoản này?
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={handleDeleteUser}>
-                Yes, I&apos;m sure
+                Có, xóa đi!
               </Button>
               <Button color="gray" onClick={() => setDeleteModal(false)}>
-                No, cancel
+                Không
               </Button>
             </div>
           </div>

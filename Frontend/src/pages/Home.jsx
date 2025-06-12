@@ -1,9 +1,12 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import { Link } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 
+//? ---------------| IMPORT COMPONENTS |---------------
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import Introduce from "../components/Introduce";
 import { GET_POSTS } from "../apis/post";
 import PostCard from "../components/PostCard";
@@ -12,6 +15,7 @@ const Home = () => {
   const [postList, setPostList] = useState([]);
   const limitPosts = 8;
 
+  //? ---------------| HANDLE GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
       const data = await GET_POSTS(1, limitPosts);
@@ -32,22 +36,19 @@ const Home = () => {
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex flex-col gap-6 p-14 px-3 max-w-screen-2xl mx-auto text-left">
-        <h1 className="font-bold text-5xl lg:text-6xl pt-10">
-          Welcome to Arys&apos;s Blog
-        </h1>
+        <h1 className="font-bold text-5xl lg:text-6xl pt-10">Chào các bạn,</h1>
         <p className="text-gray-500 text-sm sm:text-base text-balance w-[860px]">
-          This is the first product I made as a Fresher Website Developer. The
-          blog was created to record the learning journey, as well as sharing
-          the experiences and knowledge they accumulated in the process of
-          learning about web programming. Hopefully the content here will be
-          somewhat useful for those who are on the same way to explore the web
-          world like me.
+          Đây là sản phẩm đầu tiên mình làm với tư cách là Intern/Fresher Web
+          Developer. Các Blog được tạo ra để ghi lại hành trình học tập, cũng
+          như chia sẻ kinh nghiệm và kiến thức mà họ tích lũy trong quá trình
+          tìm hiểu về lập trình web. Hy vọng rằng nội dung ở đây sẽ hơi hữu ích
+          cho những người trên cùng một cách để khám phá web thế giới như mình.
         </p>
         <Link
           className="text-sm sm:text-base text-teal-600 font-bold hover:underline"
           to="/search"
         >
-          View all posts
+          Xem thêm
         </Link>
       </div>
 
@@ -72,7 +73,7 @@ const Home = () => {
           className="text-sm sm:text-base text-teal-600 font-bold hover:underline text-center"
           to="/search"
         >
-          View all posts
+          Xem thêm
         </Link>
       </div>
     </div>

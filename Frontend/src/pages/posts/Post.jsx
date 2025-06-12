@@ -27,12 +27,12 @@ const Post = () => {
    * Set pagination
    * Set 7 posts per page
    */
+  const limitPosts = 7;
   const [userPost, setUserPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [totalPost, setTotalPost] = useState(0);
   const [postLastMonth, setPostLastMonth] = useState(0);
-  const limitPosts = 7;
 
   /*
    * Set modal
@@ -41,7 +41,7 @@ const Post = () => {
   const [modalType, setModalType] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
-  //? ---------------| GET LIST POST |---------------
+  //? ---------------| HANDLE GET LIST POST |---------------
   const list_posts = useCallback(async () => {
     try {
       const data = await GET_POSTS(currentPage, limitPosts);
@@ -64,7 +64,7 @@ const Post = () => {
   //? ---------------| HANDLE REFRESH LIST POST |---------------
   const handleRefresh = async () => {
     await list_posts();
-    toast.success("List Posts Refreshed!", { theme: "colored" });
+    toast.success("Danh sách bài viết đã được tải lại!", { theme: "colored" });
   };
 
   //? ---------------| HANDLE CHANGE PAGE |---------------
@@ -84,9 +84,10 @@ const Post = () => {
         return;
       }
 
-      toast.success("Delete post successfully!", {
+      toast.success("Xóa bài viết thành công!", {
         theme: "colored",
       });
+      
       setUserPost((prev) =>
         prev ? prev.filter((post) => post._id !== postId) : []
       );
@@ -108,7 +109,7 @@ const Post = () => {
       <div className="relative mx-auto p-7 w-full">
         <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex justify-between items-center">
-          <div className="font-semibold text-4xl">List Post</div>
+          <div className="font-semibold text-4xl">Danh sách bài viết</div>
           <div className="flex gap-2">
             <Button
               className="rounded-full w-10 border-2 shadow-md mr-2"
@@ -116,9 +117,9 @@ const Post = () => {
               onClick={handleRefresh}
             >
               <Tooltip
-                content="Refresh"
+                content="Làm mới"
                 style="light"
-                placement="bottom"
+                placement="left"
                 trigger="hover"
               >
                 <IoRefresh className="w-4 h-4" />
@@ -127,7 +128,7 @@ const Post = () => {
             <Link to="/posts/create-post">
               <Button>
                 <FaPlus className="mr-2 h-5 w-5" />
-                New Post
+                Tạo mới
               </Button>
             </Link>
           </div>
@@ -135,19 +136,19 @@ const Post = () => {
         <span className="flex flex-col mt-7 text-left text-base">
           {role === "admin" ? (
             <p>
-              All Posts: <strong>{totalPost}</strong>
+              Tổng bài viết: <strong>{totalPost}</strong>
             </p>
           ) : (
-            <p>You have no permission to know</p>
+            <p>Quyền truy cập của bạn không được cho phép!</p>
           )}
         </span>
         <span className="flex flex-col text-left text-base">
           {role === "admin" ? (
             <p>
-              Post in last month: <strong>{postLastMonth}</strong>
+              Bài viết trong tháng vừa qua: <strong>{postLastMonth}</strong>
             </p>
           ) : (
-            <p>You have no permission to know</p>
+            <p>Quyền truy cập của bạn không được cho phép!</p>
           )}
         </span>
         {/* Table: Display data of list post */}
@@ -156,13 +157,13 @@ const Post = () => {
             <div>
               <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
                 <Table.Head className="text-base">
-                  <Table.HeadCell>Post Image</Table.HeadCell>
-                  <Table.HeadCell>Title</Table.HeadCell>
-                  <Table.HeadCell>Category</Table.HeadCell>
-                  <Table.HeadCell>Created At</Table.HeadCell>
-                  <Table.HeadCell>Updated At</Table.HeadCell>
-                  <Table.HeadCell>Update</Table.HeadCell>
-                  <Table.HeadCell>Delete</Table.HeadCell>
+                  <Table.HeadCell>Ảnh minh họa</Table.HeadCell>
+                  <Table.HeadCell>Tiêu đề</Table.HeadCell>
+                  <Table.HeadCell>Thể loại</Table.HeadCell>
+                  <Table.HeadCell>Tạo vào</Table.HeadCell>
+                  <Table.HeadCell>Cập nhật vào</Table.HeadCell>
+                  <Table.HeadCell>Cập nhật</Table.HeadCell>
+                  <Table.HeadCell>Xóa</Table.HeadCell>
                 </Table.Head>
                 <Table.Body>
                   {userPost.map((post) => (
@@ -183,28 +184,22 @@ const Post = () => {
                       </Table.Cell>
                       <Table.Cell>{post.category}</Table.Cell>
                       <Table.Cell>
-                        {new Date(post.createdAt).toLocaleTimeString("en-GB", {
+                        {new Date(post.createdAt).toLocaleDateString("en-GB", {
+                          hour12: false,
                           hour: "2-digit",
                           minute: "2-digit",
                           second: "2-digit",
-                          hour12: false,
-                        })}
-                        {" - "}
-                        {new Date(post.createdAt).toLocaleDateString("en-GB", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric",
                         })}
                       </Table.Cell>
                       <Table.Cell>
-                        {new Date(post.updatedAt).toLocaleTimeString("en-GB", {
+                        {new Date(post.updatedAt).toLocaleDateString("en-GB", {
+                          hour12: false,
                           hour: "2-digit",
                           minute: "2-digit",
                           second: "2-digit",
-                          hour12: false,
-                        })}
-                        {" - "}
-                        {new Date(post.updatedAt).toLocaleDateString("en-GB", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric",
@@ -245,12 +240,14 @@ const Post = () => {
                   currentPage={currentPage}
                   totalPages={totalPage}
                   onPageChange={handlePageChange}
+                  previousLabel="Trước đó"
+                  nextLabel="Tiếp theo"
                 />
               </div>
             </div>
           ) : (
             <p className="italic font-semibold text-red-700 mt-2">
-              You have no permission or list post is empty!
+              Bạn không có quyền hoặc danh sách rỗng!
             </p>
           )}
         </div>
@@ -268,13 +265,13 @@ const Post = () => {
               <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-500 dark:text-gray-400" />
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                 {modalType === "delete"
-                  ? "Are you sure you want to delete this post?"
-                  : "Are you sure you want to update this post?"}
+                  ? "Bạn có chắc là muốn xóa bài viết này?"
+                  : "Bạn có chắc là muốn cập nhật bài viết này?"}
               </h3>
               <div className="flex justify-center gap-4">
                 {modalType === "delete" ? (
                   <Button color="failure" onClick={handleDeletePost}>
-                    Yes, delete it
+                    Có, xóa đi!
                   </Button>
                 ) : (
                   <Button
@@ -284,11 +281,11 @@ const Post = () => {
                       navigate(`/posts/update-posts/${postId}`);
                     }}
                   >
-                    Yes, update it
+                    Có, cập nhật!
                   </Button>
                 )}
                 <Button color="gray" onClick={() => setModalOpen(false)}>
-                  No, cancel
+                  Không
                 </Button>
               </div>
             </div>

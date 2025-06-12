@@ -25,15 +25,15 @@ const Comment = () => {
    * Set pagination
    * Set 7 items per page
    */
+  const limitComments = 7;
   const [commentList, setCommentList] = useState([]);
   const [totalComment, setTotalComment] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [commentId, setCommentId] = useState("");
-  const limitComments = 7;
 
-  //? ---------------| GET LIST POST |---------------
+  //? ---------------| HANDLE GET LIST POST |---------------
   const list_comments = useCallback(async () => {
     try {
       const data = await GET_COMMENT_LIST(userId, currentPage, limitComments);
@@ -58,7 +58,7 @@ const Comment = () => {
   //? ---------------| HANDLE REFRESH LIST COMMENT |---------------
   const handleRefresh = async () => {
     await list_comments();
-    toast.success("List Comments Refreshed!", { theme: "colored" });
+    toast.success("Danh sách bình luận đã được tải lại!", { theme: "colored" });
   };
 
   //? ---------------| HANDLE CHANGE PAGE |---------------
@@ -66,6 +66,7 @@ const Comment = () => {
     if (page >= 1 && page <= totalPage) setCurrentPage(page);
   };
 
+  //? ---------------| HANDLE DELETE COMMENT |---------------
   const handleDeleteComment = async () => {
     setModalOpen(false);
 
@@ -82,7 +83,7 @@ const Comment = () => {
         return;
       }
 
-      toast.success("Delete comment successfully!", {
+      toast.success("Xóa bình luận thành công!", {
         theme: "colored",
       });
 
@@ -96,6 +97,7 @@ const Comment = () => {
   };
 
   return (
+    // Whole page Comment List
     <div className="min-h-screen flex flex-col md:flex-row">
       <div>
         <SidebarApp />
@@ -103,7 +105,7 @@ const Comment = () => {
       <div className="relative mx-auto p-7 w-full">
         <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex justify-between items-center">
-          <div className="font-semibold text-4xl">List Comment</div>
+          <div className="font-semibold text-4xl">Danh sách bình luận</div>
           <div className="flex gap-2">
             <Button
               className="rounded-full w-10 border-2 shadow-md"
@@ -111,9 +113,9 @@ const Comment = () => {
               onClick={handleRefresh}
             >
               <Tooltip
-                content="Refresh"
+                content="Làm mới"
                 style="light"
-                placement="bottom"
+                placement="left"
                 trigger="hover"
               >
                 <IoRefresh className="w-4 h-4" />
@@ -124,11 +126,11 @@ const Comment = () => {
         <span className="flex flex-col mt-7 text-left text-base">
           {role === "admin" ? (
             <p>
-              All Comments: <strong>{totalComment}</strong>
+              Tổng bình luận: <strong>{totalComment}</strong>
             </p>
           ) : (
             <p>
-              All Your Comments: <strong>{totalComment}</strong>
+              Tổng bình luận của bạn: <strong>{totalComment}</strong>
             </p>
           )}
         </span>
@@ -137,13 +139,13 @@ const Comment = () => {
             <div>
               <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
                 <Table.Head className="text-base">
-                  <Table.HeadCell>Post&apos;s Title</Table.HeadCell>
-                  <Table.HeadCell>Comment Content</Table.HeadCell>
-                  <Table.HeadCell>Likes</Table.HeadCell>
-                  <Table.HeadCell>Author</Table.HeadCell>
-                  <Table.HeadCell>Created At</Table.HeadCell>
-                  <Table.HeadCell>Updated At</Table.HeadCell>
-                  <Table.HeadCell>Delete</Table.HeadCell>
+                  <Table.HeadCell>Tiêu đề</Table.HeadCell>
+                  <Table.HeadCell>Nội dung bình luận</Table.HeadCell>
+                  <Table.HeadCell>Lượt thích</Table.HeadCell>
+                  <Table.HeadCell>Tác giả</Table.HeadCell>
+                  <Table.HeadCell>Tạo vào</Table.HeadCell>
+                  <Table.HeadCell>Cập nhật vào</Table.HeadCell>
+                  <Table.HeadCell>Xóa</Table.HeadCell>
                 </Table.Head>
                 <Table.Body>
                   {commentList.map((comment) => (
@@ -179,6 +181,7 @@ const Comment = () => {
                         {new Date(comment.updatedAt).toLocaleDateString(
                           "en-GB",
                           {
+                            hour12: false,
                             hour: "2-digit",
                             minute: "2-digit",
                             second: "2-digit",
@@ -209,12 +212,14 @@ const Comment = () => {
                   currentPage={currentPage}
                   totalPages={totalPage}
                   onPageChange={handlePageChange}
+                  previousLabel="Trước đó"
+                  nextLabel="Tiếp theo"
                 />
               </div>
             </div>
           ) : (
             <p className="italic font-semibold text-red-700 mt-2">
-              You have no permission or list user is empty!
+              Bạn không có quyền hoặc danh sách rỗng!
             </p>
           )}
         </div>
@@ -229,14 +234,14 @@ const Comment = () => {
             <div className="text-center">
               <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-500 dark:text-gray-400" />
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                Are you sure you want to delete this comment?
+                Bạn có chắc là muốn xóa bình luận này?
               </h3>
               <div className="flex justify-center gap-4">
                 <Button color="failure" onClick={handleDeleteComment}>
-                  Delete
+                  Có, xóa đi!
                 </Button>
                 <Button color="gray" onClick={() => setModalOpen(false)}>
-                  No, cancel
+                  Không
                 </Button>
               </div>
             </div>

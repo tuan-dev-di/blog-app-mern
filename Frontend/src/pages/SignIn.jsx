@@ -24,7 +24,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //? ---------------| GET ATTRIBUTE |---------------
+  //? ---------------| HANDLE GET ATTRIBUTE TO SIGN IN |---------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -46,7 +46,7 @@ const SignIn = () => {
       }
 
       dispatch(signInSuccess(data));
-      toast.success("Sign in successfully!", { theme: "colored" });
+      toast.success("Đăng nhập thành công!", { theme: "colored" });
 
       // replace: true => To prevent users from returning to the sign-in page with the "Back" button
       setTimeout(() => {
@@ -71,17 +71,17 @@ const SignIn = () => {
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex-1 p-3 max-w-xl mx-auto flex-col md:flex-row md:items-center gap-5 ">
         <div className="font-semibold text-center text-6xl">
-          <span>Sign In</span>
+          <span>Đăng Nhập</span>
         </div>
 
         {/* Form Sign In */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
           {/* ---------------| USERNAME |--------------- */}
           <div>
-            <Label className="text-lg" value="Username" />
+            <Label className="text-lg" value="Tên tài khoản" />
             <TextInput
               id="username"
-              placeholder="Enter your username"
+              placeholder="Nhập tên tài khoản của bạn"
               type="text"
               icon={FaUser}
               onChange={handleChange}
@@ -91,11 +91,11 @@ const SignIn = () => {
 
           {/* ---------------| PASSWORD |--------------- */}
           <div>
-            <Label className="text-lg" value="Password" />
+            <Label className="text-lg" value="Mật khẩu" />
             <div className="relative">
               <TextInput
                 id="password"
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu"
                 type={showPassword ? "text" : "password"}
                 icon={FaLock}
                 onChange={handleChange}
@@ -118,13 +118,13 @@ const SignIn = () => {
             {loading ? (
               <div>
                 <Spinner size="sm" />
-                <span className="pl-3">Signing in...</span>
+                <span className="pl-3">Đang đăng nhập...</span>
               </div>
             ) : (
-              "Continue"
+              "Tiếp tục"
             )}
           </Button>
-          <p className="font-sans text-center">Or</p>
+          <p className="font-sans text-center">Hoặc</p>
 
           {/* Using Gooogle Authentication to Sign In/Up */}
           <OAuth />
@@ -133,9 +133,9 @@ const SignIn = () => {
         {/* Navigate to Sign Up page */}
         <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-up" className="text-blue-500">
-            Sign Up
+            Đăng ký
           </Link>
-          <span>if you do not have an account!</span>
+          <span>nếu bạn chưa có tài khoản!</span>
         </div>
       </div>
     </div>

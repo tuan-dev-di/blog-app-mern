@@ -1,3 +1,4 @@
+//? ---------------| IMPORT LIBRARIES |---------------
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -18,7 +19,7 @@ const PostCard = ({ post }) => {
           className="z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-slate-50 transition-all duration-300 text-center py-2 rounded-md m-2"
           to={`/posts/get-posts/detail/${post.slug}`}
         >
-          Read this post
+          Xem bài này
         </Link>
       </div>
     </div>
