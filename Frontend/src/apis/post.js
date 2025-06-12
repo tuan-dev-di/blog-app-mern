@@ -32,12 +32,7 @@ export const SEARCH_POSTS = async (searchTerm, category, sort) => {
   return response?.data;
 };
 
-export const GET_POSTS_OVERVIEW = async (limit) => {
-  const response = await callApi(`/posts/get-posts?limit=${limit}`, "GET");
-  return response?.data;
-};
-
-export const GET_RECENT_POSTS = async (limit) => {
+export const GET_POSTS_LIMIT = async (limit) => {
   const response = await callApi(`/posts/get-posts?limit=${limit}`, "GET");
   return response?.data;
 };

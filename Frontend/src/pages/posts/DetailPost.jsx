@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_POST_DETAIL, GET_RECENT_POSTS } from "../../apis/post";
+import { GET_POST_DETAIL, GET_POSTS_LIMIT } from "../../apis/post";
 import { Introduce, CommentSection } from "../../components/_index";
 import PostCard from "../../components/PostCard";
 
@@ -42,7 +42,7 @@ const DetailPost = () => {
   //? ---------------| HANDLE GET RECENT POSTS |---------------
   const recent_post = useCallback(async () => {
     try {
-      const data = await GET_RECENT_POSTS(amount_recent_post);
+      const data = await GET_POSTS_LIMIT(amount_recent_post);
 
       if (!data) {
         toast.error(data?.message || "Không có bài viết nào.", {

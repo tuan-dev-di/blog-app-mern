@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { SidebarApp } from "../components/_index";
 import { GET_USERS_OVERVIEW } from "../apis/user";
-import { GET_POSTS_OVERVIEW } from "../apis/post";
+import { GET_POSTS_LIMIT } from "../apis/post";
 import { GET_COMMENT_OVERVIEW } from "../apis/comment";
 
 const Overview = () => {
@@ -53,7 +53,7 @@ const Overview = () => {
 
   const list_posts = useCallback(async () => {
     try {
-      const data = await GET_POSTS_OVERVIEW(limitPosts);
+      const data = await GET_POSTS_LIMIT(limitPosts);
       if (!data) toast.error(data.message, { theme: "colored" });
 
       setPostList(data.posts);
