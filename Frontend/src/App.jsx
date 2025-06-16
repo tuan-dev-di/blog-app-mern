@@ -53,9 +53,9 @@ export default function App() {
 
           {/* ---------------| POSTS |--------------- */}
           <Route path="/posts/get-posts" element={<Post />}></Route>
-          <Route path="/posts/create-post" element={<CreatePost />}></Route>
+          <Route path="/posts/create" element={<CreatePost />}></Route>
           <Route
-            path="/posts/update-posts/:postId"
+            path="/posts/update/:postId"
             element={<UpdatePost />}
           ></Route>
 

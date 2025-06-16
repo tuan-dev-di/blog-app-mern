@@ -25,13 +25,14 @@ const update_account = async (req, res) => {
     if (checkLengthPassword(password))
       return res.status(400).json({
         success: false,
-        message: "Password must be longer than 6 characters",
+        message: "Mật khẩu phải nhiều hơn 7 ký tự",
       });
 
     if (!checkRegexPassword(password))
       return res.status(400).json({
         success: false,
-        message: "Your password is not matched with Regex Pattern",
+        message:
+          "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt, 1 ký tự số, 1 ký tự chữ hoa và thường",
       });
   }
 
@@ -40,14 +41,14 @@ const update_account = async (req, res) => {
   if (emailExisted)
     return res.status(400).json({
       success: false,
-      message: `Email: '${email}' has been used`,
+      message: `Email: '${email}' đã được sử dụng`,
     });
 
   if (email)
     if (!checkRegexEmail(email))
       return res.status(400).json({
         success: false,
-        message: `Email: '${email}' is not matched with Regex Pattern`,
+        message: `Email: '${email}' không phù hợp`,
       });
 
   //? ---------------| CHECK DISPLAY NAME |---------------
@@ -55,13 +56,13 @@ const update_account = async (req, res) => {
     if (checkLengthDisplayName(displayName))
       return res.status(400).json({
         success: false,
-        message: `Your name: '${displayName}' must be between 2 and 50 characters`,
+        message: `Tên hiển thị phải có độ dài từ 2 đến 50 ký tự`,
       });
 
     if (!checkRegexDisplayName(displayName))
       return res.status(400).json({
         success: false,
-        message: `Your name: '${displayName}' is not matched with Regex Pattern`,
+        message: `Tên của bạn: '${displayName}' không phù hợp`,
       });
   }
 

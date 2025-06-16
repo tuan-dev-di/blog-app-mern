@@ -10,10 +10,24 @@ const verifyToken = async (req, res, next) => {
   //? ---------------| CHECK TOKEN |---------------
   try {
     jwt.verify(token, process.env.Access_Token, (err, user) => {
-      if (err)
+      if (err) {
+        if (err.name === "TokenExpiredError")
+          return res
+            .status(401)
+            .json({ success: false, message: "Token expired" });
+
+        if (err.name === "JsonWebTokenError")
+          return res
+            .status(401)
+            .json({ success: false, message: "Invalid token" });
+
+        // Remove cookie token if token error to avoid using older token
+        res.clearCookie("accessToken");
+
         return res
           .status(401)
           .json({ success: false, message: "Access denied" });
+      }
 
       req.user = {
         userId: user.userId,

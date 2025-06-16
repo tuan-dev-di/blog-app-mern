@@ -13,7 +13,7 @@ const sign_in = async (req, res) => {
   if (checkEmptyUsername(username) || checkEmptyPassword(password))
     return res.status(400).json({
       success: false,
-      message: "Username and Password are required",
+      message: "Tên tài khoản và mật khâu không được để trống",
     });
 
   try {
@@ -21,14 +21,14 @@ const sign_in = async (req, res) => {
     if (!userValid)
       return res.status(400).json({
         success: false,
-        message: "Incorrect username or password",
+        message: "Sai tên tài khoản hoặc mật khẩu",
       });
 
     const passwordCorrect = await argon2.verify(userValid.password, password);
     if (!passwordCorrect)
       return res.status(400).json({
         success: false,
-        message: "Incorrect username or password",
+        message: "Sai tên tài khoản hoặc mật khẩu",
       });
 
     const accessToken = jwt.sign(
@@ -54,7 +54,7 @@ const sign_in = async (req, res) => {
       })
       .json({
         success: true,
-        message: "Sign in successfully!",
+        message: "Đăng nhập thành công!",
         user: user,
         accessToken: accessToken,
       });

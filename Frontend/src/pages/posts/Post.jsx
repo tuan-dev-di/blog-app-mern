@@ -125,7 +125,7 @@ const Post = () => {
                 <IoRefresh className="w-4 h-4" />
               </Tooltip>
             </Button>
-            <Link to="/posts/create-post">
+            <Link to="/posts/create">
               <Button>
                 <FaPlus className="mr-2 h-5 w-5" />
                 Tạo mới
@@ -278,7 +278,7 @@ const Post = () => {
                     color="info"
                     onClick={() => {
                       setModalOpen(false);
-                      navigate(`/posts/update-posts/${postId}`);
+                      navigate(`/posts/update/${postId}`);
                     }}
                   >
                     Có, cập nhật!

@@ -2,7 +2,7 @@
 // return !something đã bao gồm: undefined, null và rỗng
 // Thay vào đó sẽ sử dụng: return !something || something.trim() === "" để tránh khoảng trắng bị nhập dư bởi user
 const checkEmptyUsername = (username) => {
-  return !username || username.trim() === "";
+  return !username;
 };
 
 const checkLengthUsername = (username) => {
@@ -17,7 +17,7 @@ const checkRegexUsername = (username) => {
 
 //? ---------------| VALIDATION PASSWORD |---------------
 const checkEmptyPassword = (password) => {
-  return !password || password.trim() === "";
+  return !password;
 };
 
 const checkLengthPassword = (password) => {

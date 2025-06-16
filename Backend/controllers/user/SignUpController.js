@@ -23,46 +23,46 @@ const sign_up = async (req, res) => {
   if (checkEmptyUsername(username))
     return res.status(400).json({
       success: false,
-      message: "Username is required",
+      message: "Tên tài khoản không được để trống",
     });
 
   if (checkLengthUsername(username))
     return res.status(400).json({
       success: false,
-      message: "Username must be between 7 and 25 characters",
+      message: "Tên tài khoản phải có độ dài từ 7 đến 25 ký tự",
     });
 
   if (!checkRegexUsername(username))
     return res.status(400).json({
       success: false,
-      message: `Username: '${username}' is not matched with Regex Pattern`,
+      message: `Tên tài khoản: '${username}' không phù hợp`,
     });
 
   const usernameExisted = await User.findOne({ username });
   if (usernameExisted)
     return res.status(400).json({
       success: false,
-      message: `Username: '${username}' has been used`,
+      message: `Tên tài khoản: '${username}' đã được sử dụng`,
     });
 
   //? ---------------| CHECK PASSWORD |---------------
   if (checkEmptyPassword(password))
     return res.status(400).json({
       success: false,
-      message: "Password is required",
+      message: "Mật khẩu không được để trống",
     });
 
   if (checkLengthPassword(password))
     return res.status(400).json({
       success: false,
-      message: "Password must be longer than 6 characters",
+      message: "Mật khẩu phải nhiều hơn 7 ký tự",
     });
 
   if (!checkRegexPassword(password))
     return res.status(400).json({
       success: false,
       message:
-        "Password must have at least 1 special character, 1 number character, 1 capital letter",
+        "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt, 1 ký tự số, 1 ký tự chữ hoa và thường",
     });
 
   const hashedPassword = await argon2.hash(password);
@@ -71,39 +71,39 @@ const sign_up = async (req, res) => {
   if (checkEmptyEmail(email))
     return res.status(400).json({
       success: false,
-      message: "Email is required",
+      message: "Email không được để trống",
     });
 
   if (!checkRegexEmail(email))
     return res.status(400).json({
       success: false,
-      message: `Email: '${email}' is not matched with Regex Pattern`,
+      message: `Email: '${email}' không phù hợp`,
     });
 
   const emailExisted = await User.findOne({ email });
   if (emailExisted)
     return res.status(400).json({
       success: false,
-      message: `Email: '${email}' has been used`,
+      message: `Email: '${email}' đã được sử dụng`,
     });
 
   //? ---------------| CHECK DISPLAY NAME |---------------
   if (checkEmptyDisplayName(displayName))
     return res.status(400).json({
       success: false,
-      message: "Display Name is required",
+      message: "Tên hiển thị không được để trống",
     });
 
   if (checkLengthDisplayName(displayName))
     return res.status(400).json({
       success: false,
-      message: `Your name: '${displayName}' must be between 2 and 50 characters`,
+      message: `Tên hiển thị phải có độ dài từ 2 đến 50 ký tự`,
     });
 
   if (!checkRegexDisplayName(displayName))
     return res.status(400).json({
       success: false,
-      message: `Your name: '${displayName}' is not matched with Regex Pattern`,
+      message: `Tên của bạn: '${displayName}' không phù hợp`,
     });
 
   //? ---------------| CREATE NEW USER |---------------
@@ -139,7 +139,7 @@ const sign_up = async (req, res) => {
       })
       .json({
         success: true,
-        message: `Sign up successfully: '${username}' - '${email}'`,
+        message: `Đăng ký thành công: '${username}' - '${email}'`,
         user: user,
         accessToken: accessToken,
       });
