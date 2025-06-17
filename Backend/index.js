@@ -12,7 +12,7 @@ const comment_route = require("./routes/CommentRoute");
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173/",
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173/",
     credentials: true,
   })
 );
@@ -28,5 +28,13 @@ app.get("/", (req, res) => {
 app.use("/api/auth/users", user_route);
 app.use("/api/posts", post_route);
 app.use("/api/comments", comment_route);
+
+//? ---------------| SERVE FRONTEND STATIC FILES |---------------
+const frontendPath = path.join(__dirname, "../frontend/dist");
+app.use(express.static(frontendPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 module.exports = app;
