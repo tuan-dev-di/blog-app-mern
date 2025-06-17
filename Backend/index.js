@@ -30,7 +30,7 @@ app.use("/api/posts", post_route);
 app.use("/api/comments", comment_route);
 
 //? ---------------| SERVE FRONTEND STATIC FILES |---------------
-const frontendPath = path.join(__dirname, "../frontend/dist");
+const frontendPath = path.join(__dirname, "./frontend/dist");
 app.use(express.static(frontendPath));
 
 app.get("*", (req, res) => {
