@@ -4,7 +4,7 @@ const {
   checkLengthTitle,
   checkLengthContent,
   // checkRegexContent,
-} = require("../../utilities/ValidationPost");
+} = require("../../utilities/validPost");
 
 const update_post = async (req, res) => {
   //? ---------------| CHECK ID & ROLE |---------------

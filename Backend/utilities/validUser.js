@@ -52,7 +52,7 @@ const checkLengthDisplayName = (displayName) => {
 };
 
 const checkRegexDisplayName = (name) => {
-  const nameTrimmed = name.trim()
+  const nameTrimmed = name.trim();
   const displayNameRegexPattern =
     /^[a-zA-ZĂÂÁÀẢÃẠẮẰẲẴẶẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌƠỚỜỞỠỢÔỐỒỔỖỘÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴăâắằẳẵặấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọơớờởỡợôốồổỗộúùủũụưứừửữựýỳỷỹỵ ]{2,50}(?<![ .'-])$/;
   return displayNameRegexPattern.test(nameTrimmed);

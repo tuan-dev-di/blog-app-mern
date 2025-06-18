@@ -4,7 +4,7 @@ const User = require("../../models/User");
 const {
   checkEmptyUsername,
   checkEmptyPassword,
-} = require("../../utilities/ValidationUser");
+} = require("../../utilities/validUser");
 
 const sign_in = async (req, res) => {
   const { username, password } = req.body;

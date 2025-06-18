@@ -7,7 +7,7 @@ const {
   checkRegexEmail,
   checkLengthDisplayName,
   checkRegexDisplayName,
-} = require("../../utilities/ValidationUser.js");
+} = require("../../utilities/validUser");
 
 const update_account = async (req, res) => {
   const user_id = req.user.userId;

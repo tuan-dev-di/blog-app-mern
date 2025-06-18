@@ -14,7 +14,7 @@ const {
   checkEmptyDisplayName,
   checkLengthDisplayName,
   checkRegexDisplayName,
-} = require("../../utilities/ValidationUser");
+} = require("../../utilities/validUser");
 
 const sign_up = async (req, res) => {
   const { username, password, email, displayName } = req.body;
