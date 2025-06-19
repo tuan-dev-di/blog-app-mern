@@ -13,7 +13,7 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
   if (data) options.body = JSON.stringify(data);
 
   try {
-    const response = await fetch(`/api/${BASE_URL}${endpoint}`, options);
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
     console.log("API:", response)
 
     if (!response.ok) {
