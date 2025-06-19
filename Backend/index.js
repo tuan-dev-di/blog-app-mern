@@ -26,6 +26,15 @@ app.use(
     credentials: true,
   })
 );
+
+app.options(
+  "*",
+  cors({
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173/",
+    credentials: true,
+  })
+);
+
 console.log("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
 app.use(express.json());
 app.use(cookieParser());
