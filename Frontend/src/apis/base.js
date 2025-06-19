@@ -8,6 +8,7 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   };
 
   if (data) options.body = JSON.stringify(data);
