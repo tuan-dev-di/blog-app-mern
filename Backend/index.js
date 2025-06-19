@@ -9,6 +9,8 @@ const post_route = require("./routes/PostRoute");
 const comment_route = require("./routes/CommentRoute");
 
 //? ---------------| MIDDLEWARE FROM LIBRARIES |---------------
+
+const app = express();
 app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
@@ -18,7 +20,6 @@ app.use((req, res, next) => {
   next();
 });
 
-const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_ORIGIN || "http://localhost:5173/",
