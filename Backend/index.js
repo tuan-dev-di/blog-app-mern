@@ -9,22 +9,18 @@ const post_route = require("./routes/PostRoute");
 const comment_route = require("./routes/CommentRoute");
 
 //? ---------------| MIDDLEWARE FROM LIBRARIES |---------------
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    process.env.CLIENT_ORIGIN || "http://localhost:5173"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 const app = express();
 app.use(
   cors({
-    // origin: (origin, callback) => {
-    //   const allowedOrigin = [
-    //     process.env.CLIENT_ORIGIN,
-    //     "http://localhost:5173/",
-    //   ];
-    //   if (!origin || allowedOrigin.includes(origin)) {
-    //     console.log("ORIGIN:", origin)
-    //     console.log("ALLOW ORIGIN:", allowedOrigin);
-    //     console.log("ALLOWED:", allowedOrigin.includes(origin));
-
-    //     return (null, true);
-    //   } else callback(new Error("Not allow by CORS"))
-    // },
     origin: process.env.CLIENT_ORIGIN || "http://localhost:5173/",
     credentials: true,
   })
