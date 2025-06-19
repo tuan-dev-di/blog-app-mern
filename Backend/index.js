@@ -12,19 +12,20 @@ const comment_route = require("./routes/CommentRoute");
 const app = express();
 app.use(
   cors({
-    origin: (origin, callback) => {
-      const allowedOrigin = [
-        process.env.CLIENT_ORIGIN,
-        "http://localhost:5173/",
-      ];
-      if (!origin || allowedOrigin.includes(origin)) {
-        console.log("ORIGIN:", origin)
-        console.log("ALLOW ORIGIN:", allowedOrigin);
-        console.log("ALLOWED:", allowedOrigin.includes(origin));
+    // origin: (origin, callback) => {
+    //   const allowedOrigin = [
+    //     process.env.CLIENT_ORIGIN,
+    //     "http://localhost:5173/",
+    //   ];
+    //   if (!origin || allowedOrigin.includes(origin)) {
+    //     console.log("ORIGIN:", origin)
+    //     console.log("ALLOW ORIGIN:", allowedOrigin);
+    //     console.log("ALLOWED:", allowedOrigin.includes(origin));
 
-        return (null, true);
-      } else callback(new Error("Not allow by CORS"))
-    },
+    //     return (null, true);
+    //   } else callback(new Error("Not allow by CORS"))
+    // },
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173/",
     credentials: true,
   })
 );
