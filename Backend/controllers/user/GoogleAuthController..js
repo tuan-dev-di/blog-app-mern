@@ -35,6 +35,8 @@ const google_auth = async (req, res) => {
           sameSite: "None",
           maxAge: 24 * 60 * 60 * 1000,
           // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+          domain: "blog-app-mern-ch8t.onrender.com",
+          path: "/",
         })
         .json({
           success: true,
