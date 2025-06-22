@@ -8,14 +8,16 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",
+    // credentials: "include",
   };
 
   if (data) options.body = JSON.stringify(data);
 
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, options);
-    console.log("API:", response)
+    const response = await fetch(`${BASE_URL}/api${endpoint}`, options);
+    // const response = await fetch(`${endpoint}`, options);
+    console.log("API:", response);
+    console.log("BASE_URL:", BASE_URL);
 
     if (!response.ok) {
       const error = await response.json();

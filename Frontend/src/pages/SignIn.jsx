@@ -50,7 +50,8 @@ const SignIn = () => {
 
       // replace: true => To prevent users from returning to the sign-in page with the "Back" button
       setTimeout(() => {
-        if (data?.user?.role === "admin") navigate("/overview", { replace: true });
+        if (data?.user?.role === "admin")
+          navigate("/overview", { replace: true });
         else navigate("/profile", { replace: true });
       }, 3000);
     } catch (error) {
@@ -131,11 +132,22 @@ const SignIn = () => {
         </form>
 
         {/* Navigate to Sign Up page */}
-        <div className="flex gap-2 mt-5 text-base">
+        {/* <div className="flex gap-2 mt-5 text-base">
           <Link to="/sign-up" className="text-blue-500">
             Đăng ký
           </Link>
           <span>nếu bạn chưa có tài khoản!</span>
+        </div> */}
+        <div className="flex justify-between items-center mt-5 text-base">
+          <div className="flex gap-2">
+            <Link to="/sign-up" className="text-blue-500">
+              Đăng ký
+            </Link>
+            <span>nếu bạn chưa có tài khoản!</span>
+          </div>
+          <Link to="/" className="text-blue-500">
+            Trang chủ
+          </Link>
         </div>
       </div>
     </div>

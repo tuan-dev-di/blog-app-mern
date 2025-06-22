@@ -12,14 +12,21 @@ import {
   Dropdown,
   Avatar,
   Tooltip,
+  DropdownItem,
 } from "flowbite-react";
+import { FaSignOutAlt } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { IoMoonSharp, IoSunny } from "react-icons/io5";
 import { toggleTheme } from "../redux/theme/themeSlice";
 
+//? ---------------| IMPORT MY OWN COMPONENTS |---------------
+import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
+import { SIGN_OUT } from "../apis/auth";
+
 const Header = () => {
   const path = useLocation().pathname;
   const curUser = useSelector((state) => state?.user?.currentUser);
+  const userId = curUser?.user?._id;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +49,28 @@ const Header = () => {
 
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  //? ---------------| HANDLE SIGN OUT |---------------
+  const handleSignout = async () => {
+    try {
+      // Sign out with firebase sign out
+      const { ok, data } = await SIGN_OUT(userId);
+
+      if (!ok) {
+        dispatch(signOutFailure(data.message));
+        return;
+      }
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+
+      dispatch(signOutSuccess(data.message));
+      navigate("/sign-in");
+    } catch (error) {
+      console.log("Sign out error:", error.message);
+      dispatch(signOutFailure(error.message));
+    }
   };
 
   return (
@@ -122,6 +151,9 @@ const Header = () => {
                 </span>
               </Link>
             </Dropdown.Header>
+            <DropdownItem icon={FaSignOutAlt} onClick={handleSignout}>
+              Sign out
+            </DropdownItem>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
