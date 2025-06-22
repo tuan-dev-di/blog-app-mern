@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 const verifyToken = async (req, res, next) => {
   //? ---------------| CHECK HAS TAKEN TOKEN |---------------
   const token =
-    req.cookies.accessToken || req.header("Authorization").split(" ")[1];
+    // req.cookies.accessToken || req.header("Authorization").split(" ")[1];
+    req.cookies.accessToken;
   if (!token)
     return res.status(401).json({ success: false, message: "Access denied" });
 
