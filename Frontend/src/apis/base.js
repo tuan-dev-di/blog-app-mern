@@ -10,6 +10,7 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
     },
     credentials: "include",
   };
+  console.log("OPTION:", options.credentials)
 
   if (data) options.body = JSON.stringify(data);
 
