@@ -1,6 +1,6 @@
 //? ---------------| CHECK ID & ROLE |---------------
-// const BASE_URL = "/api";
-const BASE_URL = import.meta.env.VITE_BACKEND_API;
+const BASE_URL = "/api";
+// const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
 export const callApi = async (endpoint, method = "GET", data = null) => {
   const options = {
@@ -10,15 +10,14 @@ export const callApi = async (endpoint, method = "GET", data = null) => {
     },
     credentials: "include",
   };
-  console.log("OPTION:", options.credentials)
+  // console.log("OPTION:", options.credentials)
 
   if (data) options.body = JSON.stringify(data);
 
   try {
     const response = await fetch(`${BASE_URL}/api${endpoint}`, options);
-    // const response = await fetch(`${endpoint}`, options);
-    console.log("API:", response);
-    console.log("BASE_URL:", BASE_URL);
+    // const response = await fetch(`${BASE_URL}${endpoint}`, options);
+    // console.log("API:", response);
 
     if (!response.ok) {
       const error = await response.json();
