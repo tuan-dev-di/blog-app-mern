@@ -262,6 +262,19 @@ const DetailAccount = () => {
           />
         </div>
 
+        {/* ---------------| DISPLAY NAME |--------------- */}
+        <div>
+          <Label className="text-base" value="Tên hiển thị" />
+          <TextInput
+            id="displayName"
+            defaultValue={curUser.user.displayName}
+            placeholder={curUser.user.displayName}
+            type="text"
+            icon={MdEdit}
+            onChange={handleUpdate}
+          />
+        </div>
+
         {/* ---------------| PASSWORD |--------------- */}
         <div>
           <Label className="text-base" value="Mật khẩu" />
@@ -281,19 +294,13 @@ const DetailAccount = () => {
               {showPassword ? <FaEye /> : <FaEyeSlash />}
             </Button>
           </div>
-        </div>
-
-        {/* ---------------| DISPLAY NAME |--------------- */}
-        <div>
-          <Label className="text-base" value="Tên hiển thị" />
-          <TextInput
-            id="displayName"
-            defaultValue={curUser.user.displayName}
-            placeholder={curUser.user.displayName}
-            type="text"
-            icon={MdEdit}
-            onChange={handleUpdate}
-          />
+          <ul className="list-disc  ml-4 p-3 text-sm ">
+            <li>Mật khẩu tối thiểu phải đạt 8 ký tự</li>
+            <li>Chứa ít nhật 1 ký tự đặc biệt</li>
+            <li>Chứa ít nhật 1 ký tự số</li>
+            <li>Chứa ít nhất 1 ký tự chữ viết hoa</li>
+            <li>Chứa ít nhất 1 ký tự chữ viết thường</li>
+          </ul>
         </div>
 
         {/* Button submit Update Account */}
@@ -310,7 +317,7 @@ const DetailAccount = () => {
       {/* Button submit Delete Account */}
       <Button
         color="failure"
-        className="mt-3"
+        className="my-3"
         type="submit"
         onClick={() => setDeleteModal(true)}
       >

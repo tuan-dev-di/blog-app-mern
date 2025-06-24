@@ -71,9 +71,6 @@ const CommentSection = ({ postId }) => {
 
       toast.success("Đã bình luận", { theme: "colored" });
       await get_comments();
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
       setContent(""); // Set content in comment box to null after post comment
     } catch (error) {
       console.log("Create comment error:", error.message);
@@ -83,16 +80,6 @@ const CommentSection = ({ postId }) => {
 
   //? ---------------| HANDLE SUBMIT EDIT COMMENT |---------------
   const handleSubmitEditComment = async (comment, editedComment) => {
-    // setComments(
-    //   comments.map((c) =>
-    //     c._id === comment._id
-    //       ? {
-    //           ...c,
-    //           content: editedComment,
-    //         }
-    //       : c
-    //   )
-    // );
     setComments((prevComments) =>
       prevComments.map((c) =>
         c._id === comment._id

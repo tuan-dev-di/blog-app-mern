@@ -68,6 +68,51 @@ const SignUp = () => {
 
         {/* Form Sign Up */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-12">
+          {/* ---------------| EMAIL |--------------- */}
+          <div>
+            <Label className="text-lg flex">
+              Email
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
+            </Label>
+            <TextInput
+              id="email"
+              placeholder="Ví dụ: example@gmail.com"
+              type="email"
+              icon={HiMail}
+              required
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* ---------------| DISPLAY NAME |--------------- */}
+          <div>
+            <Label className="text-lg flex">
+              Tên hiển thị
+              <Tooltip
+                content="Bắt buộc"
+                style="light"
+                placement="right"
+                trigger="hover"
+              >
+                <span className="text-red-500 ml-1">*</span>
+              </Tooltip>
+            </Label>
+            <TextInput
+              id="displayName"
+              placeholder="Ví dụ: Nguyễn Văn A"
+              type="text"
+              required
+              onChange={handleChange}
+            />
+          </div>
+
           {/* ---------------| USERNAME |--------------- */}
           <div>
             <Label className="text-lg flex">
@@ -121,52 +166,15 @@ const SignUp = () => {
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </Button>
             </div>
+            <ul className="list-disc  ml-4 p-3 text-sm ">
+            <li>Mật khẩu tối thiểu phải đạt 8 ký tự</li>
+            <li>Chứa ít nhật 1 ký tự đặc biệt</li>
+            <li>Chứa ít nhật 1 ký tự số</li>
+            <li>Chứa ít nhất 1 ký tự chữ viết hoa</li>
+            <li>Chứa ít nhất 1 ký tự chữ viết thường</li>
+          </ul>
           </div>
 
-          {/* ---------------| EMAIL |--------------- */}
-          <div>
-            <Label className="text-lg flex">
-              Email
-              <Tooltip
-                content="Bắt buộc"
-                style="light"
-                placement="right"
-                trigger="hover"
-              >
-                <span className="text-red-500 ml-1">*</span>
-              </Tooltip>
-            </Label>
-            <TextInput
-              id="email"
-              placeholder="Ví dụ: example@gmail.com"
-              type="email"
-              icon={HiMail}
-              required
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* ---------------| DISPLAY NAME |--------------- */}
-          <div>
-            <Label className="text-lg flex">
-              Tên hiển thị
-              <Tooltip
-                content="Bắt buộc"
-                style="light"
-                placement="right"
-                trigger="hover"
-              >
-                <span className="text-red-500 ml-1">*</span>
-              </Tooltip>
-            </Label>
-            <TextInput
-              id="displayName"
-              placeholder="Ví dụ: Nguyễn Văn A"
-              type="text"
-              required
-              onChange={handleChange}
-            />
-          </div>
           <Button
             gradientDuoTone="purpleToBlue"
             type="submit"

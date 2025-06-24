@@ -130,9 +130,6 @@ const DetailPost = () => {
       toast.success("Cập nhật bài viết thành công!", { theme: "colored" });
 
       await get_post_to_update();
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
     } catch (error) {
       console.log("Update post error:", error.message);
       toast.error(error.message, { theme: "colored" });
