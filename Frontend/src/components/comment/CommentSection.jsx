@@ -83,12 +83,22 @@ const CommentSection = ({ postId }) => {
 
   //? ---------------| HANDLE SUBMIT EDIT COMMENT |---------------
   const handleSubmitEditComment = async (comment, editedComment) => {
-    setComments(
-      comments.map((c) =>
+    // setComments(
+    //   comments.map((c) =>
+    //     c._id === comment._id
+    //       ? {
+    //           ...c,
+    //           content: editedComment,
+    //         }
+    //       : c
+    //   )
+    // );
+    setComments((prevComments) =>
+      prevComments.map((c) =>
         c._id === comment._id
           ? {
               ...c,
-              content: editedComment,
+              ...editedComment,
             }
           : c
       )
@@ -117,9 +127,6 @@ const CommentSection = ({ postId }) => {
 
       await get_comments();
 
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
       setComments(comments.filter((comment) => comment._id !== commentId));
     } catch (error) {
       console.log("Delete comment error:", error.message);

@@ -65,12 +65,13 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
         return;
       }
 
-      onEdit(comment, editComment);
+      onEdit(comment, {
+        content: editComment,
+        updatedAt: new Date().toISOString(),
+      });
 
       toast.success("Đã sửa bình luận", { theme: "colored" });
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
+      setEditComment(false);
     } catch (error) {
       console.log("Update comment - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
