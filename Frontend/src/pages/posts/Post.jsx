@@ -91,9 +91,11 @@ const Post = () => {
       setUserPost((prev) =>
         prev ? prev.filter((post) => post._id !== postId) : []
       );
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+
+      await list_posts();
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
     } catch (error) {
       console.log("Delete post error:", error.message);
       toast.error(error.message, { theme: "colored" });

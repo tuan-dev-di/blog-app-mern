@@ -87,9 +87,10 @@ const Comment = () => {
         theme: "colored",
       });
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      await list_comments();
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
     } catch (error) {
       console.log("Delete comment error:", error.message);
       toast.error(error.message, { theme: "colored" });

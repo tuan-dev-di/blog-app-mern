@@ -70,9 +70,10 @@ const CommentSection = ({ postId }) => {
       }
 
       toast.success("Đã bình luận", { theme: "colored" });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      await get_comments();
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
       setContent(""); // Set content in comment box to null after post comment
     } catch (error) {
       console.log("Create comment error:", error.message);
@@ -114,9 +115,11 @@ const CommentSection = ({ postId }) => {
         theme: "colored",
       });
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      await get_comments();
+
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
       setComments(comments.filter((comment) => comment._id !== commentId));
     } catch (error) {
       console.log("Delete comment error:", error.message);

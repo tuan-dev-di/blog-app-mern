@@ -68,9 +68,9 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
       onEdit(comment, editComment);
 
       toast.success("Đã sửa bình luận", { theme: "colored" });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
     } catch (error) {
       console.log("Update comment - ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
