@@ -8,14 +8,11 @@ const router = express.Router();
 
 router.get("/imagekit-auth", (req, res) => {
   const authParams = imageKit.getAuthenticationParameters();
-  console.log("AUTH PARAMS:", authParams);
 
   res.json(authParams);
 });
 
 router.post("/upload", upload.single("file"), async (req, res) => {
-  console.log("REQ FILE:", req.file); // 
-
   if (!req.file) {
     return res.status(400).json({
       success: false,
