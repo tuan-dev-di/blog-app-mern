@@ -7,6 +7,7 @@ const cors = require("cors");
 const user_route = require("./routes/UserRoute");
 const post_route = require("./routes/PostRoute");
 const comment_route = require("./routes/CommentRoute");
+const imagekit_route = require("./routes/ImageKitIO");
 
 //? ---------------| MIDDLEWARE FROM LIBRARIES |---------------
 const app = express();
@@ -31,5 +32,6 @@ app.get("/", (req, res) => {
 app.use("/api/auth/users", user_route);
 app.use("/api/posts", post_route);
 app.use("/api/comments", comment_route);
+app.use("/api/images", imagekit_route);
 
 module.exports = app;

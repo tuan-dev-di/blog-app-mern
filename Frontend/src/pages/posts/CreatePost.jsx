@@ -1,16 +1,7 @@
 //? ---------------| IMPORT LIBRARIES |---------------
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-//? ---------------| IMPORT GOOGLE SERVICES |---------------
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../../firebase";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Select, Button, Tooltip } from "flowbite-react";
@@ -23,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { CREATE_POST } from "../../apis/post";
+import { UPLOAD_IMAGE } from "../../apis/auth";
 
 const CreatePost = () => {
   const curUser = useSelector((state) => state.user.currentUser);
@@ -33,7 +25,7 @@ const CreatePost = () => {
 
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
-  const [postImageURL, setPostImageURL] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
 
   //? ---------------| HANDLE CHANGE IMAGE OF POST |---------------
@@ -41,50 +33,17 @@ const CreatePost = () => {
     let file = e.target.files[0];
     if (!file) return;
 
+    // Check capacity of image from user - MAXIMUM 4MB
+    const maxFile = 4 * 1024 * 1024;
+    if (file.size > maxFile)
+      toast.error(
+        "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
+        { theme: "colored" }
+      );
+
     setPostImage(file);
-    setPostImageURL(URL.createObjectURL(file));
+    setPreviewImage(URL.createObjectURL(file));
   };
-
-  //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
-  const uploadFile = useCallback(async () => {
-    if (!postImage) return;
-
-    const storage = getStorage(app);
-    const fileUploadName = postImage.name;
-    const fileName = new Date().getTime() + "_" + fileUploadName;
-    const storageRef = ref(storage, fileName);
-    const uploadFileTask = uploadBytesResumable(storageRef, postImage);
-    uploadFileTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setPostImageUploadProgress(progress.toFixed(0));
-      },
-      (error) => {
-        console.log("ERROR Upload File:", error);
-        toast.error(
-          "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
-          { theme: "colored" }
-        );
-        setPostImage(null);
-        setPostImageURL(null);
-        setPostImageUploadProgress(null);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadFileTask.snapshot.ref);
-        setPostImageURL(downloadURL);
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          image: downloadURL,
-        }));
-      }
-    );
-  }, [postImage]);
-
-  useEffect(() => {
-    if (postImage) uploadFile();
-  }, [postImage, uploadFile]);
 
   //? ---------------| HANDLE GET ATTRIBUTE TO CREATE POST |---------------
   // React Quill doesn't support id prop
@@ -99,8 +58,37 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let imagePreview = null;
+
     try {
-      const { ok, data } = await CREATE_POST(userId, formData);
+      if (postImage) {
+        const imageData = new FormData();
+        imageData.append("file", postImage);
+
+        imagePreview = await UPLOAD_IMAGE(imageData);
+        if (!imagePreview) {
+          toast.error("Không nhận được ảnh từ người dùng", {
+            theme: "colored",
+          });
+          setPostImage(null);
+          setPreviewImage(null);
+          setPostImageUploadProgress(null);
+          return;
+        }
+
+        setPreviewImage(imagePreview.url);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: imagePreview.url,
+        }));
+      }
+
+      const updateFormData = {
+        ...formData,
+        image: imagePreview.url,
+      };
+
+      const { ok, data } = await CREATE_POST(userId, updateFormData);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         return;
@@ -162,7 +150,6 @@ const CreatePost = () => {
                   onChange={handleCreatePost}
                   required
                 />
-
               </div>
               <div className="flex flex-col flex-1">
                 <Label className="text-lg">Thể loại</Label>
@@ -255,7 +242,7 @@ const CreatePost = () => {
                   {postImage ? (
                     <img
                       src={
-                        postImageURL ||
+                        previewImage ||
                         "https://wordtracker-swoop-uploads.s3.amazonaws.com/uploads/ckeditor/pictures/1247/content_wordtracker_blog_article_image.jpg"
                       }
                       alt="Selected post"

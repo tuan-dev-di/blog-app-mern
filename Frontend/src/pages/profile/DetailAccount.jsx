@@ -96,6 +96,13 @@ const DetailAccount = () => {
       }
     );
   }, [profileImageFile]);
+  // const uploadFile = useCallback(async () => {
+  //   try {
+      
+  //   } catch (error) {
+  //     setProfileImageUploadProgress
+  //   }
+  // });
 
   useEffect(() => {
     if (profileImageFile) uploadFile();

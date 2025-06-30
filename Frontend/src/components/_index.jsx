@@ -9,3 +9,4 @@ export { default as AdminPrivateRoute } from "./AdminPrivateRoute";
 export { default as Introduce } from "./Introduce";
 export { default as CommentSection } from "./comment/CommentSection";
 export { default as ScrollToTop } from "./ScrollToTop";
+// export { default as UploadImage } from "./UploadImage";

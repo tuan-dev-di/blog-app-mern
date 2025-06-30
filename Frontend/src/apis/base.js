@@ -1,23 +1,31 @@
 //? ---------------| CHECK ID & ROLE |---------------
-// const BASE_URL = "/api";
-const BASE_URL = import.meta.env.VITE_BACKEND_API;
+const BASE_URL = "/api";
+// const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
-export const callApi = async (endpoint, method = "GET", data = null) => {
+export const callApi = async (
+  endpoint,
+  method = "GET",
+  data = null,
+  isFormData = false
+) => {
   const options = {
-    method: method,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    method,
+    headers: {},
     credentials: "include",
   };
-  // console.log("OPTION:", options.credentials)
 
-  if (data) options.body = JSON.stringify(data);
+  if (data) {
+    if (isFormData) {
+      options.body = data; // giữ nguyên FormData
+    } else {
+      options.headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify(data);
+    }
+  }
 
   try {
-    const response = await fetch(`${BASE_URL}/api${endpoint}`, options);
-    // const response = await fetch(`${BASE_URL}${endpoint}`, options);
-    // console.log("API:", response);
+    // const response = await fetch(`${BASE_URL}/api${endpoint}`, options);
+    const response = await fetch(`${BASE_URL}${endpoint}`, options);
 
     if (!response.ok) {
       const error = await response.json();

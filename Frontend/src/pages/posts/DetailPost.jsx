@@ -112,7 +112,7 @@ const DetailPost = () => {
       </span>
 
       {/* ---------------| IMAGE |--------------- */}
-      <div className="p-3 w-full max-h-[600px] aspect-[16/9]">
+      <div className="p-3 w-full max-h-[500px] aspect-[16/9]">
         <img
           className="w-full h-full object-contain"
           src={post?.image}

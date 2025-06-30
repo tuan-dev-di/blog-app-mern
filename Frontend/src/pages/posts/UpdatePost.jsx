@@ -187,7 +187,7 @@ const DetailPost = () => {
           <div>
             <div className="flex gap-4 sm:flex-row items-start">
               <div className="flex flex-col flex-1">
-                <Label className="text-lg">
+                <Label className="text-lg flex">
                   Tiêu đề
                   <Tooltip
                     content="Bắt buộc"
@@ -234,7 +234,7 @@ const DetailPost = () => {
 
           {/* ---------------| CONTENT |--------------- */}
           <div>
-            <Label className="text-lg">
+            <Label className="text-lg flex">
               Nội dung bài viết
               <Tooltip
                 content="Bắt buộc"
