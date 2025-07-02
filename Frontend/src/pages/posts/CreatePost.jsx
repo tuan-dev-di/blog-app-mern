@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Select, Button, Tooltip } from "flowbite-react";
-import { CircularProgressbar } from "react-circular-progressbar";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -26,7 +25,6 @@ const CreatePost = () => {
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
 
   //? ---------------| HANDLE CHANGE IMAGE OF POST |---------------
   const handleChangePostImage = async (e) => {
@@ -74,7 +72,6 @@ const CreatePost = () => {
           });
           setPostImage(null);
           setPreviewImage(null);
-          setPostImageUploadProgress(null);
           return;
         }
 
@@ -218,28 +215,6 @@ const CreatePost = () => {
                 className="relative w-full h-[600px] self-center cursor-pointer overflow-hidden shadow-xl"
                 onClick={() => filePicker.current.click()}
               >
-                {postImageUploadProgress && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-60 h-60">
-                      <CircularProgressbar
-                        value={postImageUploadProgress || 0}
-                        text={`${postImageUploadProgress}%`}
-                        strokeWidth={3}
-                        styles={{
-                          root: {
-                            width: "100%",
-                            height: "100%",
-                          },
-                          path: {
-                            stroke: `rgba(62, 152, 199, ${
-                              postImageUploadProgress / 100
-                            })`,
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
                 <div className="flex flex-col items-center justify-center pb-6 pt-5 h-full w-full  border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                   {postImage ? (
                     <img
@@ -248,11 +223,7 @@ const CreatePost = () => {
                         "https://wordtracker-swoop-uploads.s3.amazonaws.com/uploads/ckeditor/pictures/1247/content_wordtracker_blog_article_image.jpg"
                       }
                       alt="Selected post"
-                      className={`w-full h-full ${
-                        postImageUploadProgress &&
-                        postImageUploadProgress < 100 &&
-                        "opacity-60"
-                      }`}
+                      className={"w-full h-full"}
                     />
                   ) : (
                     <>

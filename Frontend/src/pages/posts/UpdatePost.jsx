@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Select, Button } from "flowbite-react";
-import { CircularProgressbar } from "react-circular-progressbar";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -22,7 +21,6 @@ const DetailPost = () => {
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
 
   const { postId } = useParams();
 
@@ -39,7 +37,15 @@ const DetailPost = () => {
         toast.error("Không lấy được thông tin bài viết", { theme: "colored" });
         return;
       }
-      setFormData(data.posts[0]);
+      // setFormData(data.posts[0]);
+      const originalPostData = data.posts[0];
+      setFormData({
+        ...originalPostData,
+        originalTitle: originalPostData.title,
+        originalCategory: originalPostData.category,
+        originalContent: originalPostData.content,
+        originalPostImage: originalPostData.image,
+      });
     } catch (error) {
       console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -96,23 +102,29 @@ const DetailPost = () => {
           });
           setPostImage(null);
           setImagePreview(null);
-          setPostImageUploadProgress(null);
           return;
         }
 
         setImagePreview(imagePreview.url);
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          image: imagePreview.url,
-        }));
       }
 
-      const updateFormData = {
-        ...formData,
-        image: imagePreview.url,
-      };
 
-      const { ok, data } = await UPDATE_POST(postId, userId, updateFormData);
+      const postDataChanges = {};
+      if (formData.title && formData.title !== formData.originalTitle)
+        postDataChanges.title = formData.title;
+      if (formData.category && formData.category !== formData.originalCategory)
+        postDataChanges.category = formData.category;
+      if (formData.content && formData.content !== formData.originalContent)
+        postDataChanges.content = formData.content;
+      if (imagePreview && imagePreview.url !== formData.originalPostImage)
+        postDataChanges.image = imagePreview.url;
+
+      if (Object.keys(postDataChanges).length === 0) {
+        toast.warn("Không có gì thay đổi", { theme: "colored" });
+        return;
+      }
+
+      const { ok, data } = await UPDATE_POST(postId, userId, postDataChanges);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         return;
@@ -246,38 +258,12 @@ const DetailPost = () => {
                 className="relative w-full h-[600px] self-center cursor-pointer overflow-hidden shadow-xl"
                 onClick={() => filePicker.current.click()}
               >
-                {postImageUploadProgress && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-60 h-60">
-                      <CircularProgressbar
-                        value={postImageUploadProgress || 0}
-                        text={`${postImageUploadProgress}%`}
-                        strokeWidth={3}
-                        styles={{
-                          root: {
-                            width: "100%",
-                            height: "100%",
-                          },
-                          path: {
-                            stroke: `rgba(62, 152, 199, ${
-                              postImageUploadProgress / 100
-                            })`,
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
                 <div className="flex flex-col items-center justify-center pb-6 pt-5 h-full w-full  border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                   {formData?.image ? (
                     <img
                       src={imagePreview || formData?.image}
                       alt="Selected post"
-                      className={`w-full h-full ${
-                        postImageUploadProgress &&
-                        postImageUploadProgress < 100 &&
-                        "opacity-60"
-                      }`}
+                      className={"w-full h-full"}
                     />
                   ) : (
                     <>
