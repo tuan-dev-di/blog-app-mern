@@ -35,11 +35,13 @@ const CreatePost = () => {
 
     // Check capacity of image from user - MAXIMUM 4MB
     const maxFile = 4 * 1024 * 1024;
-    if (file.size > maxFile)
+    if (file.size > maxFile) {
       toast.error(
         "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
         { theme: "colored" }
       );
+      return;
+    }
 
     setPostImage(file);
     setPreviewImage(URL.createObjectURL(file));
