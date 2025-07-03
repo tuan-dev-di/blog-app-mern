@@ -3,18 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-//? ---------------| IMPORT GOOGLE SERVICES |---------------
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../../firebase";
-
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Label, TextInput, Select, Button, Tooltip } from "flowbite-react";
-import { CircularProgressbar } from "react-circular-progressbar";
+import { Label, TextInput, Select, Button } from "flowbite-react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -23,14 +13,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { UPDATE_POST, GET_POST_TO_UPDATE } from "../../apis/post";
+import { UPLOAD_IMAGE } from "../../apis/auth";
 
 const DetailPost = () => {
   const filePicker = useRef();
 
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
-  const [postImageURL, setPostImageURL] = useState(null);
-  const [postImageUploadProgress, setPostImageUploadProgress] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const { postId } = useParams();
 
@@ -44,9 +34,18 @@ const DetailPost = () => {
       const data = await GET_POST_TO_UPDATE(postId);
 
       if (!data) {
-        toast.error(data.message, { theme: "colored" });
+        toast.error("Không lấy được thông tin bài viết", { theme: "colored" });
+        return;
       }
-      setFormData(data.posts[0]);
+      // setFormData(data.posts[0]);
+      const originalPostData = data.posts[0];
+      setFormData({
+        ...originalPostData,
+        originalTitle: originalPostData.title,
+        originalCategory: originalPostData.category,
+        originalContent: originalPostData.content,
+        originalPostImage: originalPostData.image,
+      });
     } catch (error) {
       console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -62,50 +61,19 @@ const DetailPost = () => {
     let file = e.target.files[0];
     if (!file) return;
 
+    // Check capacity of image from user - MAXIMUM 4MB
+    const maxFile = 4 * 1024 * 1024;
+    if (file.size > maxFile) {
+      toast.error(
+        "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
+        { theme: "colored" }
+      );
+      return;
+    }
+
     setPostImage(file);
-    setPostImageURL(URL.createObjectURL(file));
+    setImagePreview(URL.createObjectURL(file));
   };
-
-  //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
-  const uploadFile = useCallback(async () => {
-    if (!postImage) return;
-
-    const storage = getStorage(app);
-    const fileUploadName = postImage.name;
-    const fileName = new Date().getTime() + "_" + fileUploadName;
-    const storageRef = ref(storage, fileName);
-    const uploadFileTask = uploadBytesResumable(storageRef, postImage);
-    uploadFileTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setPostImageUploadProgress(progress.toFixed(0));
-      },
-      (error) => {
-        console.log("Upload file error:", error);
-        toast.error(
-          "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
-          { theme: "colored" }
-        );
-        setPostImage(null);
-        setPostImageURL(null);
-        setPostImageUploadProgress(null);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadFileTask.snapshot.ref);
-        setPostImageURL(downloadURL);
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          image: downloadURL,
-        }));
-      }
-    );
-  }, [postImage]);
-
-  useEffect(() => {
-    if (postImage) uploadFile();
-  }, [postImage, uploadFile]);
 
   //? ---------------| HANDLE GET ATTRIBUTE TO UPDATE POST |---------------
   // React Quill doesn't support id prop
@@ -121,7 +89,42 @@ const DetailPost = () => {
     e.preventDefault();
 
     try {
-      const { ok, data } = await UPDATE_POST(postId, userId, formData);
+      let imagePreview = null;
+      if (postImage) {
+        const imageData = new FormData();
+        imageData.append("file", postImage);
+
+        imagePreview = await UPLOAD_IMAGE(imageData);
+
+        if (!imagePreview) {
+          toast.error("Không nhận được ảnh từ người dùng", {
+            theme: "colored",
+          });
+          setPostImage(null);
+          setImagePreview(null);
+          return;
+        }
+
+        setImagePreview(imagePreview.url);
+      }
+
+
+      const postDataChanges = {};
+      if (formData.title && formData.title !== formData.originalTitle)
+        postDataChanges.title = formData.title;
+      if (formData.category && formData.category !== formData.originalCategory)
+        postDataChanges.category = formData.category;
+      if (formData.content && formData.content !== formData.originalContent)
+        postDataChanges.content = formData.content;
+      if (imagePreview && imagePreview.url !== formData.originalPostImage)
+        postDataChanges.image = imagePreview.url;
+
+      if (Object.keys(postDataChanges).length === 0) {
+        toast.warn("Không có gì thay đổi", { theme: "colored" });
+        return;
+      }
+
+      const { ok, data } = await UPDATE_POST(postId, userId, postDataChanges);
       if (!ok) {
         toast.error(data.message, { theme: "colored" });
         return;
@@ -187,22 +190,12 @@ const DetailPost = () => {
           <div>
             <div className="flex gap-4 sm:flex-row items-start">
               <div className="flex flex-col flex-1">
-                <Label className="text-lg flex">
-                  Tiêu đề
-                  <Tooltip
-                    content="Bắt buộc"
-                    style="light"
-                    placement="right"
-                    trigger="hover"
-                  >
-                    <span className="text-red-500 ml-1">*</span>
-                  </Tooltip>
-                </Label>
+                <Label className="text-lg">Tiêu đề</Label>
                 <TextInput
                   id="title"
                   type="text"
                   className="flex-1 w-[500px]"
-                  placeholder="Nhập tiêu đề"
+                  placeholder="Không được sửa tiêu đề để trống"
                   onChange={handleUpdatePost}
                   value={formData?.title || ""}
                   required
@@ -234,20 +227,10 @@ const DetailPost = () => {
 
           {/* ---------------| CONTENT |--------------- */}
           <div>
-            <Label className="text-lg flex">
-              Nội dung bài viết
-              <Tooltip
-                content="Bắt buộc"
-                style="light"
-                placement="right"
-                trigger="hover"
-              >
-                <span className="text-red-500 ml-1">*</span>
-              </Tooltip>
-            </Label>
+            <Label className="text-lg">Nội dung bài viết</Label>
             <ReactQuill
               theme="snow"
-              placeholder="Nhập nội dung bài viết của bạn"
+              placeholder="Không được sửa nội dung bài viết để trống"
               className="h-64 mb-10"
               value={formData?.content || ""}
               onChange={(value) => {
@@ -275,38 +258,12 @@ const DetailPost = () => {
                 className="relative w-full h-[600px] self-center cursor-pointer overflow-hidden shadow-xl"
                 onClick={() => filePicker.current.click()}
               >
-                {postImageUploadProgress && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-60 h-60">
-                      <CircularProgressbar
-                        value={postImageUploadProgress || 0}
-                        text={`${postImageUploadProgress}%`}
-                        strokeWidth={3}
-                        styles={{
-                          root: {
-                            width: "100%",
-                            height: "100%",
-                          },
-                          path: {
-                            stroke: `rgba(62, 152, 199, ${
-                              postImageUploadProgress / 100
-                            })`,
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
                 <div className="flex flex-col items-center justify-center pb-6 pt-5 h-full w-full  border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                   {formData?.image ? (
                     <img
-                      src={formData?.image || postImageURL}
+                      src={imagePreview || formData?.image}
                       alt="Selected post"
-                      className={`w-full h-full ${
-                        postImageUploadProgress &&
-                        postImageUploadProgress < 100 &&
-                        "opacity-60"
-                      }`}
+                      className={"w-full h-full"}
                     />
                   ) : (
                     <>

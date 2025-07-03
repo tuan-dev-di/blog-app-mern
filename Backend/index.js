@@ -19,7 +19,6 @@ app.use(
   })
 );
 
-console.log("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
 app.use(express.json());
 app.use(cookieParser());
 

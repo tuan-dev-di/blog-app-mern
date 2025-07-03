@@ -1,23 +1,13 @@
 //? ---------------| IMPORT LIBRARIES |---------------
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useCallback, useEffect, useRef, useState } from "react";
-
-//? ---------------| IMPORT GOOGLE SERVICES |---------------
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../../firebase";
+import { useRef, useState } from "react";
 
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Label, TextInput, Button, Modal } from "flowbite-react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdEmail, MdEdit } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,6 +22,7 @@ import {
   deleteUserFailure,
 } from "../../redux/user/userSlice";
 import { DELETE_ACCOUNT, UPDATE_ACCOUNT } from "../../apis/user";
+import { UPLOAD_IMAGE } from "../../apis/auth";
 
 const DetailAccount = () => {
   const dispatch = useDispatch();
@@ -42,71 +33,28 @@ const DetailAccount = () => {
   const loading = useSelector((state) => state.user.loading);
   const [formData, setFormData] = useState({});
 
-  const [profileImageFile, setProfileImageFile] = useState(null);
-  const [profileImageUrl, setProfileImageUrl] = useState(null);
-  const [profileImageUploadProgress, setProfileImageUploadProgress] =
-    useState(null);
-  const [profileImageUploading, setProfileImageUploading] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
   const filePicker = useRef();
 
   //? ---------------| HANDLE CHANGE IMAGE OF PROFILE USER |---------------
   const handleChangeProfileImage = (e) => {
     let file = e.target.files[0];
-    if (file) {
-      setProfileImageFile(file);
-      setProfileImageUrl(URL.createObjectURL(file));
+    if (!file) return;
+
+    // Check capacity of image from user - MAXIMUM 4MB
+    const maxFile = 4 * 1024 * 1024;
+    if (file.size > maxFile) {
+      toast.error(
+        "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
+        { theme: "colored" }
+      );
+      return;
     }
+
+    setProfileImage(file);
+    setProfileImagePreview(URL.createObjectURL(file));
   };
-
-  //? ---------------| UPLOAD FILE IMAGE ON UI |---------------
-  const uploadFile = useCallback(async () => {
-    const storage = getStorage(app);
-    const fileNameUpload = profileImageFile.name;
-    const fileName = new Date().getTime() + "_" + fileNameUpload;
-
-    const storageRef = ref(storage, fileName);
-    const uploadFileTask = uploadBytesResumable(storageRef, profileImageFile);
-    uploadFileTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProfileImageUploadProgress(progress.toFixed(0));
-      },
-      (error) => {
-        console.log("Upload file error:", error);
-        toast.error(
-          "Không thể úp ảnh - Chỉ nhận loại tệp JPEG, JPG, PNG, GIF - Tệp phải có dung lượng nhỏ hơn 4MB",
-          { theme: "colored" }
-        );
-        setProfileImageUploadProgress(null);
-        setProfileImageUploading(null);
-        setProfileImageFile(null);
-        setProfileImageUrl(null);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadFileTask.snapshot.ref);
-        setProfileImageUrl(downloadURL);
-
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          profileImage: downloadURL,
-        }));
-        setProfileImageUploading(false);
-      }
-    );
-  }, [profileImageFile]);
-  // const uploadFile = useCallback(async () => {
-  //   try {
-      
-  //   } catch (error) {
-  //     setProfileImageUploadProgress
-  //   }
-  // });
-
-  useEffect(() => {
-    if (profileImageFile) uploadFile();
-  }, [profileImageFile, uploadFile]);
 
   //? ---------------| HANDLE GET ATTRIBUTE TO UPDATE ACCOUNT |---------------
   const handleUpdate = (e) => {
@@ -120,21 +68,46 @@ const DetailAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (profileImageUploading) {
-      toast.error("Vui lòng chờ ảnh đại diện úp lên!", {
-        theme: "colored",
-      });
-      return;
-    }
-
-    if (Object.keys(formData).length === 0) {
-      toast.warn("Không có gì thay đổi!", { theme: "colored" });
-      return;
-    }
-
     try {
+      let imagePreview = null;
+      if (profileImage) {
+        const imageData = new FormData();
+        imageData.append("file", profileImage);
+
+        imagePreview = await UPLOAD_IMAGE(imageData);
+
+        if (!imagePreview) {
+          toast.error("Không nhận được ảnh từ người dùng", {
+            theme: "colored",
+          });
+          setProfileImage(null);
+          setProfileImagePreview(null);
+          return;
+        }
+
+        setProfileImagePreview(imagePreview.url);
+      }
+
+      const profileDataChanges = {};
+      if (formData.email && formData.email !== curUser.user.email)
+        profileDataChanges.email = formData.email;
+      if (
+        formData.displayName &&
+        formData.displayName !== curUser.user.displayName
+      )
+        profileDataChanges.displayName = formData.displayName;
+      if (formData.password && formData.password !== curUser.user.password)
+        profileDataChanges.password = formData.password;
+      if (imagePreview && imagePreview.url !== curUser.user.profileImage)
+        profileDataChanges.profileImage = imagePreview.url;
+
+      if (Object.keys(profileDataChanges).length === 0) {
+        toast.warn("Không có gì thay đổi!", { theme: "colored" });
+        return;
+      }
+
       dispatch(updateUserStart());
-      const { ok, data } = await UPDATE_ACCOUNT(userId, formData);
+      const { ok, data } = await UPDATE_ACCOUNT(userId, profileDataChanges);
       if (!ok) {
         dispatch(updateUserFailure(data.message));
         toast.error(data.message, { theme: "colored" });
@@ -142,7 +115,6 @@ const DetailAccount = () => {
       }
 
       dispatch(updateUserSuccess(data));
-      setProfileImageUploadProgress(false);
       toast.success("Cập nhật hồ sơ thành công!", { theme: "colored" });
       navigate("/profile");
     } catch (error) {
@@ -206,36 +178,11 @@ const DetailAccount = () => {
           className="relative w-60 h-60 self-center cursor-pointer shadow-lg overflow-hidden rounded-full mt-7"
           onClick={() => filePicker.current.click()}
         >
-          {profileImageUploadProgress && (
-            <CircularProgressbar
-              value={profileImageUploadProgress || 0}
-              text={`${profileImageUploadProgress}%`}
-              strokeWidth={3}
-              styles={{
-                root: {
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                },
-                path: {
-                  stroke: `rgba(62, 152, 199, ${
-                    profileImageUploadProgress / 100
-                  })`,
-                },
-              }}
-            />
-          )}
           <img
-            src={profileImageUrl || curUser.user.profileImage}
+            src={profileImagePreview || curUser.user.profileImage}
             defaultValue={curUser.profileImage}
             alt={curUser.displayName}
-            className={`rounded-full w-full h-full ${
-              profileImageUploadProgress &&
-              profileImageUploadProgress < 100 &&
-              "opacity-60"
-            }`}
+            className={"rounded-full w-full h-full"}
           />
         </button>
         <p className="my-4 text-center text-2xl">
@@ -315,7 +262,7 @@ const DetailAccount = () => {
           gradientDuoTone="greenToBlue"
           className="mt-3"
           type="submit"
-          disabled={loading || profileImageUploading}
+          // disabled={loading || profileImageUploading}
         >
           {loading ? "Đang cập nhật..." : "Cập nhật"}
         </Button>

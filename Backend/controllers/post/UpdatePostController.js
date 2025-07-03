@@ -6,6 +6,9 @@ const {
   // checkRegexContent,
 } = require("../../utilities/validPost");
 
+const imagekit = require("../../utilities/imageKit"); // Khởi tạo SDK
+const fs = require("fs");
+
 const update_post = async (req, res) => {
   //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
@@ -19,6 +22,8 @@ const update_post = async (req, res) => {
     });
 
   const { title, category, content, image } = req.body;
+  // const { title, category, content, oldImage } = req.body;
+  // const file = req.file;
 
   //? ---------------| CHECK TITLE |---------------
   const titleExisted = await Post.findOne({ title });
@@ -51,20 +56,22 @@ const update_post = async (req, res) => {
       });
   }
 
-  //? ---------------| CREATE A NEW SLUG WITH TITLE |---------------
-  const slug = title
-    .split(" ")
-    .join("-")
-    .toLowerCase()
-    .replace(/[^A-Za-z0-9-]/g, "-");
-  updateData.slug = slug;
-
   //? ---------------| CHECK IF ANY FIELDS HAS BEEN CHANGED FROM USER, ONLY DATA ON THAT FIELD WILL BE UPDATED |---------------
   const updateData = {};
   if (title) updateData.title = title;
   if (content) updateData.content = content;
   if (category) updateData.category = category;
   if (image) updateData.image = image;
+
+  //? ---------------| CREATE A NEW SLUG WITH TITLE |---------------
+  const newSlug = title
+    .split(" ")
+    .join("-")
+    .toLowerCase()
+    .replace(/[^A-Za-z0-9-]/g, "-");
+  updateData.slug = newSlug;
+
+  console.log("UPDATE DATA:", updateData);
 
   try {
     const updatePost = await Post.findByIdAndUpdate(
