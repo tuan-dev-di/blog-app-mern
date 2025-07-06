@@ -16,7 +16,7 @@ export const callApi = async (
 
   if (data) {
     if (isFormData) {
-      options.body = data; // giữ nguyên FormData
+      options.body = data;
     } else {
       options.headers["Content-Type"] = "application/json";
       options.body = JSON.stringify(data);

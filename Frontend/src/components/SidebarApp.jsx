@@ -57,7 +57,6 @@ const SidebarApp = () => {
           )}
           <Sidebar.Item
             icon={FaUserEdit}
-            label={userRole}
             className="cursor-pointer"
             as={"div"}
           >

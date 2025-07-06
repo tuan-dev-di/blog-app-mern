@@ -1,5 +1,6 @@
 const argon2 = require("argon2");
 const User = require("../../models/User");
+const imagekit = require("../../utilities/imageKit");
 
 const {
   checkLengthPassword,
@@ -72,7 +73,37 @@ const update_account = async (req, res) => {
   if (password) updateData.password = await argon2.hash(password);
   if (email) updateData.email = email;
   if (displayName) updateData.displayName = displayName;
-  if (profileImage) updateData.profileImage = profileImage;
+
+  //? ---------------| COMPARE OLD AND NEW IMAGE |---------------
+  //? ---------------| ADD NEW IMAGE AND DELETE OLD IMAGE ON IMAGEKIT |---------------
+  const currentUser = await User.findById(param_user_id); // Get all info of user by Id
+  const oldImage = currentUser?.profileImage; // Get current image of user
+  if (profileImage) {
+    // Check if user changes new image
+    if (profileImage !== oldImage && oldImage) {
+      // Compare old and new image
+      try {
+        // Get filename of old image
+        // Ex: https://ik.imagekit.io/v1/folder/filename.jpg
+        // => filename: avatar.jpg
+        const filename = new URL(oldImage).pathname.split("/").pop();
+
+        // Get name of old image by param filename
+        const result = await imagekit.listFiles({
+          searchQuery: `name=${filename}`,
+        });
+
+        // Check result, and get imageId to use function deleteFile
+        if (result.length !== 0 || result.length > 0) {
+          const fileId = result[0].fileId;
+          await imagekit.deleteFile(fileId);
+        }
+      } catch (error) {
+        console.warn("ERORR:", error.message);
+      }
+    }
+    updateData.profileImage = profileImage;
+  }
 
   try {
     const updateUser = await User.findByIdAndUpdate(

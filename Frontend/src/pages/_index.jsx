@@ -9,7 +9,6 @@ export { default as Overview } from "./Overview";
 
 // ---------------| PROFILE |---------------
 export { default as Profile } from "./profile/Profile";
-export { default as DetailAccount } from "./profile/DetailAccount";
 
 // ---------------| POST |---------------
 export { default as Post } from "./posts/Post";
