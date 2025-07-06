@@ -28,6 +28,9 @@ const DetailAccount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [modalType, setModalType] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id; // Get Id of user's account
   const loading = useSelector((state) => state.user.loading);
@@ -67,6 +70,7 @@ const DetailAccount = () => {
   //? ---------------| HANDLE SUBMIT UPDATE |---------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setModalOpen(false);
 
     try {
       let imagePreview = null;
@@ -124,9 +128,10 @@ const DetailAccount = () => {
   };
 
   //? ---------------| HANDLE DELETE ACCOUNT |---------------
-  const [deleteModal, setDeleteModal] = useState(false);
+  // const [deleteModal, setDeleteModal] = useState(false);
   const handleDeleteUser = async () => {
-    setDeleteModal(false);
+    // setDeleteModal(false);
+    setModalOpen(false);
     try {
       dispatch(deleteUserStart());
       const { ok, data } = await DELETE_ACCOUNT(userId, formData);
@@ -256,47 +261,63 @@ const DetailAccount = () => {
             <li>Chứa ít nhất 1 ký tự chữ viết thường</li>
           </ul>
         </div>
-
-        {/* Button submit Update Account */}
-        <Button
-          gradientDuoTone="greenToBlue"
-          className="mt-3"
-          type="submit"
-          // disabled={loading || profileImageUploading}
-        >
-          {loading ? "Đang cập nhật..." : "Cập nhật"}
-        </Button>
       </form>
+
+      {/* Button submit Update Account */}
+      <Button
+        gradientDuoTone="greenToBlue"
+        className="mt-3"
+        type="submit"
+        onClick={() => {
+          setModalOpen(true);
+          setModalType("update");
+        }}
+      >
+        {loading ? "Đang cập nhật..." : "Cập nhật"}
+      </Button>
 
       {/* Button submit Delete Account */}
       <Button
         color="failure"
         className="my-3"
         type="submit"
-        onClick={() => setDeleteModal(true)}
+        popup
+        onClick={() => {
+          setModalOpen(true);
+          setModalType("delete");
+        }}
       >
         Xóa tài khoản
       </Button>
 
       {/* Modal to confirm Delete Account --- SEVERE */}
       <Modal
-        show={deleteModal}
+        show={modalOpen}
         size="md"
-        onClose={() => setDeleteModal(false)}
+        // onClose={() => setDeleteModal(false)}
+        onClose={() => setModalOpen(false)}
         popup
       >
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
-            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-red-600 " />
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-600 " />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Bạn có chắc là muốn xóa tài khoản này?
+              {modalType === "delete"
+                ? "Bạn có chắc là muốn xóa tài khoản này?"
+                : "Bạn có chắc là muốn cập nhật tài khoản này?"}
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={handleDeleteUser}>
-                Có, xóa đi!
-              </Button>
-              <Button color="gray" onClick={() => setDeleteModal(false)}>
+              {modalType === "delete" ? (
+                <Button color="failure" onClick={handleDeleteUser}>
+                  Có, xóa đi!
+                </Button>
+              ) : (
+                <Button color="info" onClick={handleSubmit}>
+                  Có, cập nhật!
+                </Button>
+              )}
+              <Button color="gray" onClick={() => setModalOpen(false)}>
                 Không
               </Button>
             </div>
