@@ -12,6 +12,8 @@ import {
   Project,
   SignIn,
   SignUp,
+  Overview,
+  Search,
   Profile,
   CreatePost,
   UpdatePost,
@@ -19,8 +21,6 @@ import {
   Post,
   User,
   Comment,
-  Overview,
-  Search,
 } from "./pages/_index";
 
 export default function App() {
@@ -54,10 +54,7 @@ export default function App() {
           {/* ---------------| POSTS |--------------- */}
           <Route path="/posts/get-posts" element={<Post />}></Route>
           <Route path="/posts/create" element={<CreatePost />}></Route>
-          <Route
-            path="/posts/update/:postId"
-            element={<UpdatePost />}
-          ></Route>
+          <Route path="/posts/update/:postId" element={<UpdatePost />}></Route>
 
           {/* ---------------| USERS |--------------- */}
           <Route path="/users/get-users" element={<User />}></Route>
