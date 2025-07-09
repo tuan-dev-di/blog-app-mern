@@ -12,25 +12,25 @@ const delete_comment = async (req, res) => {
     if (!foundComment)
       return res.status(404).json({
         success: false,
-        message: "Comment not found",
+        message: "Bình luận này không tồn tại",
       });
 
     if (user_id !== foundComment.userId.toString() && user_role !== "admin")
       return res.status(403).json({
         success: false,
-        message: "You are not allowed to delete this comment",
+        message: "Bạn không có quyền xóa bình luận này",
       });
 
     const deleteComment = await Comment.findByIdAndDelete(comment_id);
     if (!deleteComment)
       return res.status(404).json({
         success: false,
-        message: "Comment not found",
+        message: "Bình luận này không tồn tại",
       });
 
     return res.status(200).json({
       success: true,
-      message: "Comment deleted successfully!",
+      message: "Xóa bình luận thành công!",
     });
   } catch (error) {
     console.log("Delete comment error:", error.message);

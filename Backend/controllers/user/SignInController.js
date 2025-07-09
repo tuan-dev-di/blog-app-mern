@@ -21,14 +21,14 @@ const sign_in = async (req, res) => {
     if (!userValid)
       return res.status(400).json({
         success: false,
-        message: "Sai tên tài khoản hoặc mật khẩu",
+        message: "Tên tài khoản hoặc mật khẩu không hợp lệ",
       });
 
     const passwordCorrect = await argon2.verify(userValid.password, password);
     if (!passwordCorrect)
       return res.status(400).json({
         success: false,
-        message: "Sai tên tài khoản hoặc mật khẩu",
+        message: "Tên tài khoản hoặc mật khẩu không hợp lệ",
       });
 
     const accessToken = jwt.sign(

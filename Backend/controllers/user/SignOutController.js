@@ -29,7 +29,7 @@ const sign_out = async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: "Sign out successfully!" });
+      .json({ success: true, message: "Đăng xuất thành công!" });
   } catch (error) {
     console.log("Sign out error:", error.message);
     return res.status(500).json({

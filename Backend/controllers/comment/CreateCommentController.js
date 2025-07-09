@@ -1,9 +1,9 @@
 const Comment = require("../../models/Comment");
 
 const create_comment = async (req, res) => {
+  //? ---------------| CHECK ID & ROLE |---------------
   const user_id = req.user.userId;
   const param_user_id = req.params.userId;
-
   const post_id = req.params.postId;
 
   const { content } = req.body;
@@ -11,13 +11,13 @@ const create_comment = async (req, res) => {
     if (user_id !== param_user_id)
       return res.status(403).json({
         success: false,
-        message: "You are not allowed to create a comment",
+        message: "Bạn không có quyền bình luận",
       });
 
     if (!post_id)
       return res.status(404).json({
         success: false,
-        message: "Post is not found",
+        message: "Bài viết này không tồn tại",
       });
 
     const newComment = await Comment({
@@ -31,7 +31,7 @@ const create_comment = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Create comment successfully!",
+      message: "Bình luận thành công!",
       comment,
     });
   } catch (error) {

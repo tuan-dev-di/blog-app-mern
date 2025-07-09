@@ -9,7 +9,7 @@ const delete_post = async (req, res) => {
   if (user_role !== "admin" || user_id !== param_user_id)
     return res.status(403).json({
       success: false,
-      message: "Invalid role",
+      message: "Chức vụ không hợp lệ",
     });
 
   //? ---------------| DELETE A POST |---------------
@@ -20,12 +20,12 @@ const delete_post = async (req, res) => {
     if (!deletePost)
       return res.status(404).json({
         success: false,
-        message: "Post does not exist",
+        message: "Bài viết này không tồn tại",
       });
 
     return res.status(200).json({
       success: true,
-      message: "Delete post successfully!",
+      message: "Xóa bài viết thành công!",
     });
   } catch (error) {
     console.log("Delete post error:", error.message);

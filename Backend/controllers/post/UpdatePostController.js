@@ -15,12 +15,11 @@ const update_post = async (req, res) => {
   const user_id = req.user.userId;
   const param_user_id = req.params.userId;
   const post_id = req.params.postId;
-  console.log("POST ID:", post_id);
 
   if (user_role !== "admin" || user_id !== param_user_id)
     return res.status(403).json({
       success: false,
-      message: "Invalid role",
+      message: "Chức vụ không hợp lệ",
     });
 
   const { title, category, content, image } = req.body;
@@ -30,20 +29,20 @@ const update_post = async (req, res) => {
   if (titleExisted)
     return res.status(400).json({
       success: false,
-      message: "This title has been used, please try again!",
+      message: "Tiêu đề này đã được dùng, xin thử lại!",
     });
 
   if (title) {
     if (!checkRegexTitle(title))
       return res.status(400).json({
         success: false,
-        message: "Title is not matched with Regex Pattern ",
+        message: "Tiêu đề không hợp lệ",
       });
 
     if (checkLengthTitle(title))
       return res.status(400).json({
         success: false,
-        message: "Length of title must between 10 and 50 characters",
+        message: "Độ dài tiêu đề phải đạt từ 2 đến 50 ký tự",
       });
   }
 
@@ -52,7 +51,7 @@ const update_post = async (req, res) => {
     if (checkLengthContent(content))
       return res.status(400).json({
         success: false,
-        message: "Length of content must between 50 and 5000 characters",
+        message: "Độ dài tiêu đề phải đạt từ 50 đến 5000 ký tự",
       });
   }
 
@@ -72,8 +71,7 @@ const update_post = async (req, res) => {
       // Compare old and new image
       try {
         // Get filename of old image
-        // Ex: https://ik.imagekit.io/v1/folder/filename.jpg
-        // => filename: avatar.jpg
+        // https://ik.imagekit.io/v1/folder/filename.jpg => filename: avatar.jpg
         const filename = new URL(oldImage).pathname.split("/").pop();
 
         // Get name of old image by param filename
@@ -92,8 +90,6 @@ const update_post = async (req, res) => {
     }
     updateData.image = image;
   }
-
-  // if (image) updateData.image = image;
 
   //? ---------------| CREATE A NEW SLUG WITH TITLE |---------------
   const newSlug = title
@@ -114,14 +110,14 @@ const update_post = async (req, res) => {
     if (!updatePost)
       return res.status(404).json({
         success: false,
-        message: "Post not found",
+        message: "Bài viết này không tồn tại",
       });
 
     const { ...post } = updatePost._doc;
 
     return res.status(200).json({
       success: true,
-      message: "Update post successfully!",
+      message: "Cập nhật bài viết thành công!",
       post: post,
     });
   } catch (error) {
