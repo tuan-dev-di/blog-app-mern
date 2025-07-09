@@ -121,7 +121,8 @@ const Profile = () => {
 
       dispatch(updateUserSuccess(data));
       toast.success("Cập nhật hồ sơ thành công!", { theme: "colored" });
-      navigate("/profile");
+      setFormData({});
+      setProfileImage(null);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
       toast.error(error.message, { theme: "colored" });
@@ -167,7 +168,10 @@ const Profile = () => {
       <div className="">
         <SidebarApp />
       </div>
-      <div className="relative md:mx-auto p-7 w-full">
+      <div
+        className="relative md:mx-auto p-7 w-full"
+        key={curUser.user.updatedAt}
+      >
         <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex flex-col justify-between items-center gap-5">
           <div className="font-semibold text-5xl my-5">Thông Tin Cá Nhân</div>
@@ -193,7 +197,7 @@ const Profile = () => {
                   src={profileImagePreview || curUser.user.profileImage}
                   defaultValue={curUser.profileImage}
                   alt={curUser.displayName}
-                  className={"rounded-full w-full h-full"}
+                  className={" w-full h-full"}
                 />
               </button>
               <p className="my-4 text-center text-2xl">
@@ -215,6 +219,7 @@ const Profile = () => {
                   {curUser.user.role}
                 </span>
               </div>
+
               {/* ---------------| USERNAME |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Tên tài khoản" />
@@ -227,31 +232,35 @@ const Profile = () => {
                   disabled
                 />
               </div>
+
               {/* ---------------| EMAIL |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Email" />
                 <TextInput
                   id="email"
-                  defaultValue={curUser.user.email}
+                  // defaultValue={curUser.user.email}
+                  value={curUser.user.email ?? formData.email}
                   placeholder={curUser.user.email}
                   type="email"
                   icon={MdEmail}
                   onChange={handleUpdate}
-                  // disabled
                 />
               </div>
+
               {/* ---------------| DISPLAY NAME |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Tên hiển thị" />
                 <TextInput
                   id="displayName"
-                  defaultValue={curUser.user.displayName}
+                  // defaultValue={curUser.user.displayName}
+                  value={curUser.user.displayName ?? formData.displayName}
                   placeholder={curUser.user.displayName}
                   type="text"
                   icon={MdEdit}
                   onChange={handleUpdate}
                 />
               </div>
+
               {/* ---------------| PASSWORD |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Mật khẩu" />
