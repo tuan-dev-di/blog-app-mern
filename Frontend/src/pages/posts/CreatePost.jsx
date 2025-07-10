@@ -16,12 +16,12 @@ import { CREATE_POST } from "../../apis/post";
 import { UPLOAD_IMAGE } from "../../apis/auth";
 
 const CreatePost = () => {
+  const navigate = useNavigate();
+
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
 
   const filePicker = useRef();
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -58,9 +58,9 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let imagePreview = null;
-
     try {
+      // Check image null or not
+      let imagePreview = null;
       if (postImage) {
         const imageData = new FormData();
         imageData.append("file", postImage);
@@ -82,6 +82,7 @@ const CreatePost = () => {
         }));
       }
 
+      // Create an object to get rest of formData and new image
       const updateFormData = {
         ...formData,
         image: imagePreview.url,

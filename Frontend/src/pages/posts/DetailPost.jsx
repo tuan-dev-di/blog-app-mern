@@ -13,8 +13,8 @@ import { Introduce, CommentSection } from "../../components/_index";
 import PostCard from "../../components/PostCard";
 
 const DetailPost = () => {
-  const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
+  const { postSlug } = useParams();
   const [post, setPost] = useState(null);
   const [recentPost, setRecentPost] = useState(null);
   const amount_recent_post = 4;
@@ -22,6 +22,7 @@ const DetailPost = () => {
   //? ---------------| HANDLE GET DETAIL POST |---------------
   const post_detail = useCallback(async () => {
     setLoading(true);
+
     try {
       const data = await GET_POST_DETAIL(postSlug);
 

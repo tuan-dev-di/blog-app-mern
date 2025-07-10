@@ -44,7 +44,7 @@ const get_users = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Get list of user successfully!",
+      message: "Danh sách người dùng!",
       userLastMonth,
       totalPage: Math.ceil(totalUser / limit),
       totalUser,

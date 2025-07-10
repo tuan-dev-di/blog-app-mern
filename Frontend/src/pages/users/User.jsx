@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Button, Table, Tooltip, Pagination } from "flowbite-react";
+import { Button, Table, Tooltip, Pagination, Spinner } from "flowbite-react";
 import { IoRefresh } from "react-icons/io5";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +17,7 @@ const User = () => {
   const userId = curUser.user._id;
   const role = curUser.user.role;
 
+  const [loading, setLoading] = useState(false);
   /*
    * Set pagination
    * Set 7 users per page
@@ -30,6 +31,7 @@ const User = () => {
 
   //? ---------------| HANDLE GET LIST POST |---------------
   const list_users = useCallback(async () => {
+    setLoading(false);
     try {
       const data = await GET_USERS(userId, currentPage, limitUsers);
       if (!data) toast.error(data.message, { theme: "colored" });
@@ -109,7 +111,17 @@ const User = () => {
           )}
         </span>
         <div>
-          {role === "admin" && userList.length > 0 ? (
+          {!loading && userList.length === 0 && role !== "admin" && (
+            <p className="italic font-semibold text-red-700 mt-2">
+              Không tìm thấy hoặc bạn không có quyền.
+            </p>
+          )}
+          {loading && (
+            <div className="flex justify-center items-center min-h-screen">
+              <Spinner size="xl" />
+            </div>
+          )}
+          {role === "admin" && userList.length > 0 && (
             <div>
               <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
                 <Table.Head className="text-base">
@@ -185,10 +197,6 @@ const User = () => {
                 />
               </div>
             </div>
-          ) : (
-            <p className="italic font-semibold text-red-700 mt-2">
-              Bạn không có quyền hoặc danh sách rỗng!
-            </p>
           )}
         </div>
       </div>

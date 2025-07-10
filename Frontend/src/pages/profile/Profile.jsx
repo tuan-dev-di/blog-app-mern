@@ -29,14 +29,14 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [modalType, setModalType] = useState("");
+  const [modalType, setModalType] = useState(""); // Separate modal: UPDATE - DELETE
   const [modalOpen, setModalOpen] = useState(false);
 
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id; // Get Id of user's account
   const loading = useSelector((state) => state.user.loading);
-  const [formData, setFormData] = useState({});
 
+  const [formData, setFormData] = useState({});
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const filePicker = useRef();
@@ -93,6 +93,7 @@ const Profile = () => {
         setProfileImagePreview(imagePreview.url);
       }
 
+      // Create an object to get field which update by user with new data
       const profileDataChanges = {};
       if (formData.email && formData.email !== curUser.user.email)
         profileDataChanges.email = formData.email;
@@ -121,7 +122,11 @@ const Profile = () => {
 
       dispatch(updateUserSuccess(data));
       toast.success("Cập nhật hồ sơ thành công!", { theme: "colored" });
-      setFormData({});
+
+      setTimeout(() => {
+        navigate("/profile", { replace: true });
+      }, 3000);
+      // setFormData({});
       setProfileImage(null);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
@@ -168,10 +173,7 @@ const Profile = () => {
       <div className="">
         <SidebarApp />
       </div>
-      <div
-        className="relative md:mx-auto p-7 w-full"
-        key={curUser.user.updatedAt}
-      >
+      <div className="relative md:mx-auto p-7 w-full">
         <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex flex-col justify-between items-center gap-5">
           <div className="font-semibold text-5xl my-5">Thông Tin Cá Nhân</div>
@@ -195,9 +197,9 @@ const Profile = () => {
               >
                 <img
                   src={profileImagePreview || curUser.user.profileImage}
-                  defaultValue={curUser.profileImage}
-                  alt={curUser.displayName}
-                  className={" w-full h-full"}
+                  defaultValue={curUser.user.profileImage}
+                  alt={curUser.user.displayName}
+                  className="w-full h-full object-cover"
                 />
               </button>
               <p className="my-4 text-center text-2xl">
@@ -238,8 +240,7 @@ const Profile = () => {
                 <Label className="text-base" value="Email" />
                 <TextInput
                   id="email"
-                  // defaultValue={curUser.user.email}
-                  value={curUser.user.email ?? formData.email}
+                  defaultValue={curUser.user.email}
                   placeholder={curUser.user.email}
                   type="email"
                   icon={MdEmail}
@@ -252,8 +253,7 @@ const Profile = () => {
                 <Label className="text-base" value="Tên hiển thị" />
                 <TextInput
                   id="displayName"
-                  // defaultValue={curUser.user.displayName}
-                  value={curUser.user.displayName ?? formData.displayName}
+                  defaultValue={curUser.user.displayName}
                   placeholder={curUser.user.displayName}
                   type="text"
                   icon={MdEdit}

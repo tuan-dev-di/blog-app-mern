@@ -4,7 +4,14 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
+import {
+  Button,
+  Table,
+  Tooltip,
+  Pagination,
+  Modal,
+  Spinner,
+} from "flowbite-react";
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { RiPencilLine, RiDeleteBin2Line } from "react-icons/ri";
@@ -17,32 +24,29 @@ import { GET_POSTS, DELETE_POST } from "../../apis/post";
 import { SidebarApp } from "../../components/_index";
 
 const Post = () => {
+  const navigate = useNavigate();
+
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
   const role = curUser.user.role;
 
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  /*
-   * Set pagination
-   * Set 7 posts per page
-   */
-  const limitPosts = 7;
+  const limitPosts = 7; // Limit 7 posts in a page
   const [userPost, setUserPost] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1); // Default page is 1
   const [totalPage, setTotalPage] = useState(0);
   const [totalPost, setTotalPost] = useState(0);
   const [postLastMonth, setPostLastMonth] = useState(0);
 
-  /*
-   * Set modal
-   */
   const [postId, setPostId] = useState("");
-  const [modalType, setModalType] = useState("");
+  const [modalType, setModalType] = useState(""); // Separate modal: UPDATE - DELETE
   const [modalOpen, setModalOpen] = useState(false);
 
   //? ---------------| HANDLE GET LIST POST |---------------
   const list_posts = useCallback(async () => {
+    setLoading(true);
+
     try {
       const data = await GET_POSTS(currentPage, limitPosts);
       if (!data) toast.error(data.message, { theme: "colored" });
@@ -51,6 +55,8 @@ const Post = () => {
       setTotalPage(data.totalPage);
       setTotalPost(data.totalPost);
       setPostLastMonth(data.postLastMonth);
+
+      setLoading(false);
     } catch (error) {
       console.log("Get post error:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -87,7 +93,7 @@ const Post = () => {
       toast.success("Xóa bài viết thành công!", {
         theme: "colored",
       });
-      
+
       setUserPost((prev) =>
         prev ? prev.filter((post) => post._id !== postId) : []
       );
@@ -98,6 +104,8 @@ const Post = () => {
       toast.error(error.message, { theme: "colored" });
     }
   };
+
+  //
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -152,7 +160,17 @@ const Post = () => {
         </span>
         {/* Table: Display data of list post */}
         <div>
-          {role === "admin" && userPost?.length > 0 ? (
+          {!loading && userPost.length === 0 && role !== "admin" && (
+            <p className="italic font-semibold text-red-700 mt-2">
+              Không tìm thấy hoặc bạn không có quyền.
+            </p>
+          )}
+          {loading && (
+            <div className="flex justify-center items-center min-h-screen">
+              <Spinner size="xl" />
+            </div>
+          )}
+          {role === "admin" && userPost?.length > 0 && (
             <div>
               <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
                 <Table.Head className="text-base">
@@ -244,10 +262,6 @@ const Post = () => {
                 />
               </div>
             </div>
-          ) : (
-            <p className="italic font-semibold text-red-700 mt-2">
-              Bạn không có quyền hoặc danh sách rỗng!
-            </p>
           )}
         </div>
 

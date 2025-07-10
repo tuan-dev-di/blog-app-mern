@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Label, TextInput, Select, Button } from "flowbite-react";
+import { Label, TextInput, Select, Button, Spinner } from "flowbite-react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -18,18 +18,22 @@ import { UPLOAD_IMAGE } from "../../apis/auth";
 const DetailPost = () => {
   const filePicker = useRef();
 
+  const curUser = useSelector((state) => state.user.currentUser);
+  const userId = curUser.user._id;
+  const role = curUser.user.role;
+
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   const { postId } = useParams();
 
-  const curUser = useSelector((state) => state.user.currentUser);
-  const userId = curUser.user._id;
-  const role = curUser.user.role;
-
   //? ---------------| HANDLE GET DETAIL OF POST |---------------
   const get_post_to_update = useCallback(async () => {
+    setLoading(true);
+
     try {
       const data = await GET_POST_TO_UPDATE(postId);
 
@@ -46,6 +50,8 @@ const DetailPost = () => {
         originalContent: originalPostData.content,
         originalPostImage: originalPostData.image,
       });
+
+      setLoading(false);
     } catch (error) {
       console.log("ERROR:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -89,6 +95,7 @@ const DetailPost = () => {
     e.preventDefault();
 
     try {
+      // Check image null or not
       let imagePreview = null;
       if (postImage) {
         const imageData = new FormData();
@@ -108,7 +115,7 @@ const DetailPost = () => {
         setImagePreview(imagePreview.url);
       }
 
-
+      // Create an object to get field which update by user with new data
       const postDataChanges = {};
       if (formData.title && formData.title !== formData.originalTitle)
         postDataChanges.title = formData.title;
@@ -138,6 +145,14 @@ const DetailPost = () => {
       toast.error(error.message, { theme: "colored" });
     }
   };
+
+  //? ---------------| DISPLAY SPINNER |---------------
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner size="xl" />
+      </div>
+    );
 
   //? ---------------| FORMAT DATE TIME |---------------
   const formatDateTime = (dateString) => {
@@ -259,38 +274,12 @@ const DetailPost = () => {
                 onClick={() => filePicker.current.click()}
               >
                 <div className="flex flex-col items-center justify-center pb-6 pt-5 h-full w-full  border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                  {formData?.image ? (
+                  {formData?.image && (
                     <img
                       src={imagePreview || formData?.image}
                       alt="Selected post"
                       className={"w-full h-full"}
                     />
-                  ) : (
-                    <>
-                      <svg
-                        className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 16"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                        />
-                      </svg>
-                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">
-                          Nhấp hoặc kéo hoặc thả hình ảnh vào khung này
-                        </span>
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG hoặc GIF
-                      </p>
-                    </>
                   )}
                 </div>
               </button>
