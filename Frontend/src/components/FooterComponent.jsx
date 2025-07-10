@@ -14,8 +14,8 @@ const FooterComponent = () => {
             <Footer.Brand
               href="https://github.com/tuan-dev-di"
               src={Ami_Chill}
-              alt="Arys Domi"
-              name="Arys Domi"
+              alt="Arys Tommy"
+              name="Arys Tommy"
             />
           </div>
 
@@ -48,7 +48,7 @@ const FooterComponent = () => {
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <Footer.Copyright
             href="https://github.com/tuan-dev-di"
-            by="Arys Domi"
+            by="Arys Tommy"
             year={new Date().getFullYear()}
           />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">

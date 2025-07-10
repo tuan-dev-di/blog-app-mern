@@ -4,7 +4,14 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Button, Table, Tooltip, Pagination, Modal } from "flowbite-react";
+import {
+  Button,
+  Table,
+  Tooltip,
+  Pagination,
+  Modal,
+  Spinner,
+} from "flowbite-react";
 import { IoRefresh } from "react-icons/io5";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -21,30 +28,34 @@ const Comment = () => {
   const userId = curUser.user._id;
   const role = curUser.user.role;
 
-  /*
-   * Set pagination
-   * Set 7 items per page
-   */
-  const limitComments = 7;
+  const [loading, setLoading] = useState(false);
+
+  const limitComments = 7; // Limit 7 comments in a page
   const [commentList, setCommentList] = useState([]);
   const [totalComment, setTotalComment] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1); // Default page is 1
   const [modalOpen, setModalOpen] = useState(false);
   const [commentId, setCommentId] = useState("");
 
   //? ---------------| HANDLE GET LIST POST |---------------
   const list_comments = useCallback(async () => {
+    setLoading(true);
+
     try {
       const data = await GET_COMMENT_LIST(userId, currentPage, limitComments);
+
       if (!data) toast.error(data.message, { theme: "colored" });
       const merged = data.comments.map((comment, index) => ({
         ...comment,
         ...data.extraComments?.[index],
       }));
+
       setCommentList(merged);
       setTotalComment(data.totalComment);
       setTotalPage(data.totalPage);
+
+      setLoading(false);
     } catch (error) {
       console.log("Get comment error:", error.message);
       toast.error(error.message, { theme: "colored" });
@@ -133,11 +144,21 @@ const Comment = () => {
           )}
         </span>
         <div>
-          {commentList.length > 0 ? (
+          {!loading && commentList.length === 0 && (
+            <p className="italic font-semibold text-red-700 mt-2">
+              Không tìm thấy hoặc danh sách rỗng.
+            </p>
+          )}
+          {loading && (
+            <div className="flex justify-center items-center min-h-screen">
+              <Spinner size="xl" />
+            </div>
+          )}
+          {commentList.length > 0 && (
             <div>
               <Table hoverable className="mt-7 shadow-md dark:bg-slate-800">
                 <Table.Head className="text-base">
-                  <Table.HeadCell>Tiêu đề</Table.HeadCell>
+                  <Table.HeadCell>Tiêu đề bài viết</Table.HeadCell>
                   <Table.HeadCell>Nội dung bình luận</Table.HeadCell>
                   <Table.HeadCell>Lượt thích</Table.HeadCell>
                   <Table.HeadCell>Tác giả</Table.HeadCell>
@@ -215,10 +236,6 @@ const Comment = () => {
                 />
               </div>
             </div>
-          ) : (
-            <p className="italic font-semibold text-red-700 mt-2">
-              Bạn không có quyền hoặc danh sách rỗng!
-            </p>
           )}
         </div>
         <Modal

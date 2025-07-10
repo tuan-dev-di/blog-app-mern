@@ -11,12 +11,13 @@ const {
 } = require("../../utilities/validUser");
 
 const update_account = async (req, res) => {
+  //? ---------------| CHECK ID |---------------
   const user_id = req.user.userId;
   const param_user_id = req.params.userId;
   if (user_id !== param_user_id)
     return res.status(403).json({
       success: false,
-      message: "Invalid role",
+      message: "Bạn không có quyền cập nhật tài khoản này",
     });
 
   const { username, password, email, displayName, profileImage } = req.body;
@@ -81,11 +82,10 @@ const update_account = async (req, res) => {
   if (profileImage) {
     // Check if user changes new image
     if (profileImage !== oldImage && oldImage) {
-      // Compare old and new image
       try {
+        // Compare old and new image
         // Get filename of old image
-        // Ex: https://ik.imagekit.io/v1/folder/filename.jpg
-        // => filename: avatar.jpg
+        // https://ik.imagekit.io/v1/folder/filename.jpg => filename: avatar.jpg
         const filename = new URL(oldImage).pathname.split("/").pop();
 
         // Get name of old image by param filename
@@ -99,7 +99,7 @@ const update_account = async (req, res) => {
           await imagekit.deleteFile(fileId);
         }
       } catch (error) {
-        console.warn("ERORR:", error.message);
+        console.warn("ERROR:", error.message);
       }
     }
     updateData.profileImage = profileImage;
@@ -116,14 +116,14 @@ const update_account = async (req, res) => {
     if (!updateUser)
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: "Không tìm thấy tài khoản này!",
       });
 
     const { password, ...user } = updateUser._doc;
 
     return res.status(200).json({
       success: true,
-      message: "Update account successfully!",
+      message: "Cập nhật tài khoản thành công!",
       user: user,
     });
   } catch (error) {

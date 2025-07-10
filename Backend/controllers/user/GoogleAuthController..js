@@ -13,7 +13,7 @@ const google_auth = async (req, res) => {
     const checkUser = await User.findOne({ email });
 
     if (checkUser) {
-      //? ---------------| CREATE A NEW TOKEN|---------------
+      //? ---------------| CREATE A NEW TOKEN FOR SIGNING IN BY EMAIL |---------------
       const accessToken = jwt.sign(
         {
           userId: checkUser._id,
@@ -39,12 +39,12 @@ const google_auth = async (req, res) => {
         })
         .json({
           success: true,
-          message: "Sign in with Google Auth successfully!",
+          message: "Đăng nhập bằng email thành công",
           user: user,
           accessToken: accessToken,
         });
     } else {
-      //? ---------------| CREATE A RANDOM PASSWORD |---------------
+      //? ---------------| CREATE A RANDOM PASSWORD FOR SIGNING UP BY EMAIL |---------------
       //* The function of automatically sending passwords to users has not been used
       const randomPassword =
         Math.random().toString(36).slice(-8) +
@@ -83,7 +83,8 @@ const google_auth = async (req, res) => {
         .json({
           success: true,
           // message: `Welcome - ${newUser.username}`,
-          message: `Sign up successfully by Google Auth with - ${newUser.username}`,
+          // message: `Sign up successfully by Google Auth with - ${newUser.username}`,
+          message: `Đăng ký thành công với tài khoản Google - ${newUser.username}`,
           user: user,
           accessToken: accessToken,
         });

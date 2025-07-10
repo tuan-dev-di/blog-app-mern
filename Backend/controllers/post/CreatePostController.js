@@ -17,7 +17,7 @@ const create_post = async (req, res) => {
   if (user_role !== "admin" || user_id !== param_user_id)
     return res.status(403).json({
       success: false,
-      message: "Invalid role",
+      message: "Chức vụ không hợp lệ",
     });
 
   const { title, category, content, image } = req.body;
@@ -26,39 +26,39 @@ const create_post = async (req, res) => {
   if (checkEmptyTitle(title))
     return res.status(400).json({
       success: false,
-      message: "Title is required",
+      message: "Tiêu đề không được để trống",
     });
 
   if (checkLengthTitle(title))
     return res.status(400).json({
       success: false,
-      message: "Length of title must between 10 and 50 characters",
+      message: "Độ dài tiêu đề phải đạt từ 10 đến 50 ký tự",
     });
 
   if (!checkRegexTitle(title))
     return res.status(400).json({
       success: false,
-      message: "Title is not matched with Regex Pattern",
+      message: "Tiêu đề không hợp lệ",
     });
 
   const titleExisted = await Post.findOne({ title });
   if (titleExisted)
     return res.status(400).json({
       success: false,
-      message: "This title has been used, please try again!",
+      message: "Tiêu đề này đã được dùng, xin thử lại!",
     });
 
   //? ---------------| CHECK CONTENT |---------------
   if (checkEmptyContent(content))
     return res.status(400).json({
       success: false,
-      message: "Content is required",
+      message: "Nội dung không được để trống",
     });
 
   if (checkLengthContent(content))
     return res.status(400).json({
       success: false,
-      message: "Length of content must between 50 and 5000 characters",
+      message: "Độ dài tiêu đề phải đạt từ 50 đến 5000 ký tự",
     });
 
   //? ---------------| CREATE SLUG FROM TITLE |---------------
@@ -84,7 +84,7 @@ const create_post = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Create post successfully!",
+      message: "Tạo mới bài viết thành công!",
       post: post,
     });
   } catch (error) {

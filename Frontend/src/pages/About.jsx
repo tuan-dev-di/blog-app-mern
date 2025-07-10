@@ -4,11 +4,11 @@ const About = () => {
       <div className="max-w-2xl mx-auto p-3 text-center">
         <div>
           <h1 className="text-5xl font font-semibold text-center my-7">
-            About Arys Domi
+            About Arys Tommy
           </h1>
           <div className="text-md text-pretty text-lg p-5 text-gray-500 flex flex-col gap-6">
             <p>
-              Chào mừng bạn đến với blog của Arys Domi. Trang web lập trình cá
+              Chào mừng bạn đến với blog của Arys Tommy. Trang web lập trình cá
               nhân của mình! Đây là nơi mình ghi lại hành trình học tập, khám
               phá và phát triển các dự án lập trình - từ Backend đến Frontend,
               từ ý tưởng đến sản phẩm thực sự.

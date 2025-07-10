@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 
 const get_users = async (req, res) => {
+  //? ---------------| CHECK ID & ROLE |---------------
   const param_user_id = req.params.userId;
   const user_id = req.user.userId;
   const user_role = req.user.role;
@@ -8,7 +9,7 @@ const get_users = async (req, res) => {
   if (user_role !== "admin" || user_id !== param_user_id)
     return res.status(403).json({
       success: false,
-      message: "Invalid role",
+      message: "Chức vụ không hợp lệ",
     });
 
   try {
@@ -43,7 +44,7 @@ const get_users = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Get list of user successfully!",
+      message: "Danh sách người dùng!",
       userLastMonth,
       totalPage: Math.ceil(totalUser / limit),
       totalUser,

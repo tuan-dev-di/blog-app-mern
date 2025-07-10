@@ -19,10 +19,11 @@ import { SIGN_IN } from "../apis/auth";
 import OAuth from "../components/OAuth";
 
 const SignIn = () => {
-  const [formData, setFormData] = useState({});
-  const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({});
+  const { loading } = useSelector((state) => state.user);
 
   //? ---------------| HANDLE GET ATTRIBUTE TO SIGN IN |---------------
   const handleChange = (e) => {

@@ -41,7 +41,7 @@ const get_posts = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Get list of post successfully!",
+      message: "Danh sách các bài viết!",
       postLastMonth,
       totalPage: Math.ceil(totalPost / limit),
       totalPost,

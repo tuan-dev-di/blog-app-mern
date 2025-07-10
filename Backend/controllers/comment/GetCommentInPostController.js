@@ -6,7 +6,7 @@ const get_comments_in_post = async (req, res) => {
   if (!post_id)
     return res.status(404).json({
       success: false,
-      message: "Post is not found",
+      message: "Bài viết này không tồn tại",
     });
 
   try {
@@ -18,7 +18,7 @@ const get_comments_in_post = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Get list of comments in post successfully!",
+      message: "Danh sách các bình luận trong bài viết!",
       totalComment,
       comments,
     });

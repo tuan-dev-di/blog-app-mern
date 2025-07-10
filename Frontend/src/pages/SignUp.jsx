@@ -3,7 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Label, TextInput, Button, Spinner, Tooltip } from "flowbite-react";
+import {
+  Label,
+  TextInput,
+  Button,
+  Spinner,
+  Tooltip,
+  Badge,
+} from "flowbite-react";
+import { CiWarning } from "react-icons/ci";
 import { HiMail } from "react-icons/hi";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
@@ -167,12 +175,12 @@ const SignUp = () => {
               </Button>
             </div>
             <ul className="list-disc  ml-4 p-3 text-sm ">
-            <li>Mật khẩu tối thiểu phải đạt 8 ký tự</li>
-            <li>Chứa ít nhật 1 ký tự đặc biệt</li>
-            <li>Chứa ít nhật 1 ký tự số</li>
-            <li>Chứa ít nhất 1 ký tự chữ viết hoa</li>
-            <li>Chứa ít nhất 1 ký tự chữ viết thường</li>
-          </ul>
+              <li>Mật khẩu tối thiểu phải đạt 8 ký tự</li>
+              <li>Chứa ít nhật 1 ký tự đặc biệt</li>
+              <li>Chứa ít nhật 1 ký tự số</li>
+              <li>Chứa ít nhất 1 ký tự chữ viết hoa</li>
+              <li>Chứa ít nhất 1 ký tự chữ viết thường</li>
+            </ul>
           </div>
 
           <Button
@@ -196,11 +204,19 @@ const SignUp = () => {
         </form>
 
         {/* Navigate to Sign In page */}
-        <div className="flex gap-1 mt-5 text-base">
-          <Link to="/sign-in" className="text-blue-500">
-            Đăng nhập
-          </Link>
-          <span>nếu bạn đã có tài khoản rồi!</span>
+        <div className="flex flex-col gap-3 mt-3">
+          <div>
+            <Badge icon={CiWarning} color="warning" className="text-xs py-3 rounded-none">
+              Lưu ý: Nếu bạn đăng ký với tài khoản Google, tên tài khoản của bạn
+              sẽ là tên gmail
+            </Badge>
+          </div>
+          <div>
+            <Link to="/sign-in" className="text-blue-500 mr-1">
+              Đăng nhập
+            </Link>
+            <span>nếu bạn đã có tài khoản rồi!</span>
+          </div>
         </div>
       </div>
     </div>

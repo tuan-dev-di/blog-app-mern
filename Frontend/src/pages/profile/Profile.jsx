@@ -29,14 +29,14 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [modalType, setModalType] = useState("");
+  const [modalType, setModalType] = useState(""); // Separate modal: UPDATE - DELETE
   const [modalOpen, setModalOpen] = useState(false);
 
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id; // Get Id of user's account
   const loading = useSelector((state) => state.user.loading);
-  const [formData, setFormData] = useState({});
 
+  const [formData, setFormData] = useState({});
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const filePicker = useRef();
@@ -93,6 +93,7 @@ const Profile = () => {
         setProfileImagePreview(imagePreview.url);
       }
 
+      // Create an object to get field which update by user with new data
       const profileDataChanges = {};
       if (formData.email && formData.email !== curUser.user.email)
         profileDataChanges.email = formData.email;
@@ -121,7 +122,12 @@ const Profile = () => {
 
       dispatch(updateUserSuccess(data));
       toast.success("Cập nhật hồ sơ thành công!", { theme: "colored" });
-      navigate("/profile");
+
+      setTimeout(() => {
+        navigate("/profile", { replace: true });
+      }, 3000);
+      // setFormData({});
+      setProfileImage(null);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
       toast.error(error.message, { theme: "colored" });
@@ -191,9 +197,9 @@ const Profile = () => {
               >
                 <img
                   src={profileImagePreview || curUser.user.profileImage}
-                  defaultValue={curUser.profileImage}
-                  alt={curUser.displayName}
-                  className={"rounded-full w-full h-full"}
+                  defaultValue={curUser.user.profileImage}
+                  alt={curUser.user.displayName}
+                  className="w-full h-full object-cover"
                 />
               </button>
               <p className="my-4 text-center text-2xl">
@@ -215,6 +221,7 @@ const Profile = () => {
                   {curUser.user.role}
                 </span>
               </div>
+
               {/* ---------------| USERNAME |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Tên tài khoản" />
@@ -227,6 +234,7 @@ const Profile = () => {
                   disabled
                 />
               </div>
+
               {/* ---------------| EMAIL |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Email" />
@@ -237,9 +245,9 @@ const Profile = () => {
                   type="email"
                   icon={MdEmail}
                   onChange={handleUpdate}
-                  // disabled
                 />
               </div>
+
               {/* ---------------| DISPLAY NAME |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Tên hiển thị" />
@@ -252,6 +260,7 @@ const Profile = () => {
                   onChange={handleUpdate}
                 />
               </div>
+
               {/* ---------------| PASSWORD |--------------- */}
               <div className="max-w-2xl">
                 <Label className="text-base" value="Mật khẩu" />
