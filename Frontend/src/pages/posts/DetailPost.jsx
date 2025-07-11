@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_POST_DETAIL, GET_POSTS_LIMIT } from "../../apis/post";
+import { GET_POST_DETAIL, GET_POSTS_LIMIT } from "../../api/post";
 import { Introduce, CommentSection } from "../../components/_index";
 import PostCard from "../../components/PostCard";
 

@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { SEARCH_POSTS } from "../apis/post";
+import { SEARCH_POSTS } from "../api/post";
 import PostCard from "../components/PostCard";
 
 const Search = () => {

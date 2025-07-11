@@ -12,8 +12,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { CREATE_POST } from "../../apis/post";
-import { UPLOAD_IMAGE } from "../../apis/auth";
+import { CREATE_POST } from "../../api/post";
+import { UPLOAD_IMAGE } from "../../api/auth";
 
 const CreatePost = () => {
   const navigate = useNavigate();

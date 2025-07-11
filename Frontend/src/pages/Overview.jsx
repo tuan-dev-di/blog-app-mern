@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 //? ---------------| IMPORT COMPONENTS |---------------
-import { Button, Table } from "flowbite-react";
+import { Button, Table, Spinner } from "flowbite-react";
 import { FaUsers } from "react-icons/fa";
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
 import { MdArticle } from "react-icons/md";
@@ -14,30 +14,37 @@ import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { SidebarApp } from "../components/_index";
-import { GET_USERS_OVERVIEW } from "../apis/user";
-import { GET_POSTS_LIMIT } from "../apis/post";
-import { GET_COMMENT_OVERVIEW } from "../apis/comment";
+import { GET_USERS_OVERVIEW } from "../api/user";
+import { GET_POSTS_LIMIT } from "../api/post";
+import { GET_COMMENT_OVERVIEW } from "../api/comment";
 
 const Overview = () => {
   const curUser = useSelector((state) => state.user.currentUser);
   const userId = curUser.user._id;
   const role = curUser.user.role;
 
+  const [loading, setLoading] = useState(false);
+
+  // User part
   const [userList, setUserList] = useState([]);
   const [totalUser, setTotalUser] = useState(0);
   const [userLastMonth, setUserLastMonth] = useState(0);
   const limitUsers = 5;
 
+  // Post part
   const [postList, setPostList] = useState([]);
   const [totalPost, setTotalPost] = useState(0);
   const [postLastMonth, setPostLastMonth] = useState(0);
   const limitPosts = 5;
 
+  // Comment part
   const [commentList, setCommentList] = useState([]);
   const [totalComment, setTotalComment] = useState(0);
   const limitComments = 5;
 
   const list_users = useCallback(async () => {
+    setLoading(false);
+
     try {
       const data = await GET_USERS_OVERVIEW(userId, limitUsers);
       if (!data) toast.error(data.message, { theme: "colored" });
@@ -52,6 +59,8 @@ const Overview = () => {
   }, [userId, limitUsers]);
 
   const list_posts = useCallback(async () => {
+    setLoading(false);
+
     try {
       const data = await GET_POSTS_LIMIT(limitPosts);
       if (!data) toast.error(data.message, { theme: "colored" });
@@ -66,6 +75,8 @@ const Overview = () => {
   }, [limitPosts]);
 
   const list_comments = useCallback(async () => {
+    setLoading(false);
+
     try {
       const data = await GET_COMMENT_OVERVIEW(userId, limitComments);
       if (!data) toast.error(data.message, { theme: "colored" });
@@ -97,6 +108,11 @@ const Overview = () => {
       <div className="relative md:mx-auto p-7 w-full">
         <ToastContainer position="top-right" autoClose={3000} />
         <div>
+          {loading && (
+            <div className="flex justify-center items-center min-h-screen">
+              <Spinner size="xl" />
+            </div>
+          )}
           {role === "admin" ? (
             <div>
               {/* ---------------| TOTAL PART |---------------*/}
@@ -185,6 +201,7 @@ const Overview = () => {
                     <Table.Head>
                       <Table.HeadCell>Ảnh đại diện</Table.HeadCell>
                       <Table.HeadCell>Tài khoản</Table.HeadCell>
+                      <Table.HeadCell>Chức vụ</Table.HeadCell>
                     </Table.Head>
                     <Table.Body>
                       {userList.map((user) => (
@@ -201,6 +218,17 @@ const Overview = () => {
                             />
                           </Table.Cell>
                           <Table.Cell>{user.username}</Table.Cell>
+                          <Table.Cell>
+                            <span
+                              className={`px-4 py-2 text-sm font-semibold rounded-full ${
+                                user.role === "admin"
+                                  ? "bg-blue-100 text-blue-700"
+                                  : "bg-green-100 text-green-700"
+                              }`}
+                            >
+                              {user.role}
+                            </span>
+                          </Table.Cell>
                         </Table.Row>
                       ))}
                     </Table.Body>

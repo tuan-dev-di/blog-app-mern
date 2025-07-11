@@ -16,7 +16,7 @@ import {
   DELETE_COMMENT,
   GET_COMMENTS_IN_POST,
   LIKE_COMMENT,
-} from "../../apis/comment";
+} from "../../api/comment";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
