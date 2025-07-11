@@ -10,7 +10,7 @@ import { BiSolidCommentDetail } from "react-icons/bi";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
-import { SIGN_OUT } from "../apis/auth";
+import { SIGN_OUT } from "../api/auth";
 
 const SidebarApp = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const SidebarApp = () => {
   };
 
   return (
-    <Sidebar className="w-full md:w-60">
+    <Sidebar className="w-full md:w-60 shadow-md">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {userRole === "admin" && (

@@ -12,7 +12,7 @@ import { FaGoogle } from "react-icons/fa";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signInFailure, signInSuccess } from "../redux/user/userSlice";
-import { GOOGLE_AUTH } from "../apis/auth";
+import { GOOGLE_AUTH } from "../api/auth";
 
 const OAuth = () => {
   const auth = getAuth(app);

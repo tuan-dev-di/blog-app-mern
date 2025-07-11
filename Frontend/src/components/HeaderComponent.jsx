@@ -21,7 +21,7 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import { signOutSuccess, signOutFailure } from "../redux/user/userSlice";
-import { SIGN_OUT } from "../apis/auth";
+import { SIGN_OUT } from "../api/auth";
 
 const Header = () => {
   const path = useLocation().pathname;

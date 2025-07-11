@@ -13,6 +13,7 @@ import {
   SignIn,
   SignUp,
   Overview,
+  ComingSoon,
   Search,
   Profile,
   CreatePost,
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/project" element={<Project />}></Route>
         <Route path="/sign-in" element={<SignIn />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
+        <Route path="/coming-soon" element={<ComingSoon />}></Route>
         <Route
           path="/posts/get-posts/detail/:postSlug"
           element={<DetailPost />}

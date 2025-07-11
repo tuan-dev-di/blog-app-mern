@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
 import Introduce from "../components/Introduce";
-import { GET_POSTS } from "../apis/post";
+import { GET_POSTS } from "../api/post";
 import PostCard from "../components/PostCard";
 
 const Home = () => {

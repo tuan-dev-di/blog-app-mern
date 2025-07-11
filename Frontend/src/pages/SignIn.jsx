@@ -15,7 +15,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
-import { SIGN_IN } from "../apis/auth";
+import { SIGN_IN } from "../api/auth";
 import OAuth from "../components/OAuth";
 
 const SignIn = () => {
@@ -133,21 +133,12 @@ const SignIn = () => {
         </form>
 
         {/* Navigate to Sign Up page */}
-        {/* <div className="flex gap-2 mt-5 text-base">
-          <Link to="/sign-up" className="text-blue-500">
-            Đăng ký
+        <div className="flex justify-between items-center p-3 mt-5 text-base w-full">
+          <Link to="/coming-soon" className="text-blue-500">
+            Quên mật khẩu?
           </Link>
-          <span>nếu bạn chưa có tài khoản!</span>
-        </div> */}
-        <div className="flex justify-between items-center mt-5 text-base">
-          <div className="flex gap-2">
-            <Link to="/sign-up" className="text-blue-500">
-              Đăng ký
-            </Link>
-            <span>nếu bạn chưa có tài khoản!</span>
-          </div>
-          <Link to="/" className="text-blue-500">
-            Trang chủ
+          <Link to="/sign-up" className="text-blue-500">
+            Tạo tài khoản mới
           </Link>
         </div>
       </div>

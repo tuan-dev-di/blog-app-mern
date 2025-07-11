@@ -22,8 +22,8 @@ import {
   deleteUserSuccess,
   deleteUserFailure,
 } from "../../redux/user/userSlice";
-import { DELETE_ACCOUNT, UPDATE_ACCOUNT } from "../../apis/user";
-import { UPLOAD_IMAGE } from "../../apis/auth";
+import { DELETE_ACCOUNT, UPDATE_ACCOUNT } from "../../api/user";
+import { UPLOAD_IMAGE } from "../../api/auth";
 
 const Profile = () => {
   const dispatch = useDispatch();

@@ -19,7 +19,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_COMMENT_LIST, DELETE_COMMENT } from "../../apis/comment";
+import { GET_COMMENT_LIST, DELETE_COMMENT } from "../../api/comment";
 import { SidebarApp } from "../../components/_index";
 
 const Comment = () => {

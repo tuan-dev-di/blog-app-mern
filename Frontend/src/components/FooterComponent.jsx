@@ -1,7 +1,7 @@
 //? ---------------| IMPORT COMPONENTS |---------------
 import { Footer } from "flowbite-react";
 import { BsFacebook, BsGithub } from "react-icons/bs";
-import Ami_Chill from "../assets/Ami_ChillChill.jpg";
+import Amy_Chill from "../assets/Amy_ChillChill.jpg";
 
 const FooterComponent = () => {
   return (
@@ -13,7 +13,7 @@ const FooterComponent = () => {
           <div className="mt-5">
             <Footer.Brand
               href="https://github.com/tuan-dev-di"
-              src={Ami_Chill}
+              src={Amy_Chill}
               alt="Arys Tommy"
               name="Arys Tommy"
             />
@@ -29,10 +29,12 @@ const FooterComponent = () => {
               </Footer.LinkGroup>
             </div>
             <div>
-              <Footer.Title title="Follow us" />
+              <Footer.Title title="Contact" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Github</Footer.Link>
-                <Footer.Link href="#">Discord</Footer.Link>
+                <Footer.Link href="tuanndt76@outlook.com">Mail</Footer.Link>
+                <Footer.Link href="https://www.facebook.com/thanh.tuan.221793/">
+                  Facebook
+                </Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>

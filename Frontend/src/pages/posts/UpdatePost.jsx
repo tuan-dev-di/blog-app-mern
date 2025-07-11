@@ -12,8 +12,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { UPDATE_POST, GET_POST_TO_UPDATE } from "../../apis/post";
-import { UPLOAD_IMAGE } from "../../apis/auth";
+import { UPDATE_POST, GET_POST_TO_UPDATE } from "../../api/post";
+import { UPLOAD_IMAGE } from "../../api/auth";
 
 const DetailPost = () => {
   const filePicker = useRef();

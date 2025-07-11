@@ -18,7 +18,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { SIGN_UP } from "../apis/auth";
+import { SIGN_UP } from "../api/auth";
 import OAuth from "../components/OAuth";
 
 const SignUp = () => {

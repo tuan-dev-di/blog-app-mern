@@ -6,6 +6,7 @@ export { default as Project } from "./Project";
 export { default as Home } from "./Home";
 export { default as Search } from "./Search";
 export { default as Overview } from "./Overview";
+export { default as ComingSoon } from "./ComingSoon";
 
 // ---------------| PROFILE |---------------
 export { default as Profile } from "./profile/Profile";

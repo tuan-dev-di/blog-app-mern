@@ -20,7 +20,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_POSTS, DELETE_POST } from "../../apis/post";
+import { GET_POSTS, DELETE_POST } from "../../api/post";
 import { SidebarApp } from "../../components/_index";
 
 const Post = () => {

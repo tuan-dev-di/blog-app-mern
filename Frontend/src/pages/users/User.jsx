@@ -9,7 +9,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //? ---------------| IMPORT MY OWN COMPONENTS |---------------
-import { GET_USERS } from "../../apis/user";
+import { GET_USERS } from "../../api/user";
 import { SidebarApp } from "../../components/_index";
 
 const User = () => {
