@@ -22,12 +22,15 @@ const sign_out = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
 
-    res.clearCookie("accessToken", {
-      httpOnly: true,
-      secure: true,
-    });
-
     return res
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: true,
+      })
+      .clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+      })
       .status(200)
       .json({ success: true, message: "Đăng xuất thành công!" });
   } catch (error) {

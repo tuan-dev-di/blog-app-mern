@@ -15,6 +15,10 @@ const {
   checkLengthDisplayName,
   checkRegexDisplayName,
 } = require("../../utilities/validUser");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../../utilities/authToken");
 
 const sign_up = async (req, res) => {
   const { username, password, email, displayName } = req.body;
@@ -119,13 +123,8 @@ const sign_up = async (req, res) => {
     await newUser.save();
 
     // Return token
-    const accessToken = jwt.sign(
-      { userId: newUser._id, role: newUser.role },
-      process.env.Access_Token,
-      {
-        expiresIn: "24h",
-      }
-    );
+    const accessToken = generateAccessToken(newUser);
+    const refreshToken = generateRefreshToken(newUser);
 
     const { password: userPassword, ...user } = newUser._doc;
 
@@ -135,15 +134,24 @@ const sign_up = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "None",
+        path: "/",
         maxAge: 24 * 60 * 60 * 1000,
         // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+      })
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
         path: "/",
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+        // => 3 (days) * 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
       })
       .json({
         success: true,
         message: `Đăng ký thành công: '${username}' - '${email}'`,
         user: user,
         accessToken: accessToken,
+        refreshToken: refreshToken,
       });
   } catch (error) {
     console.log("Sign up error:", error.message);

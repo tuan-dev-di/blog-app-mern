@@ -3,6 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
 
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../../utilities/authToken");
+
 const google_auth = async (req, res) => {
   const { email, name, photo } = req.body;
   const username = req.body.email;
@@ -14,16 +19,8 @@ const google_auth = async (req, res) => {
 
     if (checkUser) {
       //? ---------------| CREATE A NEW TOKEN FOR SIGNING IN BY EMAIL |---------------
-      const accessToken = jwt.sign(
-        {
-          userId: checkUser._id,
-          role: checkUser.role,
-        },
-        process.env.Access_Token,
-        {
-          expiresIn: "24h",
-        }
-      );
+      const accessToken = generateAccessToken(checkUser);
+      const refreshToken = generateRefreshToken(checkUser);
 
       const { password, ...user } = checkUser._doc;
 
@@ -33,15 +30,24 @@ const google_auth = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "None",
+          path: "/",
           maxAge: 24 * 60 * 60 * 1000,
           // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+        })
+        .cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
           path: "/",
+          maxAge: 24 * 60 * 60 * 1000,
+          // => 3 (days) * 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
         })
         .json({
           success: true,
           message: "Đăng nhập bằng email thành công",
           user: user,
           accessToken: accessToken,
+          refreshToken: refreshToken,
         });
     } else {
       //? ---------------| CREATE A RANDOM PASSWORD FOR SIGNING UP BY EMAIL |---------------
@@ -59,16 +65,8 @@ const google_auth = async (req, res) => {
       });
       await newUser.save();
 
-      const accessToken = jwt.sign(
-        {
-          userId: newUser.uid,
-          role: newUser.role,
-        },
-        process.env.Access_Token,
-        {
-          expiresIn: "24h",
-        }
-      );
+      const accessToken = generateAccessToken(newUser);
+      const refreshToken = generateRefreshToken(newUser);
 
       const { password, ...user } = newUser._doc;
       return res
@@ -77,8 +75,17 @@ const google_auth = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "None",
+          path: "/",
           maxAge: 24 * 60 * 60 * 1000,
           // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+        })
+        .cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          path: "/",
+          maxAge: 3 * 24 * 60 * 60 * 1000,
+          // => 3 (days) * 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
         })
         .json({
           success: true,
@@ -87,6 +94,7 @@ const google_auth = async (req, res) => {
           message: `Đăng ký thành công với tài khoản Google - ${newUser.username}`,
           user: user,
           accessToken: accessToken,
+          refreshToken: refreshToken,
         });
     }
   } catch (error) {

@@ -25,6 +25,7 @@ const verifyToken = async (req, res, next) => {
 
         // Remove cookie token if token error to avoid using older token
         res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
 
         return res
           .status(401)
