@@ -6,7 +6,7 @@ const verifyToken = require("../middleware/Auth.js");
 const { sign_in } = require("../controllers/user/SignInController.js");
 const { sign_up } = require("../controllers/user/SignUpController.js");
 const { sign_out } = require("../controllers/user/SignOutController.js");
-const { google_auth } = require("../controllers/user/GoogleAuthController..js");
+const { google_auth } = require("../controllers/user/GoogleAuthController.js");
 const {
   update_account,
 } = require("../controllers/user/UpdateAccountController.js");

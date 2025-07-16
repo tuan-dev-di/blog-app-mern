@@ -15,6 +15,7 @@ const {
   checkLengthDisplayName,
   checkRegexDisplayName,
 } = require("../../utilities/validUser");
+const { generateAccessToken } = require("../../utilities/authToken");
 
 const sign_up = async (req, res) => {
   const { username, password, email, displayName } = req.body;
@@ -119,13 +120,7 @@ const sign_up = async (req, res) => {
     await newUser.save();
 
     // Return token
-    const accessToken = jwt.sign(
-      { userId: newUser._id, role: newUser.role },
-      process.env.Access_Token,
-      {
-        expiresIn: "24h",
-      }
-    );
+    const accessToken = generateAccessToken(newUser);
 
     const { password: userPassword, ...user } = newUser._doc;
 
@@ -135,9 +130,9 @@ const sign_up = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        maxAge: 24 * 60 * 60 * 1000,
-        // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
         path: "/",
+        maxAge: 12 * 60 * 60 * 1000,
+        // => 12 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
       })
       .json({
         success: true,

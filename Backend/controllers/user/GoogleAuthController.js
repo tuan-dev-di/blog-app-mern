@@ -1,7 +1,10 @@
 const argon2 = require("argon2");
-const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
+
+const {
+  generateAccessToken,
+} = require("../../utilities/authToken");
 
 const google_auth = async (req, res) => {
   const { email, name, photo } = req.body;
@@ -14,16 +17,7 @@ const google_auth = async (req, res) => {
 
     if (checkUser) {
       //? ---------------| CREATE A NEW TOKEN FOR SIGNING IN BY EMAIL |---------------
-      const accessToken = jwt.sign(
-        {
-          userId: checkUser._id,
-          role: checkUser.role,
-        },
-        process.env.Access_Token,
-        {
-          expiresIn: "24h",
-        }
-      );
+      const accessToken = generateAccessToken(checkUser);
 
       const { password, ...user } = checkUser._doc;
 
@@ -33,9 +27,9 @@ const google_auth = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "None",
-          maxAge: 24 * 60 * 60 * 1000,
-          // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
           path: "/",
+          maxAge: 12 * 60 * 60 * 1000,
+          // => 12 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
         })
         .json({
           success: true,
@@ -59,16 +53,7 @@ const google_auth = async (req, res) => {
       });
       await newUser.save();
 
-      const accessToken = jwt.sign(
-        {
-          userId: newUser.uid,
-          role: newUser.role,
-        },
-        process.env.Access_Token,
-        {
-          expiresIn: "24h",
-        }
-      );
+      const accessToken = generateAccessToken(newUser);
 
       const { password, ...user } = newUser._doc;
       return res
@@ -77,8 +62,9 @@ const google_auth = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "None",
-          maxAge: 24 * 60 * 60 * 1000,
-          // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+          path: "/",
+          maxAge: 12 * 60 * 60 * 1000,
+          // => 12 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
         })
         .json({
           success: true,

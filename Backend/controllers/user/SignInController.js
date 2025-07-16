@@ -5,6 +5,9 @@ const {
   checkEmptyUsername,
   checkEmptyPassword,
 } = require("../../utilities/validUser");
+const {
+  generateAccessToken,
+} = require("../../utilities/authToken");
 
 const sign_in = async (req, res) => {
   const { username, password } = req.body;
@@ -31,16 +34,7 @@ const sign_in = async (req, res) => {
         message: "Tên tài khoản hoặc mật khẩu không hợp lệ",
       });
 
-    const accessToken = jwt.sign(
-      {
-        userId: userValid._id,
-        role: userValid.role,
-      },
-      process.env.Access_Token,
-      {
-        expiresIn: "24h",
-      }
-    );
+    const accessToken = generateAccessToken(userValid);
 
     const { password: userPassword, ...user } = userValid._doc;
 
@@ -50,9 +44,9 @@ const sign_in = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        maxAge: 24 * 60 * 60 * 1000,
-        // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
         path: "/",
+        maxAge: 12 * 60 * 60 * 1000,
+        // => 12 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
       })
       .json({
         success: true,

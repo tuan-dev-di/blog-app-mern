@@ -3,9 +3,11 @@ const jwt = require("jsonwebtoken");
 const verifyToken = async (req, res, next) => {
   //? ---------------| CHECK HAS TAKEN TOKEN |---------------
   const token =
-    // req.cookies.accessToken || req.header("Authorization").split(" ")[1];
-    req.cookies.accessToken;
-  // console.log("TOKEN:", token);
+    req.body.accessToken ||
+    req.cookies.accessToken ||
+    (req.header("Authorization") && req.header("Authorization").split(" ")[1]);
+  // req.cookies.accessToken;
+  console.log("TOKEN:", token);
   if (!token)
     return res.status(401).json({ success: false, message: "Access denied" });
 
@@ -13,12 +15,14 @@ const verifyToken = async (req, res, next) => {
   try {
     jwt.verify(token, process.env.Access_Token, (err, user) => {
       if (err) {
-        if (err.name === "TokenExpiredError") // Check token expire
+        if (err.name === "TokenExpiredError")
+          // Check token expire
           return res
             .status(401)
             .json({ success: false, message: "Token expired" });
 
-        if (err.name === "JsonWebTokenError") // Check token valid
+        if (err.name === "JsonWebTokenError")
+          // Check token valid
           return res
             .status(401)
             .json({ success: false, message: "Invalid token" });
