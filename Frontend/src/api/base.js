@@ -1,6 +1,5 @@
-//? ---------------| CHECK ID & ROLE |---------------
-// const BASE_URL = "/api";
-const BASE_URL = import.meta.env.VITE_BACKEND_API;
+const BASE_URL = "/api";
+// const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
 export const callApi = async (
   endpoint,
@@ -24,12 +23,33 @@ export const callApi = async (
   }
 
   try {
-    // const response = await fetch(`${BASE_URL}${endpoint}`, options);
-    const response = await fetch(`${BASE_URL}/api${endpoint}`, options);
+    let response = await fetch(`${BASE_URL}${endpoint}`, options);
+    // let response = await fetch(`${BASE_URL}/api${endpoint}`, options);
+
+    // if (response.status === 401 && retry)
+    console.log("RESPONSE STATUS:", response.status);
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || "Unknown error occurred");
+      // const errorMsg = error?.message || "Unknown error";
+
+      // if (
+      //   response.status === 401 ||
+      //   errorMsg.includes("Token expired") ||
+      //   errorMsg.includes("Invalid token")
+      // ) {
+      //   store.dispatch(signOutSuccess());
+      //   return {
+      //     success: true,
+      //     status: 401,
+      //     data: {
+      //       message:
+      //         "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại!",
+      //     },
+      //   };
+      // }
+
+      throw new Error(error);
     }
 
     let jsonData;

@@ -27,10 +27,6 @@ const sign_out = async (req, res) => {
         httpOnly: true,
         secure: true,
       })
-      .clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: true,
-      })
       .status(200)
       .json({ success: true, message: "Đăng xuất thành công!" });
   } catch (error) {

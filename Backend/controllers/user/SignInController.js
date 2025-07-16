@@ -7,7 +7,6 @@ const {
 } = require("../../utilities/validUser");
 const {
   generateAccessToken,
-  generateRefreshToken,
 } = require("../../utilities/authToken");
 
 const sign_in = async (req, res) => {
@@ -36,7 +35,6 @@ const sign_in = async (req, res) => {
       });
 
     const accessToken = generateAccessToken(userValid);
-    const refreshToken = generateRefreshToken(userValid);
 
     const { password: userPassword, ...user } = userValid._doc;
 
@@ -46,24 +44,15 @@ const sign_in = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        maxAge: 24 * 60 * 60 * 1000,
         path: "/",
-        // => 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
-      })
-      .cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        path: "/",
-        maxAge: 3 * 24 * 60 * 60 * 1000,
-        // => 3 days * 24 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
+        maxAge: 12 * 60 * 60 * 1000,
+        // => 12 (hours) * 60 (minutes) * 60 (seconds) * 1000 (milliseconds)
       })
       .json({
         success: true,
         message: "Đăng nhập thành công!",
         user: user,
         accessToken: accessToken,
-        refreshToken: refreshToken,
       });
   } catch (error) {
     console.log("Sign in error:", error.message);

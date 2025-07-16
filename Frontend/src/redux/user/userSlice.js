@@ -30,6 +30,7 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.error = null;
       state.loading = false;
+      localStorage.removeItem("user")
     },
     signOutFailure: (state, action) => {
       state.error = action.payload;
